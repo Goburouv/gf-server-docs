@@ -1,0 +1,4 @@
+site/
+__pycache__/
+*.tmp
+manifest.json

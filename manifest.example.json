@@ -1,0 +1,14 @@
+{
+  "source_root": "../private-notes",
+  "files": [
+    { "src": "MyArticle_EN.md", "dst": "server/MyArticle.md" }
+  ],
+  "replacements": {
+    "internal wording": "public wording"
+  },
+  "deny_patterns": [
+    "\b\d{1,3}(\.\d{1,3}){3}\b",
+    "C:\\Users",
+    "\[\["
+  ]
+}
