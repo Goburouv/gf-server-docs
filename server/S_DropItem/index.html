@@ -1000,7 +1000,7 @@ both a MONSTER id and a CONTAINER ITEM id</strong>, because monsters and items s
 <p>If a number is both a monster <strong>and</strong> a bag (55383 is; there are 1,094 such ids), <strong>the same row serves both</strong>.</p>
 </div>
 <p>Full chain (all addresses are ZS 101):</p>
-<pre class="mermaid"><code>flowchart LR
+<div class="mermaid">flowchart LR
     INI[("S_DropItem.ini")]
     LOAD["CDropItemQuery::Init @0xa8eb10&lt;br/&gt;LoadDB · CheckVersion · Deserialize"]
     RAW["CGameData::m_kDropItemQuery&lt;br/&gt;map short → CDropItemData*"]
@@ -1018,7 +1018,7 @@ both a MONSTER id and a CONTAINER ITEM id</strong>, because monsters and items s
     POOL --&gt; BAG --&gt; ROLL
     POOL --&gt; MISC --&gt; ROLL
     ROLL --&gt; OUT
-    RAW --&gt; RAWUSE</code></pre>
+    RAW --&gt; RAWUSE</div>
 <p><code>CNode::BornMonster @0x97b481</code> assigns <code>CMonster::DropTable</code> (+0xB50) by template id when the mob spawns
 (also <code>CNPC::ChangTemplate @0x9757b6</code> and <code>CZoneRainbowRoadTeam::EventMonster @0x5a15b1</code>). Loader chain:
 <code>CDropItemQuery::Init @0xa8eb10</code> → <code>LoadDB @0xa8f790</code> · <code>CheckVersion @0xa8f660</code> · <code>Deserialize @0xa8ec20</code>;
@@ -1643,6 +1643,10 @@ name 0x8, stack 0x10, rate 0x14) · <code>lapis::SMonsterDrop</code> (256 B: id 
     
     
       <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="https://unpkg.com/mermaid@11/dist/mermaid.min.js"></script>
+      
+        <script src="../../javascripts/mermaid-init.js"></script>
       
     
   </body>
