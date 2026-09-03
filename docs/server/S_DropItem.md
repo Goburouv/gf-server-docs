@@ -1,3 +1,12 @@
+---
+title: S_DropItem.ini
+description: Loot tables — monster drops, bag contents, gold, affix quality, part-break drops and announcements.
+tags:
+  - server
+  - loot
+  - boot killers
+---
+
 # S_DropItem.ini — complete format and runtime reference (ZoneServer101 decompile)
 
 > Verified 2026-09-03 against the ZoneServer binary (IDA database with DWARF symbols) and the data in
@@ -16,19 +25,39 @@ both a MONSTER id and a CONTAINER ITEM id**, because monsters and items share th
 - If the key is a bag/box → the row is its contents. The bag points at the row through **`S_Item` col 64
   (`DropIndex`, idx 63)**; by convention `DropIndex = the item's own id` (7809→7809, 2136→2136), but it is a
   separate field.
-- ⚠️ If a number is both a monster **and** a bag (55383 is; there are 1,094 such ids), **the same row serves both**.
+!!! warning "Shared key space"
+    If a number is both a monster **and** a bag (55383 is; there are 1,094 such ids), **the same row serves both**.
 
 Full chain (all addresses are ZS 101):
 
+```mermaid
+flowchart LR
+    INI[("S_DropItem.ini")]
+    LOAD["CDropItemQuery::Init @0xa8eb10<br/>LoadDB · CheckVersion · Deserialize"]
+    RAW["CGameData::m_kDropItemQuery<br/>map short → CDropItemData*"]
+    BUILD["CMonsterDBO::GetAllMonsterDrops @0x771e50"]
+    POOL["CZoneServer::MonsterDrops<br/>map short → SMonsterDrop*"]
+    BORN["CNode::BornMonster<br/>CMonster::DropTable"]
+    KILL["CMonster::GiveReward<br/>GiveItem · GiveGold"]
+    BAG["OpenLuckyBag<br/>OpenOptionalLuckyBag"]
+    MISC["Fishing · Surprise box<br/>Sprite work"]
+    ROLL["CItemFactory::GenerateDrop @0x4dde70"]
+    OUT["DropTreasure<br/>AddItemsToCharacter"]
+    RAWUSE["QueryDropItem<br/>optional bags · pickup Marquee · GetItemPos"]
+    INI --> LOAD --> RAW --> BUILD --> POOL
+    POOL --> BORN --> KILL --> ROLL
+    POOL --> BAG --> ROLL
+    POOL --> MISC --> ROLL
+    ROLL --> OUT
+    RAW --> RAWUSE
 ```
-S_DropItem.ini ──CDropItemQuery::Init @0xa8eb10──► CGameData::m_kDropItemQuery   (map<short, CDropItemData*>)
-       │            LoadDB @0xa8f790 · CheckVersion @0xa8f660 · Deserialize @0xa8ec20
-       ▼
-CZoneServer::InitMonster @0x5b5f20 ──► CMonsterDBO::GetAllMonsterDrops @0x771e50 ──► CZoneServer::MonsterDrops
-                                                                                       (map<short, SMonsterDrop*>)
-CNode::BornMonster @0x97b481 assigns CMonster::DropTable (+0xB50) by template id when the mob spawns
-(also CNPC::ChangTemplate @0x9757b6 and CZoneRainbowRoadTeam::EventMonster @0x5a15b1).
 
+`CNode::BornMonster @0x97b481` assigns `CMonster::DropTable` (+0xB50) by template id when the mob spawns
+(also `CNPC::ChangTemplate @0x9757b6` and `CZoneRainbowRoadTeam::EventMonster @0x5a15b1`). Loader chain:
+`CDropItemQuery::Init @0xa8eb10` → `LoadDB @0xa8f790` · `CheckVersion @0xa8f660` · `Deserialize @0xa8ec20`;
+pool builder called from `CZoneServer::InitMonster @0x5b5f20`.
+
+```
 Consumers of the pool (SMonsterDrop):
   CMonster::GiveReward @0x967900 → GiveItem @0x96fd80 (+ PB pool) and GiveGold @0x968330 · CItemFactory::GenerateDrop @0x4dde70
   CItemFactory::OpenLuckyBag @0x4ecf60 (bag class 12) · OpenOptionalLuckyBag @0x4ed320 (pick-your-own bag, class 15)
@@ -68,11 +97,12 @@ so **every record carries exactly 194 `|`** even when it spans two physical line
 
 ## 2. Columns (1-based) — type, conversion and real use in the binary
 
-Every `*Rate` column is read as a **real number in PERCENT** and stored as an integer `×1,000,000`
-(`(int)(v·1e6 + 0.5)`); at runtime it is compared against **1e8 = 100 %**. So `70` = 70 %, `0.05` = 0.05 %,
-`100` = always. The old note claiming "0.05 = 5 %" was wrong. The real-number reader is
-`CInTextStream::operator>>(double&) @0xa7e610` = `strtod(token, 0)`: a trailing `%` is ignored (`1%` reads as 1),
-non-numeric or empty text reads as 0, and a negative value (`-100`) ends up in an overflowed `UInt`.
+!!! note "Units: percent, stored ×1e6"
+    Every `*Rate` column is read as a **real number in PERCENT** and stored as an integer `×1,000,000`
+    (`(int)(v·1e6 + 0.5)`); at runtime it is compared against **1e8 = 100 %**. So `70` = 70 %, `0.05` = 0.05 %,
+    `100` = always. The real-number reader is `CInTextStream::operator>>(double&) @0xa7e610` = `strtod(token, 0)`:
+    a trailing `%` is ignored (`1%` reads as 1), non-numeric or empty text reads as 0, and a negative value
+    (`-100`) ends up in an overflowed `UInt`.
 
 | # | Name (header) | DWARF field / type | What it really does |
 |---|---|---|---|
@@ -126,15 +156,16 @@ Despite the "DBO" name it never touches PostgreSQL: it walks `CGameData::GetAllD
 
 `Level` and `NotDropRate` are **not copied**: that is why they are dead.
 
-Validations in this phase (they go to `InitErrLog` → `CLogFactory::DBError = 1` → `[FAIL] Database Error!!`,
-the ZS dies at the end of loading):
+!!! danger "Boot killers at load time"
+    These go to `InitErrLog` → `CLogFactory::DBError = 1` → `[FAIL] Database Error!!` (the ZS dies at the end of
+    loading):
 
-- `DropID[%d] with worng drop item id[%u]!` → the normal-pool `ItemId` does not exist in `S_Item` (looked up in
-  `CZoneServer::AllItems`, also keyed by short).
-- `DropID[%d] with worng item[%u] count[%hu]!` → `Stack` = 0, or `Stack > 1` on a **non-stackable** item
-  (bit 0 of `CItem::Flags`). A piece of equipment with Stack 2 does not boot.
-- The PB list is **not** validated at load; a bad id there only yields `Invalid drop item [%u] in MonsterDrop [%d]`
-  at roll time (InitErrLogAppend, no abort).
+    - `DropID[%d] with worng drop item id[%u]!` → the normal-pool `ItemId` does not exist in `S_Item` (looked up in
+      `CZoneServer::AllItems`, also keyed by short).
+    - `DropID[%d] with worng item[%u] count[%hu]!` → `Stack` = 0, or `Stack > 1` on a **non-stackable** item
+      (bit 0 of `CItem::Flags`). A piece of equipment with Stack 2 does not boot.
+    - The PB list is **not** validated at load; a bad id there only yields `Invalid drop item [%u] in MonsterDrop [%d]`
+      at roll time (InitErrLogAppend, no abort).
 
 ---
 
