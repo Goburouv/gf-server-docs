@@ -1,0 +1,1435 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Verified reference for the server data files, from the decompiled binaries.">
+      
+      
+      
+      
+        <link rel="prev" href="../..">
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>S_DropItem.ini - GF Server Data Reference</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#s_dropitemini-complete-format-and-runtime-reference-zoneserver101-decompile" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="GF Server Data Reference" class="md-header__button md-logo" aria-label="GF Server Data Reference" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            GF Server Data Reference
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              S_DropItem.ini
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="./" class="md-tabs__link">
+          
+  
+  
+  Server files
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="GF Server Data Reference" class="md-nav__button md-logo" aria-label="GF Server Data Reference" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    GF Server Data Reference
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Server files
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Server files
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    S_DropItem.ini
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    S_DropItem.ini
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#0-what-it-is-and-who-uses-it" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        0. What it is and who uses it
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-versions-and-column-count-checkversion-0xa8f660" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Versions and column count (CheckVersion @0xa8f660)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-columns-1-based-type-conversion-and-real-use-in-the-binary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Columns (1-based) — type, conversion and real use in the binary
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-deserialize-0xa8ec20-exact-read-order" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Deserialize (@0xa8ec20) — exact read order
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-building-the-in-memory-pool-cmonsterdbogetallmonsterdrops-0x771e50" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Building the in-memory pool (CMonsterDBO::GetAllMonsterDrops @0x771e50)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-the-roll-citemfactorygeneratedrop-0x4dde70" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. The roll (CItemFactory::GenerateDrop @0x4dde70)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-delivery-monsters-gold-and-bags" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Delivery: monsters, gold and bags
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. Delivery: monsters, gold and bags">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#61-monster-death-cmonstergivereward-0x967900" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.1 Monster death (CMonster::GiveReward @0x967900)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#62-gold-cmonstergivegold-0x968330" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.2 Gold (CMonster::GiveGold @0x968330)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#63-normal-bags-openluckybag-0x4ecf60-item-class-12" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.3 Normal bags (OpenLuckyBag @0x4ecf60, item class 12)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#64-pick-your-own-bags-openoptionalluckybag-0x4ed320-class-15" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.4 Pick-your-own bags (OpenOptionalLuckyBag @0x4ed320, class 15)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#65-others" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.5 Others
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-marqueeitem-col-194" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. MarqueeItem (col 194)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-test-server-data-for-calibration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. Test-server data (for calibration)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9-recipes-and-traps" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9. Recipes and traps
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10-function-index" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10. Function index
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#0-what-it-is-and-who-uses-it" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        0. What it is and who uses it
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-versions-and-column-count-checkversion-0xa8f660" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Versions and column count (CheckVersion @0xa8f660)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-columns-1-based-type-conversion-and-real-use-in-the-binary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Columns (1-based) — type, conversion and real use in the binary
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-deserialize-0xa8ec20-exact-read-order" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Deserialize (@0xa8ec20) — exact read order
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-building-the-in-memory-pool-cmonsterdbogetallmonsterdrops-0x771e50" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Building the in-memory pool (CMonsterDBO::GetAllMonsterDrops @0x771e50)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-the-roll-citemfactorygeneratedrop-0x4dde70" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. The roll (CItemFactory::GenerateDrop @0x4dde70)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-delivery-monsters-gold-and-bags" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Delivery: monsters, gold and bags
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. Delivery: monsters, gold and bags">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#61-monster-death-cmonstergivereward-0x967900" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.1 Monster death (CMonster::GiveReward @0x967900)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#62-gold-cmonstergivegold-0x968330" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.2 Gold (CMonster::GiveGold @0x968330)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#63-normal-bags-openluckybag-0x4ecf60-item-class-12" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.3 Normal bags (OpenLuckyBag @0x4ecf60, item class 12)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#64-pick-your-own-bags-openoptionalluckybag-0x4ed320-class-15" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.4 Pick-your-own bags (OpenOptionalLuckyBag @0x4ed320, class 15)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#65-others" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.5 Others
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-marqueeitem-col-194" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. MarqueeItem (col 194)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-test-server-data-for-calibration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. Test-server data (for calibration)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9-recipes-and-traps" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9. Recipes and traps
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10-function-index" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10. Function index
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="s_dropitemini-complete-format-and-runtime-reference-zoneserver101-decompile">S_DropItem.ini — complete format and runtime reference (ZoneServer101 decompile)<a class="headerlink" href="#s_dropitemini-complete-format-and-runtime-reference-zoneserver101-decompile" title="Permanent link">&para;</a></h1>
+<blockquote>
+<p>Verified 2026-09-03 against the ZoneServer binary (IDA database with DWARF symbols) and the data in
+a test-server copy of <code>S_DropItem.ini</code> (<code>|V.6|194|</code>, 6,794 rows).
+Scope: ZoneServer only. Client-side files are not covered.</p>
+</blockquote>
+<hr />
+<h2 id="0-what-it-is-and-who-uses-it">0. What it is and who uses it<a class="headerlink" href="#0-what-it-is-and-who-uses-it" title="Permanent link">&para;</a></h2>
+<p><code>S_DropItem.ini</code> is the <strong>only loot table</strong> in the server. One row describes a "pool": gold, an affix-quality
+distribution, up to 40 weighted items, 5 part-break items and an optional announcement. The <strong>key (col 1) is
+both a MONSTER id and a CONTAINER ITEM id</strong>, because monsters and items share the same number space:</p>
+<ul>
+<li>If the key is a monster → the row is what it drops on death (<code>CMonster::GiveItem</code> + <code>GiveGold</code>).</li>
+<li>If the key is a bag/box → the row is its contents. The bag points at the row through <strong><code>S_Item</code> col 64
+  (<code>DropIndex</code>, idx 63)</strong>; by convention <code>DropIndex = the item's own id</code> (7809→7809, 2136→2136), but it is a
+  separate field.</li>
+<li>⚠️ If a number is both a monster <strong>and</strong> a bag (55383 is; there are 1,094 such ids), <strong>the same row serves both</strong>.</li>
+</ul>
+<p>Full chain (all addresses are ZS 101):</p>
+<div class="highlight"><pre><span></span><code>S_DropItem.ini ──CDropItemQuery::Init @0xa8eb10──► CGameData::m_kDropItemQuery   (map&lt;short, CDropItemData*&gt;)
+       │            LoadDB @0xa8f790 · CheckVersion @0xa8f660 · Deserialize @0xa8ec20
+       ▼
+CZoneServer::InitMonster @0x5b5f20 ──► CMonsterDBO::GetAllMonsterDrops @0x771e50 ──► CZoneServer::MonsterDrops
+                                                                                       (map&lt;short, SMonsterDrop*&gt;)
+CNode::BornMonster @0x97b481 assigns CMonster::DropTable (+0xB50) by template id when the mob spawns
+(also CNPC::ChangTemplate @0x9757b6 and CZoneRainbowRoadTeam::EventMonster @0x5a15b1).
+
+Consumers of the pool (SMonsterDrop):
+  CMonster::GiveReward @0x967900 → GiveItem @0x96fd80 (+ PB pool) and GiveGold @0x968330 · CItemFactory::GenerateDrop @0x4dde70
+  CItemFactory::OpenLuckyBag @0x4ecf60 (bag class 12) · OpenOptionalLuckyBag @0x4ed320 (pick-your-own bag, class 15)
+  CItemFactory::GetDropItemByDropIndex @0x501940 (fishing only: CFishFactory::AutoFished) · PlayerPickUpSurpriseBox @0x4db6c0
+  CEventDelayElfWorkResult::Remove @0x5e1040 (sprite work result) · CFishFactory::SetFishItemId
+  GM: TC_Drop_Item_Test @0x8945c0 · TC_DropItem @0x7c5690 · Server_TC_ServerDataTest
+Consumers of the raw row (CDropItemData, via CGameData::QueryDropItem @0xa51700):
+  OpenOptionalLuckyBag (item list and RandTimes) · PlayerPickUpTreasure @0x4d8aa0 (Marquee announcement on pickup)
+  CMonsterDBO::GetItemPos @0x773f60 (item→position map for the client&#39;s &quot;where to get it&quot;)
+</code></pre></div>
+<p><strong>No hot reload</strong>: no GM command re-reads <code>S_DropItem</code>; the ZS must be restarted. As with every other loader,
+if <code>S_DropItem.ini.bin</code> exists (RC4 <code>easyfun</code>) <strong>that</strong> file is loaded and the <code>.ini</code> is ignored.</p>
+<hr />
+<h2 id="1-versions-and-column-count-checkversion-0xa8f660">1. Versions and column count (<code>CheckVersion @0xa8f660</code>)<a class="headerlink" href="#1-versions-and-column-count-checkversion-0xa8f660" title="Permanent link">&para;</a></h2>
+<p>The header <code>|V.x|N|</code> sets <code>m_nVer = x</code> and the number of item slots <code>MaxDropItem</code>:</p>
+<table>
+<thead>
+<tr>
+<th>Header</th>
+<th>MaxDropItem</th>
+<th>Columns</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>V.0 / V.1</td>
+<td>not set (do not use)</td>
+<td>—</td>
+</tr>
+<tr>
+<td>V.2</td>
+<td>20</td>
+<td>12 + 80 = 92</td>
+</tr>
+<tr>
+<td>V.3</td>
+<td>20</td>
+<td>13 + 80 = 93</td>
+</tr>
+<tr>
+<td>V.4</td>
+<td>40</td>
+<td>13 + 160 = 173</td>
+</tr>
+<tr>
+<td>V.5</td>
+<td>40</td>
+<td>13 + 160 + 20 = 193</td>
+</tr>
+<tr>
+<td><strong>V.6 (current)</strong></td>
+<td><strong>40</strong></td>
+<td><strong>13 + 160 + 20 + 1 = 194</strong></td>
+</tr>
+</tbody>
+</table>
+<p>Formula: <code>12 base columns + 1 (PurpleRate, v≥3) + 4·MaxDropItem + 20 (5 PB entries, v≥5) + 1 (MarqueeItem, v≥6)</code>.
+Any other version makes <code>CheckVersion</code> fail and the load abort. The tokenizer is the one shared by every
+<code>S_*.ini</code>: it flattens the file on <code>|</code>, requires <code>(tokens − 2) % 194 == 0</code> and slices blindly into chunks of 194,
+so <strong>every record carries exactly 194 <code>|</code></strong> even when it spans two physical lines (982 test-server records have a
+<code>\n</code> inside the name, as in <code>S_Monster</code>). One <code>|</code> too many or too few shifts every following row.</p>
+<hr />
+<h2 id="2-columns-1-based-type-conversion-and-real-use-in-the-binary">2. Columns (1-based) — type, conversion and real use in the binary<a class="headerlink" href="#2-columns-1-based-type-conversion-and-real-use-in-the-binary" title="Permanent link">&para;</a></h2>
+<p>Every <code>*Rate</code> column is read as a <strong>real number in PERCENT</strong> and stored as an integer <code>×1,000,000</code>
+(<code>(int)(v·1e6 + 0.5)</code>); at runtime it is compared against <strong>1e8 = 100 %</strong>. So <code>70</code> = 70 %, <code>0.05</code> = 0.05 %,
+<code>100</code> = always. The old note claiming "0.05 = 5 %" was wrong. The real-number reader is
+<code>CInTextStream::operator&gt;&gt;(double&amp;) @0xa7e610</code> = <code>strtod(token, 0)</code>: a trailing <code>%</code> is ignored (<code>1%</code> reads as 1),
+non-numeric or empty text reads as 0, and a negative value (<code>-100</code>) ends up in an overflowed <code>UInt</code>.</p>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Name (header)</th>
+<th>DWARF field / type</th>
+<th>What it really does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Id</td>
+<td><code>m_nId</code> int → <strong>short key</strong></td>
+<td>Unique. <code>QueryDropItem</code> and every map truncate to <code>short</code>: ids ≥ 32768 work (as negatives) but must be &lt; 65536 and unique modulo 65536.</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Name</td>
+<td><code>m_kName</code> string</td>
+<td>Logs only. May contain a line break (two-line record).</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Level</td>
+<td><code>m_nLevel</code> uchar</td>
+<td><strong>Dead</strong>: parsed, never read (neither by <code>GetAllMonsterDrops</code> nor by the raw-row consumers).</td>
+</tr>
+<tr>
+<td>4</td>
+<td>DropGoldRate</td>
+<td><code>m_nDropGoldRate</code> % ×1e6</td>
+<td>Chance to drop gold (<code>GiveGold</code>): <code>roll ∈ [1, 1e8] ≤ rate</code>. <code>100</code> = always, empty = never.</td>
+</tr>
+<tr>
+<td>5</td>
+<td>AvgGold</td>
+<td><code>m_nAvgGold</code> uint</td>
+<td>Average gold.</td>
+</tr>
+<tr>
+<td>6</td>
+<td>RandGold</td>
+<td><code>m_nRandGold</code> uint</td>
+<td>Gold = uniform in <code>[Avg − Rand, Avg + Rand)</code>.</td>
+</tr>
+<tr>
+<td>7</td>
+<td>RandTimes</td>
+<td><code>m_nRandTimes</code> uchar → <code>m_nDropNumber</code></td>
+<td><strong>Number of independent rolls</strong> per kill/opening (each may miss or repeat an item). In pick-your-own bags (class 15) = <strong>number of items the player chooses</strong>. Empty = 0 = nothing.</td>
+</tr>
+<tr>
+<td>8</td>
+<td>NotDropRate</td>
+<td><code>m_nNotDropRate</code> % ×1e6</td>
+<td><strong>Dead</strong>: parsed but <strong>never copied into the pool nor read by anyone</strong>. The "nothing drops" chance comes from the weights summing to less than 100 (§4). the test data has 112 rows with <code>-100</code> and dozens with 43/55/75: they do nothing.</td>
+</tr>
+<tr>
+<td>9-12</td>
+<td>GreenRate, BlueRate, OrangeRate, YellowRate</td>
+<td><code>m_nGreenRate</code>…<code>m_nYellowRate</code> % ×1e6</td>
+<td><strong>Affix quality</strong> distribution (<code>S_ItemCombo</code>) for equipment coming out of this pool: qualities 2, 3, 4, 5.</td>
+</tr>
+<tr>
+<td>13</td>
+<td>RedRate (v≥3)</td>
+<td><code>m_nPurpleRate</code> % ×1e6</td>
+<td>Quality 6. The header calls it Red, the binary Purple.</td>
+</tr>
+<tr>
+<td>14-173</td>
+<td>40 × <code>Drop_ItemId, Drop_ItemName, Drop_Stack, Drop_Rate</code></td>
+<td><code>DropItem {m_nItemId uint, m_kItemName string, m_nStack ushort, m_nRate % ×1e6}</code></td>
+<td>Normal pool. <code>ItemId</code> 0/empty = gap (skipped, the list stays dense). <code>Rate</code> 0/empty = <strong>dead entry</strong> (never enters the pool). <code>Stack</code> = exact amount dropped. The name is informational.</td>
+</tr>
+<tr>
+<td>174-193</td>
+<td>5 × <code>PB_ItemId, PB_ItemName, PB_Stack, PB_Rate</code></td>
+<td>list <code>m_kPBDropItems</code></td>
+<td><strong>Part-break</strong> pool: rolled ONLY if at death <code>MaxPartHP &gt; 0 &amp;&amp; PartHP &lt;= 0</code> (see the part-breaking article). There are <strong>5</strong> entries, not 6.</td>
+</tr>
+<tr>
+<td>194</td>
+<td>MarqueeItem (v≥6)</td>
+<td><code>m_kMarqueeItemIds</code> map<int,int></td>
+<td>Server-wide announcement when a given item comes out of this row (§7). Without a <code>#</code> it is a comment and is ignored.</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="3-deserialize-0xa8ec20-exact-read-order">3. Deserialize (<code>@0xa8ec20</code>) — exact read order<a class="headerlink" href="#3-deserialize-0xa8ec20-exact-read-order" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code>id(int)  name(str)  level(uchar)  DropGoldRate(real→×1e6)  AvgGold(uint)  RandGold(uint)  RandTimes(uchar)
+NotDropRate(real→×1e6)  Green  Blue  Orange  Yellow (reals→×1e6)
+[v≥3] Purple(real→×1e6)
+MaxDropItem × { ItemId(uint) Name(str) Stack(ushort) Rate(real→×1e6) }   → m_kDropItems if ItemId≠0
+[v≥5] 5 × { ItemId Name Stack Rate }                                     → m_kPBDropItems if ItemId≠0
+[v≥6] MarqueeItem(str)  → StrToken &#39;#&#39;; if exactly 2 parts, the 2nd is split on &#39;:&#39; (≤45 pairs)
+                          and each pair on &#39; &#39; into (short,short) → m_kMarqueeItemIds[itemId] = textIndex
+</code></pre></div>
+<p>Parser errors (set <code>m_bError</code>, <code>Init</code> returns false and the ZS does not boot):
+<code>ERROR!! DropItem:%d MarqueeItem Fields size != 2</code> (more than one <code>#</code>, or a pair without two fields) and
+<code>ERROR!! DropItem:%d MarqueeItem is over 45</code>. A MarqueeItem without <code>#</code> (0 or 1 parts) is not an error: it is dropped.</p>
+<hr />
+<h2 id="4-building-the-in-memory-pool-cmonsterdbogetallmonsterdrops-0x771e50">4. Building the in-memory pool (<code>CMonsterDBO::GetAllMonsterDrops @0x771e50</code>)<a class="headerlink" href="#4-building-the-in-memory-pool-cmonsterdbogetallmonsterdrops-0x771e50" title="Permanent link">&para;</a></h2>
+<p>Despite the "DBO" name it never touches PostgreSQL: it walks <code>CGameData::GetAllDropItems()</code> and creates one
+<code>SMonsterDrop</code> (256 B) per row, which is what the rolls use:</p>
+<table>
+<thead>
+<tr>
+<th>SMonsterDrop field</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>m_nId</code>, <code>m_nDropGoldRate</code>, <code>m_nAvgGold</code>, <code>m_nRandGold</code></td>
+<td>straight copy</td>
+</tr>
+<tr>
+<td><code>m_nDropNumber</code> (short)</td>
+<td><code>RandTimes</code></td>
+</tr>
+<tr>
+<td><code>m_nGreenRate</code>…<code>m_nPurpleRate</code>, <code>m_nSumOfQualityRate</code>, <code>m_kItemQuality</code></td>
+<td>cumulative map <code>{0→0, Green→2, Green+Blue→3, +Orange→4, +Yellow→5, +Purple→6}</code> (only non-zero rates)</td>
+</tr>
+<tr>
+<td><code>m_nSumOfProbability</code>, <code>m_kDropItems</code> (map<cumulative, CDropItem{itemId, stack, rate}>)</td>
+<td>for every entry with <code>Rate ≠ 0</code>: <code>Sum += rate; map[Sum] = entry</code></td>
+</tr>
+<tr>
+<td><code>m_nPBSumOfProbability</code>, <code>m_kPBDropItems</code></td>
+<td>same with the PB list</td>
+</tr>
+<tr>
+<td><code>m_kMarqueeItems</code></td>
+<td>copy of the Marquee map</td>
+</tr>
+</tbody>
+</table>
+<p><code>Level</code> and <code>NotDropRate</code> are <strong>not copied</strong>: that is why they are dead.</p>
+<p>Validations in this phase (they go to <code>InitErrLog</code> → <code>CLogFactory::DBError = 1</code> → <code>[FAIL] Database Error!!</code>,
+the ZS dies at the end of loading):</p>
+<ul>
+<li><code>DropID[%d] with worng drop item id[%u]!</code> → the normal-pool <code>ItemId</code> does not exist in <code>S_Item</code> (looked up in
+  <code>CZoneServer::AllItems</code>, also keyed by short).</li>
+<li><code>DropID[%d] with worng item[%u] count[%hu]!</code> → <code>Stack</code> = 0, or <code>Stack &gt; 1</code> on a <strong>non-stackable</strong> item
+  (bit 0 of <code>CItem::Flags</code>). A piece of equipment with Stack 2 does not boot.</li>
+<li>The PB list is <strong>not</strong> validated at load; a bad id there only yields <code>Invalid drop item [%u] in MonsterDrop [%d]</code>
+  at roll time (InitErrLogAppend, no abort).</li>
+</ul>
+<hr />
+<h2 id="5-the-roll-citemfactorygeneratedrop-0x4dde70">5. The roll (<code>CItemFactory::GenerateDrop @0x4dde70</code>)<a class="headerlink" href="#5-the-roll-citemfactorygeneratedrop-0x4dde70" title="Permanent link">&para;</a></h2>
+<p><code>GenerateDrop(eDropType, &amp;list, killer, SMonsterDrop*, monster_id, add_drop_rate, bTestData)</code>:</p>
+<ol>
+<li>Pool: <code>eDropType == 0</code> → normal; <code>1 (eDr_PartBreaking)</code> → PB. <code>killer</code> plays no part in the selection;
+   <code>monster_id</code> is only logged.</li>
+<li><code>base = (int)((1 − add_drop_rate) · 1e8)</code>, floored at 0.</li>
+<li><code>DropNumber</code> times: <code>range = max(Sum, base)</code>; <code>roll = random()/2³¹ · range + 1</code> (uniform in <code>[1, range]</code>);
+   if <code>roll &gt; Sum</code> → this roll <strong>drops nothing</strong> (with <code>bTestData</code> a null pair is recorded to count misses);
+   otherwise → <code>upper_bound(roll)</code> in the cumulative map → <code>{ItemId, Stack}</code>; the item must exist in
+   <code>AllItems</code> (else <code>Invalid drop item [%u] in MonsterDrop [%d]</code>) and is appended to the list.</li>
+<li>Logs (level 0): <code>[DROP] ID:&lt;monster_id&gt; MonsterDrop:&lt;row&gt;(PartBreaking)</code> and per item
+   <code>drop from ItemID:&lt;id&gt; Amount:&lt;n&gt;</code>.</li>
+</ol>
+<p>Consequences:</p>
+<ul>
+<li><strong>P(a given item per roll) = rate / max(Sum, 100·(1 − add_drop_rate))</strong>, in percent.</li>
+<li><strong>P(anything drops per roll) = Sum / max(Sum, 100·(1 − add))</strong>. If <code>Sum ≥ 100</code> the pool is <strong>saturated</strong>:
+  something always drops and any drop bonus is inert. In the test data: 450 rows
+  with sum &gt; 100 (max 254), 3,016 rows with sum &lt; 100.</li>
+<li>Rolls are <strong>with replacement</strong>: with <code>RandTimes 5</code> you can get 5 copies of the same item.</li>
+<li><code>add_drop_rate</code> for monsters = <code>CNodeTemplate::GetDropRateUp(node, killer IP)</code> + the killer's attribute at
+  <code>EFBonusAttr+0x4C4</code> (added by <code>CEC_ItemDropRateUp</code>, an <code>S_Enchant</code> command: parameter in %, between −100 and
+  100, divided by 100). The node bonus is a map keyed by <strong>IP range</strong> (<code>SetDropRateUp @0x98b090</code>, GM
+  <code>TC_SetNodeDrop</code>) capped at 5.0. <code>CEC_DropRateUp</code> writes a <strong>different</strong> attribute (<code>+0x4A0</code>) that the
+  <code>S_DropItem</code> chain never reads.</li>
+<li>Bags, fishing and surprise boxes call with <code>add_drop_rate = 1.0</code> → <code>base = 0</code> → <strong>they never miss</strong>: every
+  roll yields an item (unless the pool is empty).</li>
+</ul>
+<hr />
+<h2 id="6-delivery-monsters-gold-and-bags">6. Delivery: monsters, gold and bags<a class="headerlink" href="#6-delivery-monsters-gold-and-bags" title="Permanent link">&para;</a></h2>
+<h3 id="61-monster-death-cmonstergivereward-0x967900">6.1 Monster death (<code>CMonster::GiveReward @0x967900</code>)<a class="headerlink" href="#61-monster-death-cmonstergivereward-0x967900" title="Permanent link">&para;</a></h3>
+<p>Order: EXP (<code>GiveExp</code>/<code>GiveTeamExp</code>/<code>GiveNodePlayersExp</code>) → items (virtual <code>GiveItem</code>) → <code>GiveGold</code>. With a
+Raid-10 team, items and gold are only given in the node types of bitmask <code>0x82040</code>.</p>
+<p><code>GiveItem @0x96fd80</code>: <code>GenerateDrop(0, …, DropTable, id, GetDropRateUp + bonus, 0)</code>; if <code>MaxPartHP &gt; 0 &amp;&amp;
+PartHP &lt;= 0</code> it runs a <strong>second</strong> <code>GenerateDrop(1, …)</code> with the PB pool (same bonus). Every item is materialized
+with <code>DropTreasure @0x4deb20</code> on a random cell around the corpse (4 attempts at ~1 cell, respecting blocks and
+line of movement; if none is valid it lands on the corpse itself):</p>
+<ul>
+<li><code>CItem::Clone</code> → <code>SelectItemCombo @0x4e9180</code>: if the item can carry affixes (<code>Flags</code> bit 7 and
+  <code>GetItemComboType ≠ 0</code>), <code>roll ∈ [1, 1e8]</code>; if <code>roll ≤ SumOfQualityRate</code> → <code>upper_bound</code> in <code>m_kItemQuality</code>
+  → quality 2..6 → <code>RandItemCombo</code> picks an <code>S_ItemCombo</code> affix of that quality; otherwise no affix.
+  <strong>Green..Purple are therefore the affix probabilities of dropped equipment, not the item's own color.</strong></li>
+<li>Durability: if the item is stackable (<code>Flags</code> bit 0) and <code>MaxDurability &gt; Stack</code>, the durability field =
+  <code>Stack</code> (that is how the amount travels); otherwise max durability.</li>
+<li><code>Treasure-&gt;SourceID = row</code> (used later for the Marquee on pickup).</li>
+<li>In Beasts Tower it logs <code>[ItemDrop]</code> / <code>[PartBreak ItemDrop] Monster ID[%hu] Drop Item ID[%d] …</code>.</li>
+</ul>
+<h3 id="62-gold-cmonstergivegold-0x968330">6.2 Gold (<code>CMonster::GiveGold @0x968330</code>)<a class="headerlink" href="#62-gold-cmonstergivegold-0x968330" title="Permanent link">&para;</a></h3>
+<p>Only if the killer is a player and in the same node. <code>roll ∈ [1, 1e8] ≤ DropGoldRate</code> → amount
+<code>Avg − Rand + random()·2·Rand</code>. Split: in Beasts Tower equally among the players in the node; with a team,
+equally among the members present in the node (<code>GiveGold Team Number Error ????</code> if the list is empty);
+otherwise all to the killer. Each share is multiplied by <code>1 + GetGoldRateUp(node, IP)</code> (cap 5.0, GM
+<code>TC_SetNodeGold</code>) and goes through <code>CCharacter::GainGold</code> (messages 9052/9053, <code>ItemLog</code> type 5 <code>M:&lt;mob&gt;,A:-1</code>).
+Gold does <strong>not</strong> go through <code>GenerateDrop</code> nor through the item-drop bonus.</p>
+<h3 id="63-normal-bags-openluckybag-0x4ecf60-item-class-12">6.3 Normal bags (<code>OpenLuckyBag @0x4ecf60</code>, item class 12)<a class="headerlink" href="#63-normal-bags-openluckybag-0x4ecf60-item-class-12" title="Permanent link">&para;</a></h3>
+<p>Item <code>DropIndex</code> → <code>MonsterDrops</code> → <code>GenerateDrop(0, …, add = 1.0)</code> → <code>RandTimes</code> items (with replacement,
+never misses) → <code>HandleREOpenLuckyBag</code> (recommended events) → <code>AddItemsToCharacter @0x4eb300</code>, which runs every
+item through <code>DiceItemCombo @0x4e9fa0</code> (same quality table as §6.1) and puts it in the normal or sprite inventory
+by type (23-26, 32/33, 9022). Then, for every obtained item present in <code>m_kMarqueeItems</code>, it sends the
+announcement (§7).</p>
+<h3 id="64-pick-your-own-bags-openoptionalluckybag-0x4ed320-class-15">6.4 Pick-your-own bags (<code>OpenOptionalLuckyBag @0x4ed320</code>, class 15)<a class="headerlink" href="#64-pick-your-own-bags-openoptionalluckybag-0x4ed320-class-15" title="Permanent link">&para;</a></h3>
+<p>The client sends the chosen ids separated by <code>,</code>. Rules: the number of ids must be <strong>exactly <code>RandTimes</code></strong>;
+every id must appear in the row's list (weights are ignored, the amount is the entry's <code>Stack</code>); the item must
+exist (<code>Invalid OpenOptionalLuckyBag item [%u]</code>); inventory slots are checked (message 9057 if they do not fit)
+and the items are delivered through <code>AddItemsToCharacter</code> + Marquee. Debug log
+<code>OpenOptionalLuckyBag select_id[%d] not found if drop_id[%hu]</code> when an id is not in the list.</p>
+<h3 id="65-others">6.5 Others<a class="headerlink" href="#65-others" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Fishing: <code>GetDropItemByDropIndex @0x501940</code> (requires a free inventory slot, message 9057; <code>add = 1.0</code>; drops
+  the treasure at the player's feet and picks it up immediately).</li>
+<li><code>PlayerPickUpSurpriseBox @0x4db6c0</code>, <code>CEventDelayElfWorkResult::Remove @0x5e1040</code> and
+  <code>CFishFactory::SetFishItemId</code> call <code>GenerateDrop</code> with the row their own table points at.</li>
+<li><code>CMonsterDBO::GetItemPos @0x773f60</code> walks <code>S_Item</code>: if the item has a position (<code>node;area</code>) and no enchant
+  with command 1075, it dumps <strong>the contents of its <code>S_DropItem</code> row</strong> (by item id) into the item→position map
+  that feeds the client's "where to get it".</li>
+</ul>
+<hr />
+<h2 id="7-marqueeitem-col-194">7. MarqueeItem (col 194)<a class="headerlink" href="#7-marqueeitem-col-194" title="Permanent link">&para;</a></h2>
+<p>Format: <code>&lt;free text&gt;#&lt;itemId&gt; &lt;textIndex&gt;:&lt;itemId&gt; &lt;textIndex&gt;:…</code> (at most 45 pairs). The resulting map
+<code>itemId → textIndex</code> is checked when <strong>opening a bag</strong> (§6.3/6.4) and when <strong>picking up a treasure</strong>
+(<code>PlayerPickUpTreasure</code>, through the treasure's <code>SourceID</code>). If the obtained item is in the map and
+<code>textIndex &gt; 0</code>, the ZS asks the MissionServer for
+<code>BroadCastScreenMessage Type= 7 Msg= |TextIndex:&lt;n&gt; Param:&lt;player&gt;, &lt;item&gt;, &lt;bag or source&gt;|</code> (server-wide
+screen message, text from <code>T_TextIndex</code>). In the test data the 18 rows using this column carry only a comment
+(<code>20230111農曆新年活動</code>, <code>藏寶圖任務獎勵</code>…) without <code>#</code>, so <strong>no announcement is active</strong>.</p>
+<hr />
+<h2 id="8-test-server-data-for-calibration">8. Test-server data (for calibration)<a class="headerlink" href="#8-test-server-data-for-calibration" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Distribution</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Level</td>
+<td>empty 2,316 · 90: 533 · 80: 226 · 15: 122 · 70: 114 (dead)</td>
+</tr>
+<tr>
+<td>Gold</td>
+<td>4,428 rows without gold; patterns <code>100|372|100</code>, <code>100|358|95</code>, <code>100|1510|90</code> on normal mobs</td>
+</tr>
+<tr>
+<td>RandTimes</td>
+<td>1: 5,286 · 2: 582 · 3: 486 · 5: 242 · 4: 62 · empty: 40 · 10: 33 · 6: 27 · 15: 25</td>
+</tr>
+<tr>
+<td>NotDropRate</td>
+<td>0: 4,082 · −100: 112 · 43: 87 · 55: 63 · 100: 55 · 50: 46 (dead)</td>
+</tr>
+<tr>
+<td>Quality (G,B,O,Y,R)</td>
+<td>empty 3,771 · <code>35,1</code> 715 · <code>35,5</code> 296 · <code>40,60</code> 262 · <code>20</code> 127 · <code>75,25</code> 125 · <code>95,5</code> 120 · <code>20,80</code> 119</td>
+</tr>
+<tr>
+<td>Item rates</td>
+<td>56,947 integers · 43,918 decimals · <strong>883 empty (dead entries)</strong> · 2 with a <code>%</code> suffix</td>
+</tr>
+<tr>
+<td>Entries per row</td>
+<td>0 to 40; 31 rows at the cap of 40</td>
+</tr>
+<tr>
+<td>Weight sum</td>
+<td>median 100 · 450 rows &gt; 100 (max 254) · 3,016 rows &lt; 100</td>
+</tr>
+<tr>
+<td>PB</td>
+<td>103 rows: raids 51298/51299/51369/51459/51921, Sprite Messengers 50408-51673 (PB at 100 %), boxes 17141-17146, 19998</td>
+</tr>
+<tr>
+<td>Marquee</td>
+<td>18 rows, all comments</td>
+</tr>
+</tbody>
+</table>
+<p>Sample row (boss 59534 Rast, saturated pool at 137 %, <code>RandTimes 5</code>, no gold):
+<code>59534|Rast|65|||||5|0||||||31606|…|15|13.5|31605|…|15|13.5|…|34414|…|1|4|…</code></p>
+<hr />
+<h2 id="9-recipes-and-traps">9. Recipes and traps<a class="headerlink" href="#9-recipes-and-traps" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>Raise/lower a drop</strong>: change its <code>Rate</code> (%). Its per-roll chance is <code>rate / max(Sum, 100)</code>; if you want
+  drop x2 events to affect it, keep the pool sum <strong>below 100</strong>.</li>
+<li><strong>New drop on a mob</strong>: use a free slot among the 40 entries (<code>ItemId|Name|Stack|Rate</code>), <code>Rate &gt; 0</code>, an item
+  that exists in <code>S_Item</code>, <code>Stack 1</code> unless stackable. Empty slots may sit in any position.</li>
+<li><strong>New box/bag</strong>: item of class 12 (or 15 for "choose N") with <code>DropIndex</code> = the row id; in the row,
+  <code>RandTimes</code> = number of items that come out (or get chosen), weights in % (for class 12 it is convenient to
+  make them sum to 100 so they read as probabilities; if they sum to less, something still always drops, because
+  <code>add = 1.0</code>).</li>
+<li><strong>Gold</strong>: <code>DropGoldRate 100|Avg|Rand</code>. The <code>Level</code> and <code>NotDropRate</code> columns do nothing: do not waste time on them.</li>
+<li><strong>Things that kill the ZS at boot</strong>: one <code>|</code> too many/few, a non-existent <code>ItemId</code>, <code>Stack 0</code>, <code>Stack &gt; 1</code> on a
+  non-stackable item, a <code>MarqueeItem</code> with more than one <code>#</code>, malformed pairs or more than 45 pairs.</li>
+<li><strong>Short key</strong>: monsters 50031-60000 and mall items 40001-65000 work, but an id ≥ 65536 would collide with
+  <code>id − 65536</code>, and <strong>a monster and a box with the same number share the row</strong>.</li>
+<li>The <code>.bin</code> takes precedence over the <code>.ini</code>; and there is no hot reload.</li>
+<li>The client ships the same table as <code>C_DropItem.ini</code> in its data folder (<code>|V.6|194|</code>, empty names, visible
+  probabilities): any weight change is public.</li>
+</ul>
+<hr />
+<h2 id="10-function-index">10. Function index<a class="headerlink" href="#10-function-index" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Function</th>
+<th>Addr</th>
+<th>Role</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>CDropItemQuery::Init</code> / <code>CheckVersion</code> / <code>Deserialize</code></td>
+<td>0xa8eb10 / 0xa8f660 / 0xa8ec20</td>
+<td>load and parse</td>
+</tr>
+<tr>
+<td><code>CBaseQuery&lt;short,CDropItemData&gt;::LoadDB</code></td>
+<td>0xa8f790</td>
+<td>tokenizer + <code>.bin</code></td>
+</tr>
+<tr>
+<td><code>CGameData::QueryDropItem</code> / <code>GetAllDropItems</code></td>
+<td>0xa51700 / 0xa51780</td>
+<td>raw row access (short key)</td>
+</tr>
+<tr>
+<td><code>CMonsterDBO::GetAllMonsterDrops</code></td>
+<td>0x771e50</td>
+<td>row → <code>SMonsterDrop</code> (cumulative pools, validations)</td>
+</tr>
+<tr>
+<td><code>CZoneServer::InitMonster</code></td>
+<td>0x5b5f20</td>
+<td>calls the above at boot</td>
+</tr>
+<tr>
+<td><code>CNode::BornMonster</code></td>
+<td>assigns at 0x97b481</td>
+<td><code>CMonster::DropTable</code></td>
+</tr>
+<tr>
+<td><code>CItemFactory::GenerateDrop</code></td>
+<td>0x4dde70</td>
+<td>the roll</td>
+</tr>
+<tr>
+<td><code>CItemFactory::DropTreasure</code> / <code>CreateTreasure</code></td>
+<td>0x4deb20 / 0x4e9050</td>
+<td>treasure on the ground</td>
+</tr>
+<tr>
+<td><code>CItemFactory::SelectItemCombo</code> / <code>DiceItemCombo</code> / <code>RandItemCombo</code></td>
+<td>0x4e9180 / 0x4e9fa0 / 0x4d16b0</td>
+<td>affix quality</td>
+</tr>
+<tr>
+<td><code>CItemFactory::AddItemsToCharacter</code></td>
+<td>0x4eb300</td>
+<td>direct delivery (bags)</td>
+</tr>
+<tr>
+<td><code>CMonster::GiveReward</code> / <code>GiveItem</code> / <code>GiveGold</code></td>
+<td>0x967900 / 0x96fd80 / 0x968330</td>
+<td>rewards on death</td>
+</tr>
+<tr>
+<td><code>CItemFactory::OpenLuckyBag</code> / <code>OpenOptionalLuckyBag</code></td>
+<td>0x4ecf60 / 0x4ed320</td>
+<td>bags</td>
+</tr>
+<tr>
+<td><code>CItemFactory::GetDropItemByDropIndex</code></td>
+<td>0x501940</td>
+<td>fishing</td>
+</tr>
+<tr>
+<td><code>CItemFactory::PlayerPickUpTreasure</code></td>
+<td>0x4d8aa0</td>
+<td>pickup + Marquee</td>
+</tr>
+<tr>
+<td><code>CNodeTemplate::SetDropRateUp</code> / <code>GetDropRateUp</code> / <code>SetGoldRateUp</code> / <code>GetGoldRateUp</code></td>
+<td>0x98b090 / 0x98b4a0 / 0x98ad60 / 0x98b430</td>
+<td>per-node bonus by IP range (cap 5.0)</td>
+</tr>
+<tr>
+<td><code>CEC_ItemDropRateUp::Init</code> / <code>Execute</code></td>
+<td>0x9f6e30 / 0x9f6f40</td>
+<td>drop buff (%, ±100) → <code>EFBonusAttr+0x4C4</code></td>
+</tr>
+<tr>
+<td><code>CEC_DropRateUp::Init</code> / <code>Execute</code></td>
+<td>0x9de260 / 0x9de340</td>
+<td>another attribute (<code>+0x4A0</code>), outside this chain</td>
+</tr>
+<tr>
+<td><code>CMonsterDBO::GetItemPos</code></td>
+<td>0x773f60</td>
+<td>item → position ("where to get it")</td>
+</tr>
+<tr>
+<td><code>TC_Drop_Item_Test</code> / <code>TC_DropItem</code></td>
+<td>0x8945c0 / 0x7c5690</td>
+<td>GM test commands (<code>bTestData</code>)</td>
+</tr>
+</tbody>
+</table>
+<p>Structures: <code>GameData::CDropItemData</code> (144 B: id 0x0, name 0x8, level 0x10, gold 0x14-0x1c, RandTimes 0x20,
+NotDrop 0x24, Green..Purple 0x28-0x38, lists 0x40/0x50, marquee 0x60) · <code>CDropItemData::DropItem</code> (24 B: id 0x0,
+name 0x8, stack 0x10, rate 0x14) · <code>lapis::SMonsterDrop</code> (256 B: id 0x0, gold 0x4-0xc, DropNumber 0x10, quality
+0x14-0x28, <code>m_kItemQuality</code> 0x30, <code>m_nSumOfProbability</code> 0x60, <code>m_kDropItems</code> 0x68, PB 0x98/0xa0, marquee 0xd0) ·
+<code>CDropItemQuery</code> (<code>m_nMaxDropItem</code> 0x78, <code>m_nVer</code> 0x7c, <code>m_bError</code> 0x80).</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.sections", "navigation.top", "search.suggest", "search.highlight", "content.code.copy"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>
