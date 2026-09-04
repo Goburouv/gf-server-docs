@@ -16,7 +16,7 @@
         <link rel="prev" href="../S_DropItem/">
       
       
-        <link rel="next" href="../../tags/">
+        <link rel="next" href="../S_Enchant_Commands/">
       
       
         
@@ -383,6 +383,8 @@
   
     
     
+      
+        
       
         
       
@@ -766,6 +768,34 @@
   
 </nav>
       
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../S_Enchant_Commands/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    S_Enchant commands
+  
+
+    
+  </span>
+  
+  
+
+      </a>
     </li>
   
 
@@ -1295,14 +1325,14 @@ and the command slots).</p>
 <tr>
 <td>9</td>
 <td><code>m_eEnchantCategory</code></td>
-<td>uint (V.10) → <code>Category</code></td>
-<td>Copied, but <strong>no reader was found</strong> in the ZS (128 rows use it).</td>
+<td>uint (V.10) → <code>Category</code> (<code>GameData::EEnchantCategory</code>, <code>SEffectData+0x18</code>)</td>
+<td><strong>No reader located</strong> (128 rows use it). Searched: <code>SEffectData</code> exposes only 5 methods and none touches <code>+0x18</code>; <code>CEnchantMgr::Add @0xa1ef40</code>, <code>ILifeEntity::AddEnchant @0x95a6e0</code>, <code>CEffectFactory::EffectToLife @0x4489a0</code> and <code>CheckEffectToLife @0x449320</code> decompiled in full without reading it; the 41 <code>CCheck*</code> predicates read <code>+0x00</code> (<code>ID</code>) or <code>+0x10</code> (<code>Type</code>), never <code>+0x18</code>; and the 8 two-instruction sequences that use the real bases of a <code>SEffectData</code> (<code>[CEnchant+0x10]</code>, <code>[CEffectCommand+0x8]</code>, <code>[ISpell+0x18]</code>) return 0 hits. Not a proof of absolute absence.</td>
 </tr>
 <tr>
 <td>10</td>
 <td><code>m_nImmuneMonsterType</code></td>
-<td>ushort → <code>ImmuneMonsterType</code> (parent and child)</td>
-<td>Copied; <strong>no reader found</strong> (8 rows).</td>
+<td>ushort → <code>ImmuneMonsterType</code> (<code>SEffectData+0x1c</code>, parent and child)</td>
+<td>A <strong>bitmask of immune creature categories</strong>, not a type id. <code>ISpell::OnHitTargetEffect @0x9b3de0</code> (site <code>0x9b3e72</code>) and <code>ISpell::OnHitLife</code> (<code>0x9b30fd</code>, <code>0x9b3381</code>) call the victim's <code>vtable+0xA0</code> virtual, run <code>test ImmuneMonsterType, category</code> and, if the AND is ≠ 0, <strong>do not apply the effect</strong>. The overrides of that virtual are <code>CMonster::GetCategory @0x8cedb0</code> (reads the mob template at <code>+0x158</code>) and <code>CCharacter::GetCategory @0x947d00</code>, which returns a <strong>constant 4</strong>: setting bit <code>4</code> makes the effect harmless against players — the 7 rows holding <code>126</code> (= 2+4+8+16+32+64) carry it. The identity of the virtual is inferred from its shape (returns a <code>short</code>, <code>cwde</code> right after), not proven by slot index.</td>
 </tr>
 <tr>
 <td>11-17</td>
@@ -1386,7 +1416,7 @@ and the command slots).</p>
 <td>50</td>
 <td><code>m_eTransitionEnchantCategory</code></td>
 <td>uint (V.10) → child <code>Category</code></td>
-<td>No reader found.</td>
+<td>No reader located (same sweep as col 9).</td>
 </tr>
 <tr>
 <td>51-55</td>
@@ -1738,12 +1768,39 @@ for the child. The parent receives one parameterless command (<code>Effect</code
 <td><strong>Never stacks</strong>, even with <code>MaxStack ≥ 2</code>.</td>
 </tr>
 <tr>
-<td>0x10000 / 0x40000 / 0x800000 / 0x1000000 / 0x2000000</td>
-<td>6 / 550 / 84 / 17 / 1</td>
-<td>No reader found in the functions inspected.</td>
+<td>0x40000</td>
+<td>550</td>
+<td>Enables the <strong>caster-attribute scaling</strong> of healing/HP: <code>CEC_HP::Execute @0x9efe40</code> (site <code>0x9f001c</code>), <code>CEC_HPRate @0x9f0f30</code>, <code>CEC_HPLimit @0x9f3b20</code>, <code>CEC_Heal @0x9f4470</code>, <code>CEC_IndexCasterAbility @0x9f67f0</code>. Without the bit the healed value does not add the caster bonus.</td>
+</tr>
+<tr>
+<td>0x800000</td>
+<td>84</td>
+<td>On transformation, <code>CEC_AttrForm::Execute @0x9c2890</code> (site <code>0x9c290a</code>) <strong>stores the effect <code>ID</code></strong> in the entity's <code>+0xD54</code> field (right behind the form mask at <code>+0xD50</code>). Without the bit, <code>+0xD54</code> is left alone.</td>
+</tr>
+<tr>
+<td>0x1000000</td>
+<td>17</td>
+<td>When an already-active effect is <strong>refreshed</strong>, <code>CEnchantMgr::Reset @0xa1fd40</code> (site <code>0xa1ff78</code>) <strong>skips <code>CEnchant::ExecuteCommands()</code></strong> and goes straight to <code>ExecuteStartCommands()</code>.</td>
+</tr>
+<tr>
+<td>0x2000000</td>
+<td>1</td>
+<td>Damage from that effect <strong>does not score</strong>: <code>CCharacter::GetHurt @0x9136f0</code> skips <code>GetHurtInBattlefield</code> (scenario 5, site <code>0x913a66</code>) and <code>GetHurtInFamilyBattle</code> (scenario 8, site <code>0x913a82</code>).</td>
+</tr>
+<tr>
+<td>0x10000</td>
+<td>6</td>
+<td><strong>No reader located.</strong> The other four bits of the same byte (<code>Flag+0x16</code>) do show up and are all identified, so the sweep is reliable: this bit is never tested.</td>
 </tr>
 </tbody>
 </table>
+<div class="admonition note">
+<p class="admonition-title">How to find a <code>Flag</code> bit in the binary</p>
+<p>GCC compiles these tests as <strong>byte operations</strong>, not dword ones. <code>Flag</code> lives at <code>SEffectData+0x14</code>, so
+<code>0x800</code> is <code>test byte ptr [X+15h], 8</code> (<code>@0xa1f4c9</code>), <code>0x200000</code> is <code>test byte ptr [X+16h], 20h</code> (<code>@0xa1f729</code>)
+and <code>0x400000</code> is <code>test byte ptr [X+16h], 40h</code> (<code>@0xa1f04c</code>). Searching for the 32-bit immediate returns only
+false positives: <code>CItemData::m_nOpFlags</code>, <code>CEnchant::m_HurtType</code> and the entity flags share those masks.</p>
+</div>
 <p><code>InnerFlags</code> (<code>+0x2fe</code>, derived at load time, not editable): 0x2 hidden icon of system effects · 0x4 sprite commands
 (ids 4000-5999) · 0x8 mount/chair (<code>2134</code>, <code>2143</code>) · 0x10 transformation (<code>2132</code>, <code>2135</code>) · 0x20 "toggle" effect:
 re-applying the same id <strong>removes</strong> it (mounts, transformations, <code>2150</code>) · 0x100 item commands (<code>DrillItem</code>,
@@ -1908,6 +1965,30 @@ it is simply not drawn.</p>
   buffs because they do <code>+=</code>) · <code>3xxx</code> = periodic (<code>Commands</code>, every <code>Period</code>) · <code>4xxx</code>/<code>5xxx</code> = sprite · <code>6xxx</code> =
   checks and items · <code>7xxx</code> = effects on others/targets · <code>9xxx</code> = misc (shop, counters). The bucket is decided by
   the position of the <code>case</code> in <code>DecodeEffectCommand</code>, not by a flag.</li>
+<li><strong>Dispatch</strong>: there is not one jump table, there are <strong>six</strong>, plus four loose <code>cmp</code> cases: <code>1001-3102</code>
+  (<code>jpt_786E22 @0xDA1070</code>, 213 real cases out of 2,102 slots), <code>4001-4041</code> (<code>@0xDA5220</code>, 9), <code>5001-5032</code>
+  (<code>@0xDA5368</code>, 21), <code>6001-6026</code> (<code>@0xDA5468</code>, 9), <code>7001-7114</code> (<code>@0xDA5538</code>, 22), <code>9009-9031</code> (<code>@0xDA58C8</code>, 5), and
+  the loose ones <code>1</code> (<code>@0x795D55</code>), <code>2</code> (<code>@0x787266</code>), <code>3901</code> (<code>@0x787299</code>) and <code>9101</code> (<code>@0x7872F6</code>). <strong>283 ids</strong>
+  have a <code>case</code>; the highest id handled is <code>9101</code>.</li>
+<li>🔴 <strong>An id with no <code>case</code> is swallowed silently</strong>: every <code>default</code> falls into the same shared tail
+  (<code>def_7871A5 @0x7964FE</code>), which emits no text and writes no log — there is no way to spot the mistake from the
+  boot output. That tail still applies post-processing <strong>by id range, <code>case</code> or no <code>case</code></strong>: <code>2000 ≤ id ≤ 3999</code> →
+  <code>++DurationCnt</code> (<code>SEffectData+0x31C</code>); <code>4000 ≤ id ≤ 5999</code> and <code>id ≠ 4021</code> → <code>InnerFlags |= 4</code> (sprite commands),
+  and if also <code>id ≥ 5000</code>, then <code>++DurationCnt</code> as well. Then each of the 12 streams that is not empty gets a
+  trailing <code>;</code> and is appended to its bucket.</li>
+<li>⭐ This is where the rule in §5.3 comes from: <strong>it is the id range itself that turns an effect into a lasting buff</strong>,
+  not the command. A <code>2000</code> with no <code>case</code> does nothing, but it raises <code>DurationCnt</code> to 1, and that is why the row
+  produces a <code>CEnchant</code> with an icon and a timer. The other way round: a row whose four slots are all <code>1xxx</code> leaves
+  <code>DurationCnt</code> at 0 and the effect is instant, with no buff.</li>
+<li><strong>43 ids that appear in real data have no <code>case</code></strong> and therefore do nothing at all: <code>5</code>, <code>10</code>, <code>20</code>, <code>80</code>, <code>100</code>,
+  <code>243</code>, <code>1084</code>, <code>1915</code>, <strong><code>2000</code></strong>, <code>2177</code>, <code>2222</code>, <code>2501</code>, <code>2901</code>, <code>2933</code>, <code>7003</code>, <code>7005</code>, <code>8001</code>-<code>8006</code>,
+  <code>9003</code>-<code>9013</code>, <code>9023</code>-<code>9026</code>, <code>9200</code>-<code>9301</code>, <code>20503</code>, <code>30011</code>. Watch out for <code>30011</code>: <strong>the 30xxx family is not
+  handled at all</strong>.</li>
+<li><strong>The 12 buckets</strong> are the arguments of <code>DecodeEffectCommand</code> (<code>cmds</code>, <code>cmds_once</code>, <code>cmds_start</code>, <code>cmds_hurt</code>,
+  <code>cmds_hit</code>, <code>cmds_absorb</code>, <code>cmds_enhance</code>, <code>cmds_start_elf</code>, <code>cmds_elf</code>, <code>cmds_once_elf</code>, <code>cmds_move</code>,
+  <code>cmds_miss</code>) and they split like this across the 283 ids with a <code>case</code>: <code>cmds_start</code> 129 · <code>cmds_once</code> 77 ·
+  <code>cmds_hit</code> 20 · <code>cmds</code> 17 · <code>cmds_elf</code> 17 · <code>cmds_once_elf</code> 9 · <code>cmds_hurt</code> 5 · <code>cmds_move</code> 4 ·
+  <code>cmds_start_elf</code>, <code>cmds_enhance</code>, <code>cmds_absorb</code> and <code>cmds_miss</code> 1 each. <code>2934</code> switches bucket depending on <code>p1</code>.</li>
 <li><strong><code>CanExecute</code> before <code>Execute</code></strong>: the checks (<code>6021 MonsterCheck</code>, <code>6022-6025</code>, <code>3101/3102 EnchantCheckType</code>,
   <code>HPCheck</code>, <code>LevelCheck</code>…) live in <code>CommandsStart</code>; if they fail the effect does not enter (and if it was a refresh,
   the existing buff <strong>is removed</strong>, §5.2).</li>
@@ -1938,10 +2019,10 @@ it is simply not drawn.</p>
 <tr>
 <td>2000</td>
 <td>3,847</td>
-<td><em>(nothing)</em> — same for 2004-2010, 2015-2018, 2025-2028, 2047-2048, 2058, 2070, 2076-2080, 2088-2090, 2096-2100, 2107, 2120, 2126-2130, 2138, 2152-2162, 2173-2177</td>
+<td><em>(nothing)</em> — <strong>there is no <code>case</code> for this id</strong></td>
+<td><em>(silent default)</em></td>
 <td>—</td>
-<td>—</td>
-<td><strong>Empty</strong> command; it only contributes <code>DurationCnt</code> → used for icon/timer buffs with no effect.</td>
+<td>Not an "empty command": <code>DecodeEffectCommand</code> does not translate it and <strong>does not warn</strong>. The row still works because <code>DurationCnt</code> alone creates the <code>CEnchant</code> → an icon/timer buff with no effect. The same holds for the other 42 case-less ids seen in real data, and for 2004-2010, 2015-2018, 2025-2028, 2047-2048, 2058, 2070, 2076-2080, 2088-2090, 2096-2100, 2107, 2120, 2126-2130, 2138, 2152-2162 and 2173-2177, which have no <code>case</code> either.</td>
 </tr>
 <tr>
 <td>1921</td>
@@ -1976,25 +2057,25 @@ it is simply not drawn.</p>
 <td>Applies <code>p4</code> to the targets of the given kind within range; with a <code>Period</code> it becomes an aura / periodic check.</td>
 </tr>
 <tr>
-<td>2081</td>
-<td>1,569</td>
-<td>one sub-command per <code>pN ≠ 0</code>: <code>AttrStr &lt;p1&gt;; AttrCon &lt;p2&gt;; AttrInt &lt;p3&gt;; …</code></td>
+<td>2081 / 2082</td>
+<td>1,569 / 1,352</td>
+<td>one sub-command per <code>pN ≠ 0</code>. <strong><code>2081</code></strong>: <code>AttrStr &lt;p1&gt;; AttrCon &lt;p2&gt;; AttrInt &lt;p3&gt;; AttrVol &lt;p4&gt;; AttrDex &lt;p5&gt;</code> (<code>p6</code> unused). <strong><code>2082</code></strong>: <strong>different</strong> commands — <code>AttrPhysicoDamage &lt;p1&gt;; AttrRangeDamage &lt;p2&gt;; AttrDefence &lt;p3&gt;; AttrHitRate &lt;p4&gt;; AttrRangeHitRate &lt;p5&gt;; AttrDodgeRate &lt;p6&gt;</code></td>
 <td>start</td>
 <td>—</td>
-<td>Flat base stats (several in one row). <code>2082</code> is the same, with the row <code>0|0|0|0|0|-300</code> as an empty sentinel.</td>
+<td><code>2081</code> is flat base stats. <code>2082</code> is <strong>not "the same as 2081"</strong>: it touches damage, defence, hit and dodge. Its row <code>0\|0\|0\|0\|0\|-300</code> is the empty sentinel: with <code>p1..p5 = 0</code> and <code>p6 = −300</code> the decoder emits nothing.</td>
 </tr>
 <tr>
 <td>2055</td>
 <td>1,554</td>
-<td><code>StateNoMove …</code> (sub-commands depending on the sign of <code>p1</code>, <code>p2</code>…)</td>
+<td><code>StateNoMove &lt;p1&gt;; StateNoAttack &lt;p2&gt;; StateNoUseSkill Kungfu &lt;p3&gt;; StateNoUseSkill Magic &lt;p4&gt;; StateNoUseItem &lt;p5&gt;</code> (each part only if its <code>pN ≠ 0</code>)</td>
 <td>start</td>
 <td>sets <code>InnerFlags 0x200</code></td>
-<td>Root / immobilise.</td>
+<td>Root / silence. ⭐ <strong>With all five <code>pN</code> positive</strong> the decoder also sets <code>InnerFlags \|= 0x200</code> (<code>byte[ed+0x2FF] \|= 2</code>) and appends <code>EffectNextID &lt;AntiStunID&gt; 100 120 0 0; StateNoDodge 1</code>: this is the data-driven anti-stun path.</td>
 </tr>
 <tr>
 <td>1079</td>
 <td>1,454</td>
-<td><code>LastEnchant &lt;p1 chance%&gt; &lt;p2 id&gt; &lt;p3 dur&gt; &lt;p4 timetype&gt; &lt;p5 save&gt;</code></td>
+<td><code>LastEnchant &lt;p1 chance%&gt; &lt;p2 id&gt; &lt;p3 dur&gt; &lt;p4 timetype&gt; 1</code> — the 5th argument is the <strong>literal <code>1</code></strong>, not <code>p5</code></td>
 <td>start</td>
 <td><code>Init @0x9d22b0</code>: id 0 → <code>CEC_LastEnchant param is null.</code> (<strong>DBError</strong>); the loader follows the chain (<code>LoopEnchantIDs</code>, max 9).</td>
 <td><code>Execute</code> is empty: it acts in the <strong><code>RollBack</code></strong> (<code>@0x9d2640</code>): when the buff ends, <code>p1</code> % chance to apply <code>p2</code> for <code>p3</code>.</td>
@@ -2027,7 +2108,7 @@ it is simply not drawn.</p>
 <td>6024</td>
 <td>843</td>
 <td><code>EnchantStackCheck &lt;p1 id&gt; &lt;p2 min&gt; &lt;p3 max&gt; &lt;p4 other id&gt; &lt;p5 dur&gt; &lt;p6 target&gt;</code></td>
-<td>start</td>
+<td><strong>once</strong></td>
 <td><code>Init @0x9e9910</code>: min &gt; max → <strong>DBError</strong>.</td>
 <td>Stack self-check ("stacks up to N", switch to <code>p4</code> at the cap).</td>
 </tr>
@@ -2109,6 +2190,10 @@ in 6xxxx, 3,039 in 7xxxx, 641 in 9xxxx, 423 in 10xxxx, 247 in 12xxxx), 10,295 mu
 <tr>
 <td>Slots</td>
 <td>0 commands: 74 · 1: 18,908 · 2: 11,223 · 3: 4,027 · 4: 2,150; 307 distinct ids</td>
+</tr>
+<tr>
+<td>Ids with no <code>case</code></td>
+<td>43 of the 306 distinct ids seen in real data do not exist in the decode and do nothing (§6)</td>
 </tr>
 <tr>
 <td>Top commands</td>
@@ -2431,13 +2516,13 @@ in 6xxxx, 3,039 in 7xxxx, 641 in 9xxxx, 423 in 10xxxx, 247 in 12xxxx), 10,295 mu
         
         
           
-          <a href="../../tags/" class="md-footer__link md-footer__link--next" aria-label="Next: Tags">
+          <a href="../S_Enchant_Commands/" class="md-footer__link md-footer__link--next" aria-label="Next: S_Enchant commands">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 Next
               </span>
               <div class="md-ellipsis">
-                Tags
+                S_Enchant commands
               </div>
             </div>
             <div class="md-footer__button md-icon">
