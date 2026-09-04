@@ -37,6 +37,16 @@ hide:
 
     [:octicons-arrow-right-24: Read the article](server/S_Enchant.md)
 
+-   :material-code-braces:{ .lg .middle } __S_Enchant commands__
+
+    ---
+
+    The command vocabulary behind those effects: every numeric id, the text it generates, the stream it lands in, what its `Init` refuses at boot and what `Execute` actually changes.
+
+    <span class="status-badge">Complete</span>
+
+    [:octicons-arrow-right-24: Read the article](server/S_Enchant_Commands.md)
+
 -   :material-skull-outline:{ .lg .middle } __S_Monster.ini__
 
     ---

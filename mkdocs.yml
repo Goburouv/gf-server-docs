@@ -51,6 +51,7 @@ nav:
   - Server files:
       - S_DropItem.ini: server/S_DropItem.md
       - S_Enchant.ini: server/S_Enchant.md
+      - S_Enchant commands: server/S_Enchant_Commands.md
   - Tags: tags.md
 
 plugins:

@@ -125,8 +125,8 @@ a `ushort` it is 65535 and in a `uchar` 255, and `1.5` in an integer column is 1
 | 6 | `m_kName` | string → `Name` | Only shows up in logs (`effect[%s] id [%d] can't Abandon!`). The visible name is col 60. |
 | 7 | `m_eEnchantType` | uint → `Type` | 1 = buff, 2 = debuff, empty = 0. Bit 0 = the player may cancel it (`CancelPlayerEnchant`); `Type & 2` = removed by type-based dispels (`CCheckBufType`, `EnchantKillRandom`); a monster with the template protection refuses `Type = 2`. |
 | 8 | `m_nEnchantFlag` | uint → `Flag` | Bit mask, table in §4.3. Bits 0x1/0x2/0x4/0x2000/0x20000 also inject a `Finish 100` command. |
-| 9 | `m_eEnchantCategory` | uint (V.10) → `Category` | Copied, but **no reader was found** in the ZS (128 rows use it). |
-| 10 | `m_nImmuneMonsterType` | ushort → `ImmuneMonsterType` (parent and child) | Copied; **no reader found** (8 rows). |
+| 9 | `m_eEnchantCategory` | uint (V.10) → `Category` (`GameData::EEnchantCategory`, `SEffectData+0x18`) | **No reader located** (128 rows use it). Searched: `SEffectData` exposes only 5 methods and none touches `+0x18`; `CEnchantMgr::Add @0xa1ef40`, `ILifeEntity::AddEnchant @0x95a6e0`, `CEffectFactory::EffectToLife @0x4489a0` and `CheckEffectToLife @0x449320` decompiled in full without reading it; the 41 `CCheck*` predicates read `+0x00` (`ID`) or `+0x10` (`Type`), never `+0x18`; and the 8 two-instruction sequences that use the real bases of a `SEffectData` (`[CEnchant+0x10]`, `[CEffectCommand+0x8]`, `[ISpell+0x18]`) return 0 hits. Not a proof of absolute absence. |
+| 10 | `m_nImmuneMonsterType` | ushort → `ImmuneMonsterType` (`SEffectData+0x1c`, parent and child) | A **bitmask of immune creature categories**, not a type id. `ISpell::OnHitTargetEffect @0x9b3de0` (site `0x9b3e72`) and `ISpell::OnHitLife` (`0x9b30fd`, `0x9b3381`) call the victim's `vtable+0xA0` virtual, run `test ImmuneMonsterType, category` and, if the AND is ≠ 0, **do not apply the effect**. The overrides of that virtual are `CMonster::GetCategory @0x8cedb0` (reads the mob template at `+0x158`) and `CCharacter::GetCategory @0x947d00`, which returns a **constant 4**: setting bit `4` makes the effect harmless against players — the 7 rows holding `126` (= 2+4+8+16+32+64) carry it. The identity of the virtual is inferred from its shape (returns a `short`, `cwde` right after), not proven by slot index. |
 | 11-17 | `Cmd1` (`m_nId` + `m_dParam1..6`) | slot 1 | `Id = 0` → empty slot. See §6. |
 | 18-24 / 25-31 / 32-38 | `Cmd2` / `Cmd3` / `Cmd4` | slots 2-4 | Same. The slots listed in col 42 are pulled out of here and given to the child. |
 | 39 | `m_nPeriod` | int → `Period` **int16**; 0 → −1 | Tick of the `Commands` bucket (`3xxx` commands, `7001` without p6, `2931/2932`…). −1 = no tick: the buff simply expires. |
@@ -140,7 +140,7 @@ a `ushort` it is 65535 and in a `uchar` 255, and `1.5` in an integer column is 1
 | 47 | `m_kTransitionIconFilename` | string → not copied | **Dead** (child icon on the client). |
 | 48 | `m_eTransitionEnchantType` | uint → child `Type` | Child buff/debuff (decides cancel and dispel). |
 | 49 | `m_nTransitionEnchantFlag` | uint → child `Flag` | Same bit table as col 8, applied to the child; 0x1/0x2/0x4/0x2000/0x20000 inject `Finish 100` into the child. |
-| 50 | `m_eTransitionEnchantCategory` | uint (V.10) → child `Category` | No reader found. |
+| 50 | `m_eTransitionEnchantCategory` | uint (V.10) → child `Category` | No reader located (same sweep as col 9). |
 | 51-55 | `m_nTransitionAnimId`, `m_nTransitionEffectId`, `m_kTransitionEffectNode`, `m_nTransitionEffectDuration`, `m_kTransitionEffectDurationNode` | not copied | **Dead** (child VFX on the client). |
 | 56 | `m_nTransitionCooldownTime` | int (V.5) → **parent** `TransitionCooldownTime` | Internal proc cooldown in tenths (`EffectDownTimes`); ≤ 0 = no cooldown. |
 | 57 | `m_nWeaponFlag` | uint (V.9) → `WeaponFlags` | Weapon-type mask: if ≠ 0 the buff only lands when `IsWeaponCanEffect(current weapon)` and it is removed on weapon change. |
@@ -331,7 +331,17 @@ for the child. The parent receives one parameterless command (`Effect` or `Effec
 | 0x100000 | 133 | Removed when transported to a **battlefield** (`RemoveAllNoBattlefieldEnchants @0x8f97c0` from `CTransportFactory::TransportCharacterToArea @0x5955f0`). |
 | 0x200000 | 435 | Suppresses message 9022 to the caster when a buff with a higher `Lowword` blocks it. |
 | 0x400000 | 1,775 | **Never stacks**, even with `MaxStack ≥ 2`. |
-| 0x10000 / 0x40000 / 0x800000 / 0x1000000 / 0x2000000 | 6 / 550 / 84 / 17 / 1 | No reader found in the functions inspected. |
+| 0x40000 | 550 | Enables the **caster-attribute scaling** of healing/HP: `CEC_HP::Execute @0x9efe40` (site `0x9f001c`), `CEC_HPRate @0x9f0f30`, `CEC_HPLimit @0x9f3b20`, `CEC_Heal @0x9f4470`, `CEC_IndexCasterAbility @0x9f67f0`. Without the bit the healed value does not add the caster bonus. |
+| 0x800000 | 84 | On transformation, `CEC_AttrForm::Execute @0x9c2890` (site `0x9c290a`) **stores the effect `ID`** in the entity's `+0xD54` field (right behind the form mask at `+0xD50`). Without the bit, `+0xD54` is left alone. |
+| 0x1000000 | 17 | When an already-active effect is **refreshed**, `CEnchantMgr::Reset @0xa1fd40` (site `0xa1ff78`) **skips `CEnchant::ExecuteCommands()`** and goes straight to `ExecuteStartCommands()`. |
+| 0x2000000 | 1 | Damage from that effect **does not score**: `CCharacter::GetHurt @0x9136f0` skips `GetHurtInBattlefield` (scenario 5, site `0x913a66`) and `GetHurtInFamilyBattle` (scenario 8, site `0x913a82`). |
+| 0x10000 | 6 | **No reader located.** The other four bits of the same byte (`Flag+0x16`) do show up and are all identified, so the sweep is reliable: this bit is never tested. |
+
+!!! note "How to find a `Flag` bit in the binary"
+    GCC compiles these tests as **byte operations**, not dword ones. `Flag` lives at `SEffectData+0x14`, so
+    `0x800` is `test byte ptr [X+15h], 8` (`@0xa1f4c9`), `0x200000` is `test byte ptr [X+16h], 20h` (`@0xa1f729`)
+    and `0x400000` is `test byte ptr [X+16h], 40h` (`@0xa1f04c`). Searching for the 32-bit immediate returns only
+    false positives: `CItemData::m_nOpFlags`, `CEnchant::m_HurtType` and the entity flags share those masks.
 
 `InnerFlags` (`+0x2fe`, derived at load time, not editable): 0x2 hidden icon of system effects · 0x4 sprite commands
 (ids 4000-5999) · 0x8 mount/chair (`2134`, `2143`) · 0x10 transformation (`2132`, `2135`) · 0x20 "toggle" effect:
@@ -512,6 +522,30 @@ it is simply not drawn.
   buffs because they do `+=`) · `3xxx` = periodic (`Commands`, every `Period`) · `4xxx`/`5xxx` = sprite · `6xxx` =
   checks and items · `7xxx` = effects on others/targets · `9xxx` = misc (shop, counters). The bucket is decided by
   the position of the `case` in `DecodeEffectCommand`, not by a flag.
+- **Dispatch**: there is not one jump table, there are **six**, plus four loose `cmp` cases: `1001-3102`
+  (`jpt_786E22 @0xDA1070`, 213 real cases out of 2,102 slots), `4001-4041` (`@0xDA5220`, 9), `5001-5032`
+  (`@0xDA5368`, 21), `6001-6026` (`@0xDA5468`, 9), `7001-7114` (`@0xDA5538`, 22), `9009-9031` (`@0xDA58C8`, 5), and
+  the loose ones `1` (`@0x795D55`), `2` (`@0x787266`), `3901` (`@0x787299`) and `9101` (`@0x7872F6`). **283 ids**
+  have a `case`; the highest id handled is `9101`.
+- 🔴 **An id with no `case` is swallowed silently**: every `default` falls into the same shared tail
+  (`def_7871A5 @0x7964FE`), which emits no text and writes no log — there is no way to spot the mistake from the
+  boot output. That tail still applies post-processing **by id range, `case` or no `case`**: `2000 ≤ id ≤ 3999` →
+  `++DurationCnt` (`SEffectData+0x31C`); `4000 ≤ id ≤ 5999` and `id ≠ 4021` → `InnerFlags |= 4` (sprite commands),
+  and if also `id ≥ 5000`, then `++DurationCnt` as well. Then each of the 12 streams that is not empty gets a
+  trailing `;` and is appended to its bucket.
+- ⭐ This is where the rule in §5.3 comes from: **it is the id range itself that turns an effect into a lasting buff**,
+  not the command. A `2000` with no `case` does nothing, but it raises `DurationCnt` to 1, and that is why the row
+  produces a `CEnchant` with an icon and a timer. The other way round: a row whose four slots are all `1xxx` leaves
+  `DurationCnt` at 0 and the effect is instant, with no buff.
+- **43 ids that appear in real data have no `case`** and therefore do nothing at all: `5`, `10`, `20`, `80`, `100`,
+  `243`, `1084`, `1915`, **`2000`**, `2177`, `2222`, `2501`, `2901`, `2933`, `7003`, `7005`, `8001`-`8006`,
+  `9003`-`9013`, `9023`-`9026`, `9200`-`9301`, `20503`, `30011`. Watch out for `30011`: **the 30xxx family is not
+  handled at all**.
+- **The 12 buckets** are the arguments of `DecodeEffectCommand` (`cmds`, `cmds_once`, `cmds_start`, `cmds_hurt`,
+  `cmds_hit`, `cmds_absorb`, `cmds_enhance`, `cmds_start_elf`, `cmds_elf`, `cmds_once_elf`, `cmds_move`,
+  `cmds_miss`) and they split like this across the 283 ids with a `case`: `cmds_start` 129 · `cmds_once` 77 ·
+  `cmds_hit` 20 · `cmds` 17 · `cmds_elf` 17 · `cmds_once_elf` 9 · `cmds_hurt` 5 · `cmds_move` 4 ·
+  `cmds_start_elf`, `cmds_enhance`, `cmds_absorb` and `cmds_miss` 1 each. `2934` switches bucket depending on `p1`.
 - **`CanExecute` before `Execute`**: the checks (`6021 MonsterCheck`, `6022-6025`, `3101/3102 EnchantCheckType`,
   `HPCheck`, `LevelCheck`…) live in `CommandsStart`; if they fail the effect does not enter (and if it was a refresh,
   the existing buff **is removed**, §5.2).
@@ -522,18 +556,18 @@ it is simply not drawn.
 | Id | Uses | Generated text (pN → args) | Bucket | `Init` and traps | Effect |
 |---|---|---|---|---|---|
 | 2051 | 3,866 | `AttrMovement <p1>` (same shape: 2052 `AttrAttackSpeed`, 2053 `AttrCastTime`, 2067, 2121, 2122, 2902) | start | — | `+= p1` to the movement-speed % (`Execute @0x9c9c40`, notifies the client); 2052 negative = faster. |
-| 2000 | 3,847 | *(nothing)* — same for 2004-2010, 2015-2018, 2025-2028, 2047-2048, 2058, 2070, 2076-2080, 2088-2090, 2096-2100, 2107, 2120, 2126-2130, 2138, 2152-2162, 2173-2177 | — | — | **Empty** command; it only contributes `DurationCnt` → used for icon/timer buffs with no effect. |
+| 2000 | 3,847 | *(nothing)* — **there is no `case` for this id** | *(silent default)* | — | Not an "empty command": `DecodeEffectCommand` does not translate it and **does not warn**. The row still works because `DurationCnt` alone creates the `CEnchant` → an icon/timer buff with no effect. The same holds for the other 42 case-less ids seen in real data, and for 2004-2010, 2015-2018, 2025-2028, 2047-2048, 2058, 2070, 2076-2080, 2088-2090, 2096-2100, 2107, 2120, 2126-2130, 2138, 2152-2162 and 2173-2177, which have no `case` either. |
 | 1921 | 2,871 | `EffectNextID <p1 id> <p2 chance%> <p3 dur> <p4 save> <p5 timetype>` | once | `Init @0x9df7a0`: id 0 → `Next`, chance 0 → `Probability %d` (**DBError**). | Applies `p1` to the carrier with `p2` %, duration `p3` tenths (−2 permanent); `p4 ≠ 0` persists it; `p5 = 1` → wall-clock time (`HurtType 0x100`). Without `p4` the child does not return after re-login. |
 | 2083 / 2085 | 2,297 / 1,474 | `AttrPhysicoDamageRate <p1>` / `AttrMagicDamageRate <p1>` | start | — | Physical / magic damage %, additive. |
 | 3001 | 1,855 | `HP <p1 min> <p2 max> <p3 min%> <p4 max%> <p5 type>` | **Commands (every `Period`)** | `Init @0x9efa20`: sorts min/max, ratios ×10, type 0-8 or `AttrResist Type is Wrong : %d` (**DBError**). | DoT/HoT: HP between `p1` and `p2` (negative = damage) plus `p3..p4` % of max per tick. **`1001` generates the same text but in `once`** (a single hit/heal on apply). |
 | 7001 | 1,659 | `Effect2Target <p1 type 1-4> <p2 friend 0-3> <p3 range/10> <p4 id> <p5 dur>` | `p6` empty → **Commands (every `Period`)**; `p6 ≠ 0` → once | `Init @0x9e0530`: type/friend out of range → `Type %d`/`Friend %d`; missing id → `CEC_Effect2Target : effect id [%d] not exist!` (**DBError**). | Applies `p4` to the targets of the given kind within range; with a `Period` it becomes an aura / periodic check. |
-| 2081 | 1,569 | one sub-command per `pN ≠ 0`: `AttrStr <p1>; AttrCon <p2>; AttrInt <p3>; …` | start | — | Flat base stats (several in one row). `2082` is the same, with the row `0|0|0|0|0|-300` as an empty sentinel. |
-| 2055 | 1,554 | `StateNoMove …` (sub-commands depending on the sign of `p1`, `p2`…) | start | sets `InnerFlags 0x200` | Root / immobilise. |
-| 1079 | 1,454 | `LastEnchant <p1 chance%> <p2 id> <p3 dur> <p4 timetype> <p5 save>` | start | `Init @0x9d22b0`: id 0 → `CEC_LastEnchant param is null.` (**DBError**); the loader follows the chain (`LoopEnchantIDs`, max 9). | `Execute` is empty: it acts in the **`RollBack`** (`@0x9d2640`): when the buff ends, `p1` % chance to apply `p2` for `p3`. |
+| 2081 / 2082 | 1,569 / 1,352 | one sub-command per `pN ≠ 0`. **`2081`**: `AttrStr <p1>; AttrCon <p2>; AttrInt <p3>; AttrVol <p4>; AttrDex <p5>` (`p6` unused). **`2082`**: **different** commands — `AttrPhysicoDamage <p1>; AttrRangeDamage <p2>; AttrDefence <p3>; AttrHitRate <p4>; AttrRangeHitRate <p5>; AttrDodgeRate <p6>` | start | — | `2081` is flat base stats. `2082` is **not "the same as 2081"**: it touches damage, defence, hit and dodge. Its row `0\|0\|0\|0\|0\|-300` is the empty sentinel: with `p1..p5 = 0` and `p6 = −300` the decoder emits nothing. |
+| 2055 | 1,554 | `StateNoMove <p1>; StateNoAttack <p2>; StateNoUseSkill Kungfu <p3>; StateNoUseSkill Magic <p4>; StateNoUseItem <p5>` (each part only if its `pN ≠ 0`) | start | sets `InnerFlags 0x200` | Root / silence. ⭐ **With all five `pN` positive** the decoder also sets `InnerFlags \|= 0x200` (`byte[ed+0x2FF] \|= 2`) and appends `EffectNextID <AntiStunID> 100 120 0 0; StateNoDodge 1`: this is the data-driven anti-stun path. |
+| 1079 | 1,454 | `LastEnchant <p1 chance%> <p2 id> <p3 dur> <p4 timetype> 1` — the 5th argument is the **literal `1`**, not `p5` | start | `Init @0x9d22b0`: id 0 → `CEC_LastEnchant param is null.` (**DBError**); the loader follows the chain (`LoopEnchantIDs`, max 9). | `Execute` is empty: it acts in the **`RollBack`** (`@0x9d2640`): when the buff ends, `p1` % chance to apply `p2` for `p3`. |
 | 2034 / 2033 | 1,449 / 852 | one sub-command per `pN ≠ 0` (N = 1..4): `AttrBeDamageRate <mask 1/2/4/8> <pN>` / `AttrDamageRate …` | start | `Init @0x9bf430`: value outside ±1000 → **DBError**; stored ×100. | Damage taken / dealt % per hit type (melee/ranged/kungfu/magic), additive across buffs. |
 | 2134 | 1,367 | `Ride <p1> <p2> <p3> <p4> <p5>` (+ `Finish 100` in **hit** when `p4 == 0`) | start | `Init @0xa07fa0` sets `InnerFlags 0x8\|0x20` | Mount; re-applying the same id dismounts; with `p4 = 0` you dismount on hit. |
 | 2087 | 856 | one sub-command per `pN ≠ 0`: `AttrBase <Str\|Con\|Int\|Vol\|Dex> <type> <pN>` | start | `Init @0x9bed70`: value via `strtol` → **0 or a decimal = DBError** (`增減基本屬性的數值為零沒意義`); unknown stat name = DBError. | `Execute @0x9bf080`: players only; `+=` into the base pool (type 1) or pool 2 (type 0) and `NeedUpdateAttr(60)`. Integers only. |
-| 6024 | 843 | `EnchantStackCheck <p1 id> <p2 min> <p3 max> <p4 other id> <p5 dur> <p6 target>` | start | `Init @0x9e9910`: min > max → **DBError**. | Stack self-check ("stacks up to N", switch to `p4` at the cap). |
+| 6024 | 843 | `EnchantStackCheck <p1 id> <p2 min> <p3 max> <p4 other id> <p5 dur> <p6 target>` | **once** | `Init @0x9e9910`: min > max → **DBError**. | Stack self-check ("stacks up to N", switch to `p4` at the cap). |
 | 2003 | — | `AttrRecoverHP <p1>` (only if `p1 ≠ 0`) | start | — | `Execute @0x9cb860`: players, flat `+=` to HP regeneration (**not** an immunity). |
 | 2061 | — | `AttrCastFailRate <p1 physical> <p2 magic> <p3 buff> <p4 restore> <p5 all>` | start | `Init @0x9bf740`: each value in **−1..100** or `BUFFID(%d) …` (**DBError**); `p5` excludes the others. | Cast-fail %; for "fewer interruptions" use `2067 AttrCastSuccessRate`. |
 | 2150 | — | `SetCoRideAction <p1 rtpl> <p2..p5 actions>` | start | `Init @0xa0a770`: `p1 = 0` → `座騎/寶座TemplateID 0 錯誤` (**DBError**); `InnerFlags 0x20`. | Mount throne/seat mode. |
@@ -557,6 +591,7 @@ in 6xxxx, 3,039 in 7xxxx, 641 in 9xxxx, 423 in 10xxxx, 247 in 12xxxx), 10,295 mu
 | `EnchantCategory` | 128 rows (3 = 77, 6 = 24, 4 = 16, 1 = 9, 2 = 2) |
 | `ImmuneMonsterType` | 8 rows (`126` ×7, `2002` ×1) |
 | Slots | 0 commands: 74 · 1: 18,908 · 2: 11,223 · 3: 4,027 · 4: 2,150; 307 distinct ids |
+| Ids with no `case` | 43 of the 306 distinct ids seen in real data do not exist in the decode and do nothing (§6) |
 | Top commands | 2051 ×3,866 · 2000 ×3,847 · 1921 ×2,871 · 2083 ×2,297 · 3001 ×1,855 · 7001 ×1,659 · 2081 ×1,569 · 2055 ×1,554 · 2085 ×1,474 · 1079 ×1,454 · 2034 ×1,449 · 2134 ×1,367 · 2082 ×1,352 · 2052 ×1,352 · 2064 ×1,342 |
 | `Period` | 9.7 %: `10` 1,468 · `30` 514 · `20` 499 · `1` 311 · `50` 169 · `100` 148 (tenths); 1,694 rows have a `Period` and no `3xxx` command, 1,002 the other way round |
 | `Hiword` / `Lowword` | 23.0 % / 21.2 %; 1,155 groups; group 81 has 346 members; typical `Lowword` 1-3, 10, 20, 51-57 |
