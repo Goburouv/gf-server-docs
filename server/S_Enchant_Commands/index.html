@@ -596,6 +596,45 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="2. The twelve command streams">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21-why-the-argument-to-vector-pairing-is-exact" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.1 Why the argument-to-vector pairing is exact
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22-the-five-streams-the-loader-fills-by-itself" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.2 The five streams the loader fills by itself
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#23-what-a-rollback-is-the-inverse-of" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.3 What a RollBack is the inverse of
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -941,6 +980,45 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="2. The twelve command streams">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21-why-the-argument-to-vector-pairing-is-exact" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.1 Why the argument-to-vector pairing is exact
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22-the-five-streams-the-loader-fills-by-itself" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.2 The five streams the loader fills by itself
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#23-what-a-rollback-is-the-inverse-of" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.3 What a RollBack is the inverse of
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -1285,15 +1363,15 @@ in <code>Commands</code> (a tick every <code>Period</code>).</p>
 </div>
 <h2 id="2-the-twelve-command-streams">2. The twelve command streams<a class="headerlink" href="#2-the-twelve-command-streams" title="Permanent link">&para;</a></h2>
 <p><code>DecodeEffectCommand</code> takes twelve <code>std::string&amp;</code> outputs, one per stream, and appends to whichever the <code>case</code>
-chooses. <code>LoadAllEffectData</code> then parses each string into the matching <code>std::vector&lt;CEffectCommand*&gt;</code> of
-<code>SEffectData</code>. Offsets below are inside <code>SEffectData</code> (832 bytes).</p>
+chooses. <code>CSpellDBO::LoadAllEffectData @0x7823b0</code> then parses each string into the matching
+<code>std::vector&lt;CEffectCommand*&gt;</code> of <code>SEffectData</code>. Offsets below are inside <code>SEffectData</code> (832 bytes).</p>
 <table>
 <thead>
 <tr>
 <th>Decoder argument</th>
 <th><code>SEffectData</code> vector</th>
 <th>Offset</th>
-<th>When the engine runs it</th>
+<th>What actually runs it</th>
 </tr>
 </thead>
 <tbody>
@@ -1301,89 +1379,278 @@ chooses. <code>LoadAllEffectData</code> then parses each string into the matchin
 <td><code>cmds</code></td>
 <td><code>Commands</code></td>
 <td><code>+0x40</code></td>
-<td>Every <code>Period</code> tick while the effect is active.</td>
+<td>Every <code>Period</code> tick while the effect is active: <code>CEnchantMgr::OnExecuteCommands @0xa22770</code>, driven by the <code>CEventEnchant::Execute @0xadfcd0</code> timer.</td>
 </tr>
 <tr>
 <td><code>cmds_once</code></td>
 <td><code>CommandsOnce</code></td>
 <td><code>+0x58</code></td>
-<td>Once, when the effect is applied.</td>
+<td>Once, when the effect is applied (<code>CEnchantMgr::Add @0xa202c0</code>).</td>
 </tr>
 <tr>
 <td><code>cmds_start</code></td>
 <td><code>CommandsStart</code></td>
 <td><code>+0x28</code></td>
-<td>When the effect enters; the matching <code>RollBack</code> runs when it leaves.</td>
+<td>When the effect enters, from <code>CEnchantMgr::Reset @0xa1fd40</code> (site <code>0xa1ff78</code>); the matching <code>RollBack</code> runs when it leaves.</td>
 </tr>
 <tr>
 <td><code>cmds_hurt</code></td>
 <td><code>CommandsHurt</code></td>
 <td><code>+0xe8</code></td>
-<td>When the bearer takes damage.</td>
+<td>On the <strong>defender</strong>, when an attack lands with non-zero damage: <code>CEnchant::OnHurt @0xa1c9d0</code>, reached through <code>CPlayerFactory::HitTrigger @0x547280</code>.</td>
 </tr>
 <tr>
 <td><code>cmds_hit</code></td>
 <td><code>CommandsHit</code></td>
 <td><code>+0xa0</code></td>
-<td>When the bearer lands a hit.</td>
+<td>On the <strong>attacker</strong>, in that same <code>HitTrigger @0x547280</code> call: <code>CEnchant::OnHit @0xa1c4d0</code>.</td>
 </tr>
 <tr>
 <td><code>cmds_absorb</code></td>
 <td><code>CommandsAbsorb</code></td>
 <td><code>+0x208</code></td>
-<td>In the damage-absorption stage (shields).</td>
+<td>On the victim's own buffs inside <code>CCharacter::GetHurt @0x9136f0</code> (mirrored by <code>CMonster::GetHurt @0x970800</code>), immediately before the damage is applied: <code>CEnchant::OnAbsorbDamage @0xa1dba0</code>.</td>
 </tr>
 <tr>
 <td><code>cmds_enhance</code></td>
 <td><code>CommandsEnhance</code></td>
 <td><code>+0x220</code></td>
-<td>In the damage-enhancement stage.</td>
+<td>On the <strong>attacker's</strong> buffs, from that same <code>GetHurt</code>, raising the outgoing damage before it lands: <code>CEnchant::OnEnhanceDamage @0xa1da20</code>.</td>
 </tr>
 <tr>
 <td><code>cmds_move</code></td>
 <td><code>CommandsMove</code></td>
 <td><code>+0x238</code></td>
-<td>On movement.</td>
+<td>On movement. <strong>Trigger not traced</strong> — taken from the column name; no <code>CEnchant::OnMove</code> was found.</td>
 </tr>
 <tr>
 <td><code>cmds_miss</code></td>
 <td><code>CommandsMiss</code></td>
 <td><code>+0xb8</code></td>
-<td>On a miss.</td>
+<td>On the defender when an incoming attack is evaded: <code>CEnchant::OnMiss @0xa1c6d0</code> from <code>CPlayerFactory::MissTrigger @0x547640</code>.</td>
 </tr>
 <tr>
 <td><code>cmds_start_elf</code></td>
 <td><code>CommandsStartElf</code></td>
 <td><code>+0x250</code></td>
-<td>Sprite equivalent of <code>CommandsStart</code>.</td>
+<td>Sprite <code>CommandsStart</code>: <code>CEnchant::ExecuteElfStartCommands @0xa1bdc0</code> from <code>CEnchantMgr::Reset @0xa1fd40</code> (site <code>0xa1feca</code>) or <code>Add @0xa202c0</code> (site <code>0xa2035d</code>), when the effect's <code>HurtType</code> names an elf slot.</td>
 </tr>
 <tr>
 <td><code>cmds_elf</code></td>
 <td><code>CommandsElf</code></td>
 <td><code>+0x268</code></td>
-<td>Sprite equivalent of <code>Commands</code>.</td>
+<td>Sprite <code>Commands</code>: <code>CEnchant::ExecuteElfCommands @0xa1bfc0</code>, on each <code>Period</code> tick from <code>CEnchantMgr::OnExecuteCommands @0xa22770</code>.</td>
 </tr>
 <tr>
 <td><code>cmds_once_elf</code></td>
 <td><code>CommandsOnceElf</code></td>
 <td><code>+0x280</code></td>
-<td>Sprite equivalent of <code>CommandsOnce</code>.</td>
+<td>Sprite <code>CommandsOnce</code>: <code>CEnchant::ExecuteElfOnceCommands @0xa1c110</code>, once, from <code>CEnchantMgr::Add @0xa202c0</code> (site <code>0xa20337</code>) or <code>Reset @0xa1fd40</code> (site <code>0xa1feaa</code>).</td>
 </tr>
 </tbody>
 </table>
-<div class="admonition note">
-<p class="admonition-title">How solid that pairing is</p>
-<p>The decoder-argument names and the vector names both come from the binary's debug symbols, and they match one
-to one. The trigger points independently verified elsewhere are <code>Commands</code> (the <code>Period</code> tick), <code>CommandsOnce</code>
-(applied once), <code>CommandsStart</code>/<code>RollBack</code> (enter and leave), and the two streams the loader injects a
-<code>Finish 100</code> into for flag bits <code>0x2000</code> and <code>0x20000</code> (<code>CommandsUseItem</code>, <code>CommandsMoveSelf</code>). For <code>Hurt</code>,
-<code>Hit</code>, <code>Absorb</code>, <code>Enhance</code>, <code>Miss</code> and the three sprite streams the trigger is taken from the name, not from a
-separately traced call site.</p>
+<h3 id="21-why-the-argument-to-vector-pairing-is-exact">2.1 Why the argument-to-vector pairing is exact<a class="headerlink" href="#21-why-the-argument-to-vector-pairing-is-exact" title="Permanent link">&para;</a></h3>
+<p>The pairing is not name matching. <code>CEffectFactory::ParseEffectCommands</code> has the signature
+<code>(SEffectData*, std::vector&lt;CEffectCommand*&gt;&amp;, const std::string&amp;)</code>, so the vector arrives in <strong><code>rdx</code></strong>. In
+<code>LoadAllEffectData</code> each of the twelve calls is preceded, in the same basic block, by a <code>CLogFactory::Log</code> whose
+format string <strong>names the stream</strong>, and by the <code>lea rdx, [ed+OFFSET]</code> that selects the vector. Name and offset
+are therefore fixed at the same call site:</p>
+<table>
+<thead>
+<tr>
+<th>Decoder argument</th>
+<th>Log format string</th>
+<th>Vector selected</th>
+<th>Offset</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>cmds</code></td>
+<td><code>"Effect [%d] commands, commands [%s]..."</code> <code>@0x7851a3</code></td>
+<td><code>lea rdx, [ed+0x40]</code> <code>@0x7851c5</code></td>
+<td><code>+0x40</code></td>
+</tr>
+<tr>
+<td><code>cmds_once</code></td>
+<td><code>"Effect [%d] commands, commands_once [%s]..."</code> <code>@0x785216</code></td>
+<td><code>lea rdx, [ed+0x58]</code> <code>@0x785238</code></td>
+<td><code>+0x58</code></td>
+</tr>
+<tr>
+<td><code>cmds_start</code></td>
+<td><code>"Effect [%d] commands, commands_start [%s]..."</code> <code>@0x78528f</code></td>
+<td><code>lea rdx, [ed+0x28]</code> <code>@0x7852b4</code></td>
+<td><code>+0x28</code></td>
+</tr>
+<tr>
+<td><code>cmds_hurt</code></td>
+<td><code>"Effect [%d] commands, commands_hurt [%s]..."</code> <code>@0x785309</code></td>
+<td><code>lea rdx, [ed+0xe8]</code> <code>@0x78532b</code></td>
+<td><code>+0xe8</code></td>
+</tr>
+<tr>
+<td><code>cmds_hit</code></td>
+<td><code>"Effect [%d] commands, commands_hit [%s]..."</code> <code>@0x785388</code></td>
+<td><code>lea rdx, [ed+0xa0]</code> <code>@0x7853aa</code></td>
+<td><code>+0xa0</code></td>
+</tr>
+<tr>
+<td><code>cmds_absorb</code></td>
+<td><code>"Effect [%d] commands, commands_absorb [%s]..."</code> <code>@0x785407</code></td>
+<td><code>lea rdx, [ed+0x208]</code> <code>@0x785429</code></td>
+<td><code>+0x208</code></td>
+</tr>
+<tr>
+<td><code>cmds_enhance</code></td>
+<td><code>"Effect [%d] commands, commands_enhance [%s]..."</code> <code>@0x785486</code></td>
+<td><code>lea rdx, [ed+0x220]</code> <code>@0x7854a8</code></td>
+<td><code>+0x220</code></td>
+</tr>
+<tr>
+<td><code>cmds_move</code></td>
+<td><code>"Effect [%d] commands, commands_move [%s]..."</code> <code>@0x785679</code></td>
+<td><code>lea rdx, [ed+0x238]</code> <code>@0x78569b</code></td>
+<td><code>+0x238</code></td>
+</tr>
+<tr>
+<td><code>cmds_miss</code></td>
+<td><code>"Effect [%d] commands, commands_miss [%s]..."</code> <code>@0x7856f2</code></td>
+<td><code>lea rdx, [ed+0xb8]</code> <code>@0x785714</code></td>
+<td><code>+0xb8</code></td>
+</tr>
+<tr>
+<td><code>cmds_start_elf</code></td>
+<td><code>"Effect [%d] commands, commands_start elf [%s]..."</code> <code>@0x78557e</code></td>
+<td><code>lea rdx, [ed+0x250]</code> <code>@0x7855a0</code></td>
+<td><code>+0x250</code></td>
+</tr>
+<tr>
+<td><code>cmds_elf</code></td>
+<td><code>"Effect [%d] commands, commands elf [%s]..."</code> <code>@0x785505</code></td>
+<td><code>lea rdx, [ed+0x268]</code> <code>@0x785527</code></td>
+<td><code>+0x268</code></td>
+</tr>
+<tr>
+<td><code>cmds_once_elf</code></td>
+<td><code>"Effect [%d] commands, commands_once elf [%s]..."</code> <code>@0x7855fa</code></td>
+<td><code>lea rdx, [ed+0x280]</code> <code>@0x78561c</code></td>
+<td><code>+0x280</code></td>
+</tr>
+</tbody>
+</table>
+<p><code>cmds_start</code> is the one exception to the <code>lea</code> form: its vector is already in <code>r13</code>, set once by
+<code>lea r13, [ed+28h] @0x784ad7</code>, and the call takes <code>mov rdx, r13 @0x7852b4</code>.</p>
+<h3 id="22-the-five-streams-the-loader-fills-by-itself">2.2 The five streams the loader fills by itself<a class="headerlink" href="#22-the-five-streams-the-loader-fills-by-itself" title="Permanent link">&para;</a></h3>
+<p>Five <code>EnchantFlag</code> bits do not change any stat. They make the loader append the literal text command
+<code>Finish 100</code> to a stream the numeric decoder never writes to, so that the event ends the buff. Every one of the
+five sites does the same three things: <code>inc word ptr [ed+31Ch]</code> (a counter of injected commands), a log line, and
+<code>ParseEffectCommands(ed, &lt;vector&gt;, "Finish 100")</code>.</p>
+<p>The block appears <strong>twice</strong>, once for the parent effect (gated on <code>EnchantFlag</code>, col 8) and once for the
+transition child (gated on <code>TransitionEnchantFlag</code>, col 49), with identical bits and identical targets:</p>
+<table>
+<thead>
+<tr>
+<th>Flag bit</th>
+<th>Gate instruction</th>
+<th>Child site</th>
+<th>Parent site</th>
+<th>Stream filled</th>
+<th>Offset</th>
+<th>Ends the buff when</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>0x1</code></td>
+<td><code>test al, 1</code></td>
+<td><code>0x782f68</code></td>
+<td><code>0x784c44</code></td>
+<td><code>CommandsAttack</code></td>
+<td><code>+0x88</code></td>
+<td>the bearer attacks</td>
+</tr>
+<tr>
+<td><code>0x2</code></td>
+<td><code>test byte ptr [ed+14h], 2</code></td>
+<td><code>0x78300c</code></td>
+<td><code>0x784cfa</code></td>
+<td><code>CommandsBeAttacked</code></td>
+<td><code>+0xd0</code></td>
+<td>the bearer is attacked</td>
+</tr>
+<tr>
+<td><code>0x4</code></td>
+<td><code>test byte ptr [ed+14h], 4</code></td>
+<td><code>0x7830b3</code></td>
+<td><code>0x784db1</code></td>
+<td><code>CommandsHurt</code></td>
+<td><code>+0xe8</code></td>
+<td>the bearer takes damage</td>
+</tr>
+<tr>
+<td><code>0x2000</code></td>
+<td><code>test byte ptr [ed+15h], 20h</code></td>
+<td><code>0x78315a</code></td>
+<td><code>0x784e68</code></td>
+<td><code>CommandsUseItem</code></td>
+<td><code>+0x298</code></td>
+<td>the bearer uses an item</td>
+</tr>
+<tr>
+<td><code>0x20000</code></td>
+<td><code>test byte ptr [ed+16h], 2</code></td>
+<td><code>0x783201</code></td>
+<td><code>0x784f1f</code></td>
+<td><code>CommandsMoveSelf</code></td>
+<td><code>+0x2b0</code></td>
+<td>the bearer moves</td>
+</tr>
+</tbody>
+</table>
+<p>Two consequences worth keeping in mind. <code>CommandsHurt</code> is the only stream that can receive both a decoded
+command (from <code>cmds_hurt</code>) and an injected <code>Finish 100</code> (from flag <code>0x4</code>) — a buff with that bit runs its own
+hurt commands and then dies. And <code>CommandsUseItem</code> and <code>CommandsMoveSelf</code> have no other source at all: without
+bits <code>0x2000</code> / <code>0x20000</code> they stay empty.</p>
+<p><code>SEffectData</code> holds 30 command vectors in total. The other thirteen (<code>CommandsEnd</code>, <code>CommandsKill</code>,
+<code>CommandsBeKilled</code>, <code>CommandsRevive</code>, the heal and cast-spell pairs and so on) are never targets of the numeric
+decoder either; they are filled from text commands that come from other data files. One of them is filled with a
+hardcoded string: <code>Effect2Other</code> is parsed into the vector at <code>+0x1d8</code> at <code>0x782f0a</code>, under the log line
+<code>"Effect [%d] CastClassSpellToSelf commands"</code>.</p>
+<h3 id="23-what-a-rollback-is-the-inverse-of">2.3 What a <code>RollBack</code> is the inverse of<a class="headerlink" href="#23-what-a-rollback-is-the-inverse-of" title="Permanent link">&para;</a></h3>
+<p><code>Execute</code> and <code>RollBack</code> are <strong>not</strong> handed symmetric argument lists, and reading them as if they were makes
+almost every command in this file look broken. <code>CEnchant::ExecuteStartCommands @0xa1b430</code> shows the real
+contract:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>CEffectFactory::Execute (Ins, cmd, m_pVictim, caster, m_HurtType,  this, 0)
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>CEffectFactory::RollBack(Ins, cmd, m_pVictim, caster, m_StackCnt, this)
+</code></pre></div>
+<p>Both pass the command a <code>va_list</code>. Vararg&nbsp;#0 is the victim on both sides. Vararg&nbsp;#2 is <strong><code>HurtType</code> on
+the way in and <code>m_StackCnt</code> on the way out</strong> — two different values in the same slot, deliberately.</p>
+<p>The consequence is that <code>Execute</code> applies <strong>one stack's worth</strong> and is called once per application, while
+<code>RollBack</code> is called <strong>once</strong> and has to undo every stack in that single call. <code>CEC_AttrMaxHP</code> is the clean
+example: <code>Execute @0x9c75c0</code> is four instructions long and does <code>EFBonusAttr-&gt;MaxHP += this-&gt;MaxHP</code>, ignoring
+vararg&nbsp;#2 entirely, while <code>RollBack @0x9c7c60</code> reads vararg&nbsp;#2 as a count and subtracts <code>MaxHP</code> that
+many times. Twenty-three of the twenty-eight rollbacks verified in this pass have exactly that shape, so
+“<code>Execute</code> adds once, <code>RollBack</code> subtracts N times” is the contract being honoured, not a defect.</p>
+<p>The other five are correct too, by a different route. <code>AttrSpellSetChangeEffectID</code>, <code>ChangeSpecificSpell</code>,
+<code>ChangeSpellSetSpecificSpell</code> and <code>SummonMobs</code> record what they did and replay it in reverse, which needs no
+stack scaling because they set and unset rather than accumulate. <code>AttrGainCollectItem</code> is a
+<code>StartFishing</code>/<code>StopFishing</code> pair and is not an arithmetic inverse at all.</p>
+<div class="admonition danger">
+<p class="admonition-title">Two places where the engine itself breaks the contract</p>
+<p>Both are in the abort path of <code>CEnchant::ExecuteStartCommands @0xa1b430</code>, not in any individual command.</p>
+<ul>
+<li>When a command in the chain returns false, the commands already executed are rolled back with the
+  <strong>literal <code>1</code></strong> as the stack count instead of <code>m_StackCnt</code>. With several stacks active only one stack's
+  worth is refunded and the rest of the bonus stays on the character.</li>
+<li>On the ending path, when <code>m_Flags &amp; 0x40</code> is set the code decrements <code>m_StackCnt</code> <strong>before</strong> issuing the
+  rollback calls and then sets it to <code>0</code> afterwards. The rollback therefore removes <code>m_StackCnt - 1</code> stacks,
+  and one stack's worth of every start command stays applied for good. <code>m_Flags</code> here is <code>CEnchant+0x44</code>,
+  the enchant's own runtime bitfield: both constructors (<code>@0xa1a940</code>, <code>@0xa1a9d0</code>) set it to <code>0</code>
+  unconditionally, so it is <strong>not</strong> a copy of the data file's <code>EnchantFlag</code>. Bit <code>0x40</code> is the one
+  <code>CEnchantMgr::Reset @0xa1fd40</code> clears after it has processed an enchant.</li>
+</ul>
 </div>
-<p><code>SEffectData</code> holds 30 command vectors in total. The other eighteen (<code>CommandsEnd</code>, <code>CommandsAttack</code>,
-<code>CommandsBeAttacked</code>, <code>CommandsKill</code>, <code>CommandsBeKilled</code>, <code>CommandsRevive</code>, the heal and cast-spell pairs,
-<code>CommandsUseItem</code>, <code>CommandsMoveSelf</code> and so on) are never targets of the numeric decoder: they are filled from
-the <code>Finish 100</code> the loader injects for certain flag bits, or from text commands that come from other data files.</p>
 <h2 id="3-dispatch-and-what-happens-to-an-unknown-id">3. Dispatch, and what happens to an unknown id<a class="headerlink" href="#3-dispatch-and-what-happens-to-an-unknown-id" title="Permanent link">&para;</a></h2>
 <p>There is not one jump table, there are <strong>six</strong>, plus four loose <code>cmp</code> comparisons:</p>
 <table>
@@ -3115,7 +3382,7 @@ otherwise.</p>
 <td><code>AttrCriticalDamage</code></td>
 <td>2</td>
 <td>2 strtod (Value = own, BeValue = received); NO validation: it always returns true, it accepts 0, negatives and any magnitude, and there is no error literal in the function</td>
-<td>SEffectAttribute+240 (float) += Value = own critical damage and +244 (float) += BeValue = critical damage received, the value enters as-is without scaling (the 2043/2044 decoder does not multiply by 10 either); it is applied to anyone and only the NeedUpdateDetailAttr(2)/(16) require type 7, and each one only if its field != 0; RollBack 0x9c07b0 not verified</td>
+<td>SEffectAttribute+240 (float) += Value = own critical damage and +244 (float) += BeValue = critical damage received, the value enters as-is without scaling (the 2043/2044 decoder does not multiply by 10 either); it is applied to anyone and only the NeedUpdateDetailAttr(2)/(16) require type 7, and each one only if its field != 0; RollBack 0x9c07b0 VERIFIED: it reads the stack count in vararg #2 and subtracts Value/BeValue from EFBonusAttr+0xf0/+0xf4 that many times, the exact inverse under the stacking contract in §2.3</td>
 <td><code>Init</code> 0x9c05b0 · <code>Execute</code> 0x9c06f0</td>
 </tr>
 <tr>
@@ -3129,7 +3396,7 @@ otherwise.</p>
 <td><code>AttrDamageRate</code></td>
 <td>2</td>
 <td>p1=HurtType via strtol (mask 1/2/4/8, UNVALIDATED); p2 via strtod; FATAL if p2 &lt; -1000.0 or p2 &gt; 1000.0 -&gt; InitErrLogAppend(0xdcea98 "進行攻擊時增減傷害敵人％數的傷害％數 %f 錯誤"); it is stored as (int)(p2*100) = hundredths of a percent</td>
-<td>SEffectAttribute.DamageEnhance.DamageRates[0..3] (off 52/56/60/64, int) += Rate for each set bit of HurtType, in hundredths of a percent; it is applied to anyone, NeedUpdateDetailAttr(0) only if type 7; RollBack 0x9c0f20 not verified (not decompiled; it is the twin of AttrBeDamageRate::RollBack)</td>
+<td>SEffectAttribute.DamageEnhance.DamageRates[0..3] (off 52/56/60/64, int) += Rate for each set bit of HurtType, in hundredths of a percent; it is applied to anyone, NeedUpdateDetailAttr(0) only if type 7; RollBack 0x9c0f20 VERIFIED: it reads the stack count in vararg #2 and subtracts Rate that many times from the same DamageRates[0-3] slots Execute picked by HurtType, the exact inverse under the stacking contract in §2.3</td>
 <td><code>Init</code> 0x9c0d10 · <code>Execute</code> 0x9c0ea0</td>
 </tr>
 <tr>
@@ -3143,28 +3410,28 @@ otherwise.</p>
 <td><code>AttrDefenceRate</code></td>
 <td>1</td>
 <td>1 strtod; FATAL if the value is exactly 0.0 -&gt; InitErrLogAppend(0xdcec38 "增加物防％數的％數為零沒意義"); the literal does NOT carry a %f, so the log does not say which value it was; if it passes, p1/100 is stored; there is no range</td>
-<td>SEffectAttribute+196 (float) += p1/100 = fraction of % of physical defence (p1=20 -&gt; 0.20 = +20%); it is applied to anyone, NeedUpdateAttr(22) only if type 7; RollBack 0x9c13b0 not verified (not decompiled; same 0xd4-byte template as AttrDefence/AttrCastTime, which do subtract N times)</td>
+<td>SEffectAttribute+196 (float) += p1/100 = fraction of % of physical defence (p1=20 -&gt; 0.20 = +20%); it is applied to anyone, NeedUpdateAttr(22) only if type 7; RollBack 0x9c13b0 VERIFIED: it reads the stack count in vararg #2 and subtracts Value that many times from EFBonusAttr+0xc4, the exact inverse under the stacking contract in §2.3</td>
 <td><code>Init</code> 0x9c1250 · <code>Execute</code> 0x9c1340</td>
 </tr>
 <tr>
 <td><code>AttrDex</code></td>
 <td>1</td>
 <td>1 strtol (truncates decimals); it does NOT validate range or sign; SILENT FATAL if the value is 0: <code>return this-&gt;Dex != 0</code> without InitErrLogAppend, the same as AttrCon</td>
-<td>EFBonusAttr[1].ResistAttr.Resists[4] (int) += Dex in flat DEX points; the WHOLE effect is inside the if (character &amp;&amp; type==7): on a monster it does nothing; NeedUpdateAttr(60); RollBack 0x9c15d0 not verified (not decompiled; exact size twin of AttrCon::RollBack, which subtracts N times)</td>
+<td>EFBonusAttr[1].ResistAttr.Resists[4] (int) += Dex in flat DEX points; the WHOLE effect is inside the if (character &amp;&amp; type==7): on a monster it does nothing; NeedUpdateAttr(60); RollBack 0x9c15d0 VERIFIED: under the same GetType()==7 gate it reads the stack count in vararg #2 and subtracts Dex that many times from EFBonusAttr[1].ResistAttr.Resists[4], the exact inverse under the stacking contract in §2.3</td>
 <td><code>Init</code> 0x9c14a0 · <code>Execute</code> 0x9c1560</td>
 </tr>
 <tr>
 <td><code>AttrDodgeRate</code></td>
 <td>1</td>
 <td>1 strtod; FATAL if the value is exactly 0.0 -&gt; InitErrLogAppend(0xdcedc8 "增加閃避的數值為零沒意義"); literal WITHOUT %f (it does not say the value); it does NOT divide by 100 and there is no range</td>
-<td>SEffectAttribute+212 (float) += p1 in flat dodge points (it is not a %, it is the flat value; the 2082 decoder does not scale it either); it is applied to anyone, NeedUpdateAttr(25) only if type 7; RollBack 0x9c1910 not verified (not decompiled; same 0xd4-byte template as AttrDefence/AttrCastTime)</td>
+<td>SEffectAttribute+212 (float) += p1 in flat dodge points (it is not a %, it is the flat value; the 2082 decoder does not scale it either); it is applied to anyone, NeedUpdateAttr(25) only if type 7; RollBack 0x9c1910 VERIFIED: it reads the stack count in vararg #2 and subtracts DodgeRate that many times from EFBonusAttr+0xd4, the exact inverse under the stacking contract in §2.3</td>
 <td><code>Init</code> 0x9c17c0 · <code>Execute</code> 0x9c18a0</td>
 </tr>
 <tr>
 <td><code>AttrDodgeRateRate</code></td>
 <td>1</td>
 <td>1 strtod; FATAL if the value is exactly 0.0 -&gt; InitErrLogAppend(0xdcee98 "增加閃避率的％數為零沒意義"); literal WITHOUT %f; if it passes, p1/100 is stored; there is no range</td>
-<td>SEffectAttribute+220 (float) += p1/100 = fraction of % of dodge (p1=30 -&gt; 0.30 = +30%); it is applied to anyone, NeedUpdateAttr(25) only if type 7; RollBack 0x9c1b60 not verified (not decompiled; same 0xd4-byte template)</td>
+<td>SEffectAttribute+220 (float) += p1/100 = fraction of % of dodge (p1=30 -&gt; 0.30 = +30%); it is applied to anyone, NeedUpdateAttr(25) only if type 7; RollBack 0x9c1b60 VERIFIED: it reads the stack count in vararg #2 and subtracts DodgeRateRate that many times from EFBonusAttr+0xdc, the exact inverse under the stacking contract in §2.3</td>
 <td><code>Init</code> 0x9c1a00 · <code>Execute</code> 0x9c1af0</td>
 </tr>
 <tr>
@@ -3185,7 +3452,7 @@ otherwise.</p>
 <td><code>AttrGainCollectItem</code></td>
 <td>2</td>
 <td>p1 -&gt; mAutoDropId, p2 -&gt; mDropId, both strtol base 10; it validates NOTHING and always returns true (never fatal); FishGroundIndex is set to -1; both fields enter StartFishing as short: an id &gt; 32767 is truncated silently</td>
-<td>it starts the fishing/collecting via CFishFactory::StartFishing(char, mDropId, mAutoDropId, -1) only on players (type 7) and with the field obj+262 &gt;= 0; it puts the character in state 19 (eaidFishing) with LifeEntityDo + ResetOperation + AddStateEnchant(19, enchant); it returns false if it cannot start (log "but can not start fishing") or if the state does not allow it (message 9308); RollBack 0x9c3660 = not verified</td>
+<td>it starts the fishing/collecting via CFishFactory::StartFishing(char, mDropId, mAutoDropId, -1) only on players (type 7) and with the field obj+262 &gt;= 0; it puts the character in state 19 (eaidFishing) with LifeEntityDo + ResetOperation + AddStateEnchant(19, enchant); it returns false if it cannot start (log "but can not start fishing") or if the state does not allow it (message 9308); RollBack 0x9c3660 VERIFIED and it is NOT a numeric inverse: Execute calls CFishFactory::StartFishing and AddStateEnchant(19, enchant), while RollBack erases the matching node from the character's rbtree at +0x13b8 keyed by enchant[19] and calls CFishFactory::StopFishing. A start/stop pair, not an add/subtract one, and it ignores the stack count</td>
 <td><code>Init</code> 0x9c30a0 · <code>Execute</code> 0x9c33f0</td>
 </tr>
 <tr>
@@ -3213,7 +3480,7 @@ otherwise.</p>
 <td><code>AttrHateRate</code></td>
 <td>1</td>
 <td>strtod (it does NOT truncate, it accepts decimals); FATAL if Value==0.0: InitErrLogAppend with the literal 0xdcf9c8 "針對每次造成傷害的原仇恨值增減的％ %f 沒意義" and return false; if it passes, the value is DIVIDED BY 100 and stored as a fraction (the ini is written in %: 20 -&gt; 0.20); no upper or lower cap</td>
-<td>only players (type 7): it adds Value (already a fraction, that is % of the base hate) to the float of EFBonusAttr[2] (PhysicoDamage+4) and marks NeedUpdateDetailAttr(27); RollBack 0x9c5580 present, not verified (same size and shape as AttrHitRate's: it subtracts N times)</td>
+<td>only players (type 7): it adds Value (already a fraction, that is % of the base hate) to the float of EFBonusAttr[2] (PhysicoDamage+4) and marks NeedUpdateDetailAttr(27); RollBack 0x9c5580 VERIFIED: under the same GetType()==7 gate it reads the stack count in vararg #2 and subtracts Value that many times from EFBonusAttr[2].PhysicoDamage+4, the exact inverse under the stacking contract in §2.3</td>
 <td><code>Init</code> 0x9c5410 · <code>Execute</code> 0x9c5500</td>
 </tr>
 <tr>
@@ -3234,7 +3501,7 @@ otherwise.</p>
 <td><code>AttrHitRateRate</code></td>
 <td>1</td>
 <td>strtod (it does NOT truncate, it accepts decimals); FATAL if HitRateRate==0.0: InitErrLogAppend with the literal 0xdcfc78 "增加近攻命中率的％數為零沒意義" and return false; if it passes, the value is DIVIDED BY 100 (the ini is written in %: 20 -&gt; 0.20); no cap</td>
-<td>it adds HitRateRate (fraction, that is % of the base hit) to the float of the attribute at obj+352 offset +216 (MeleeHitRateRate), and only AFTERWARDS does it check the type for NeedUpdateDetailAttr(4) if it is a player -&gt; it is applied ALSO to monsters; 🔴 the same BUG as AttrHitRate: it dereferences the target before the null check; RollBack 0x9c5c70 present, not verified (0xd4 bytes, same shape as AttrHitRate's)</td>
+<td>it adds HitRateRate (fraction, that is % of the base hit) to the float of the attribute at obj+352 offset +216 (MeleeHitRateRate), and only AFTERWARDS does it check the type for NeedUpdateDetailAttr(4) if it is a player -&gt; it is applied ALSO to monsters; 🔴 the same BUG as AttrHitRate: it dereferences the target before the null check; RollBack 0x9c5c70 VERIFIED: it reads the stack count in vararg #2 and subtracts HitRateRate that many times from EFBonusAttr-&gt;MeleeHitRateRate (+0xd8), the exact inverse under the stacking contract in §2.3</td>
 <td><code>Init</code> 0x9c5b10 · <code>Execute</code> 0x9c5c00</td>
 </tr>
 <tr>
@@ -3248,28 +3515,28 @@ otherwise.</p>
 <td><code>AttrMagicCriticalDamage</code></td>
 <td>2</td>
 <td>p1 -&gt; Value, p2 -&gt; BeValue, both with strtod (they do NOT truncate, they accept decimals); it validates NOTHING, neither zeros nor ranges, and it ALWAYS returns true: it is never fatal; it does NOT divide by 100 nor multiply by 10, the value enters raw</td>
-<td>it adds Value to the float of the attribute at obj+352 offset +248 (magic critical damage dealt) and BeValue to +252 (magic critical damage received), in the binary's raw units; it refreshes NeedUpdateDetailAttr(2) if Value!=0 and (16) if BeValue!=0, but ONLY if the target is a player -&gt; the attribute is written ALSO on monsters; 🔴 it dereferences the target before the null check (null target = SEGV); RollBack 0x9c6280 present, not verified</td>
+<td>it adds Value to the float of the attribute at obj+352 offset +248 (magic critical damage dealt) and BeValue to +252 (magic critical damage received), in the binary's raw units; it refreshes NeedUpdateDetailAttr(2) if Value!=0 and (16) if BeValue!=0, but ONLY if the target is a player -&gt; the attribute is written ALSO on monsters; 🔴 it dereferences the target before the null check (null target = SEGV); RollBack 0x9c6280 VERIFIED: it reads the stack count in vararg #2 and subtracts Value/BeValue that many times from EFBonusAttr+0xf8/+0xfc, the exact inverse under the stacking contract in §2.3</td>
 <td><code>Init</code> 0x9c6080 · <code>Execute</code> 0x9c61c0</td>
 </tr>
 <tr>
 <td><code>AttrMagicCriticalRate</code></td>
 <td>2</td>
 <td>p1 -&gt; Value, p2 -&gt; BeValue, both with strtol base 10 (they TRUNCATE decimals); it validates NOTHING, neither zeros nor ranges, and it ALWAYS returns true: it is never fatal</td>
-<td>it adds Value (integer) to the DWORD of the attribute at obj+352 offset +228 (magic critical probability) and BeValue to +236 (probability of receiving a magic critical); ⚠️ the S_Enchant decoder (ids 2041/2042) already multiplies the ini parameter BY 10 before emitting it, so the internal unit is a TENTH of the ini's; it refreshes NeedUpdateAttr(27) and, if BeValue!=0, NeedUpdateDetailAttr(16), only if the target is a player -&gt; it is written ALSO on monsters; 🔴 it dereferences the target before the null check; RollBack 0x9c6590 present, not verified</td>
+<td>it adds Value (integer) to the DWORD of the attribute at obj+352 offset +228 (magic critical probability) and BeValue to +236 (probability of receiving a magic critical); ⚠️ the S_Enchant decoder (ids 2041/2042) already multiplies the ini parameter BY 10 before emitting it, so the internal unit is a TENTH of the ini's; it refreshes NeedUpdateAttr(27) and, if BeValue!=0, NeedUpdateDetailAttr(16), only if the target is a player -&gt; it is written ALSO on monsters; 🔴 it dereferences the target before the null check; RollBack 0x9c6590 VERIFIED: it reads the stack count in vararg #2 and subtracts Value/BeValue that many times from MagicCriticalRate/BeMagicCriticalRate (EFBonusAttr+0xe4/+0xec), the exact inverse under the stacking contract in §2.3</td>
 <td><code>Init</code> 0x9c63c0 · <code>Execute</code> 0x9c6500</td>
 </tr>
 <tr>
 <td><code>AttrMagicDamage</code></td>
 <td>1</td>
 <td>strtol base 10 (it TRUNCATES decimals); FATAL if MagicDamage==0 -&gt; it returns false, but 🔴 WITHOUT calling InitErrLogAppend: boot dead with [FAIL] Database Error!! and ZERO lines in the init log (the same mute pattern as AttrInt); there is no range, it accepts negatives</td>
-<td>it adds MagicDamage in FLAT POINTS (integer) to the DWORD of the attribute at obj+352 offset +160 (magic attack); it refreshes NeedUpdateAttr(21) and, if EFBonusAttr-&gt;Attr2Attr[8] is not zero, also the 19 and the 20, but ONLY if the target is a player -&gt; the attribute is written ALSO on monsters; 🔴 it dereferences the target before the null check (null target = SEGV); RollBack 0x9c6910 present, not verified</td>
+<td>it adds MagicDamage in FLAT POINTS (integer) to the DWORD of the attribute at obj+352 offset +160 (magic attack); it refreshes NeedUpdateAttr(21) and, if EFBonusAttr-&gt;Attr2Attr[8] is not zero, also the 19 and the 20, but ONLY if the target is a player -&gt; the attribute is written ALSO on monsters; 🔴 it dereferences the target before the null check (null target = SEGV); RollBack 0x9c6910 VERIFIED: it reads the stack count in vararg #2 and subtracts MagicDamage that many times from EFBonusAttr+0xa0, the exact inverse under the stacking contract in §2.3</td>
 <td><code>Init</code> 0x9c67c0 · <code>Execute</code> 0x9c6880</td>
 </tr>
 <tr>
 <td><code>AttrMagicDamageRate</code></td>
 <td>1</td>
 <td>strtod (it does NOT truncate, it accepts decimals); FATAL if Value==0.0: InitErrLogAppend with the literal 0xdd0038 "增加魔攻％數的％數為零沒意義" and return false; if it passes, the value is DIVIDED BY 100 (the ini is written in %: 20 -&gt; 0.20); no cap</td>
-<td>it adds Value (fraction, % of the base magic attack) to the float of the attribute at obj+352 offset +200; it refreshes NeedUpdateAttr(21) and, if EFBonusAttr-&gt;Attr2Attr[8] is not zero, also the 19 and the 20, but ONLY if the target is a player -&gt; it is written ALSO on monsters; 🔴 it dereferences the target before the null check; RollBack 0x9c6ca0 present, not verified</td>
+<td>it adds Value (fraction, % of the base magic attack) to the float of the attribute at obj+352 offset +200; it refreshes NeedUpdateAttr(21) and, if EFBonusAttr-&gt;Attr2Attr[8] is not zero, also the 19 and the 20, but ONLY if the target is a player -&gt; it is written ALSO on monsters; 🔴 it dereferences the target before the null check; RollBack 0x9c6ca0 VERIFIED: it reads the stack count in vararg #2 and subtracts Value that many times from EFBonusAttr+0xc8, the exact inverse under the stacking contract in §2.3</td>
 <td><code>Init</code> 0x9c6b10 · <code>Execute</code> 0x9c6c00</td>
 </tr>
 <tr>
@@ -3290,7 +3557,7 @@ otherwise.</p>
 <td><code>AttrMaxHP</code></td>
 <td>1</td>
 <td>strtol base 10 (truncates decimals); the ONLY prohibition: p1 == 0; if 0 -&gt; InitErrLogAppend(0xdd0458 "生命上限數值加 %d 沒意義", 0) + return false = FATAL; BUG: the %d is filled with the constant 0, not with the value read; negatives allowed</td>
-<td>EFBonusAttr+0x9C (int) += p1 in flat points of maximum health; ILifeEntity bearer, player or monster; Notify 0x9c7600 recalculates the real MaxHP (vfunc 57), clamps the current HP if it exceeds it and notifies (NeedUpdateAttr 0 and 17 to the player, or a broadcast packet to those who see him if it is a monster); RollBack 0x9c7c60 reads the layer counter and a subtraction loop, but the loop body is not verified (only the va_arg prologue checked)</td>
+<td>EFBonusAttr+0x9C (int) += p1 in flat points of maximum health; ILifeEntity bearer, player or monster; Notify 0x9c7600 recalculates the real MaxHP (vfunc 57), clamps the current HP if it exceeds it and notifies (NeedUpdateAttr 0 and 17 to the player, or a broadcast packet to those who see him if it is a monster); RollBack 0x9c7c60 VERIFIED in full: it reads the stack count in vararg #2 and subtracts MaxHP from EFBonusAttr-&gt;MaxHP that many times (GCC vectorised the loop with SSE, hence its size), then calls the same Notify. With a count of 0 or less it only calls Notify. The exact inverse under the stacking contract in §2.3</td>
 <td><code>Init</code> 0x9c74f0 · <code>Execute</code> 0x9c75c0</td>
 </tr>
 <tr>
@@ -3304,14 +3571,14 @@ otherwise.</p>
 <td><code>AttrMaxMP</code></td>
 <td>1</td>
 <td>strtol base 10 (truncates decimals); the ONLY prohibition: p1 == 0; if 0 -&gt; InitErrLogAppend(0xdd05d8 "能量上限數值加 %d 沒意義", 0) + return false = FATAL; the same BUG of the %d fixed to 0; negatives allowed</td>
-<td>EFBonusAttr+0xA0 (int) += p1 in flat points of maximum mana; bearer, player or monster; Notify 0x9c8790 recalculates MaxMP and clamps the current MP if there is excess; RollBack 0x9c8e00 reads the layer counter and a subtraction loop, loop body not verified (only the va_arg prologue checked)</td>
+<td>EFBonusAttr+0xA0 (int) += p1 in flat points of maximum mana; bearer, player or monster; Notify 0x9c8790 recalculates MaxMP and clamps the current MP if there is excess; RollBack 0x9c8e00 VERIFIED in full: it reads the stack count in vararg #2 and subtracts MaxMP from EFBonusAttr-&gt;MaxMP that many times, then calls the same Notify, the exact inverse under the stacking contract in §2.3</td>
 <td><code>Init</code> 0x9c8680 · <code>Execute</code> 0x9c8750</td>
 </tr>
 <tr>
 <td><code>AttrMaxMPRate</code></td>
 <td>1</td>
 <td>strtol base 10 TRUNCATED TO __int16 (the same overflow as AttrMaxHPRate); the ONLY prohibition: the 16-bit value == 0; if 0 it returns false = FATAL WITHOUT a log (it fails silently); afterwards it multiplies by 0.01</td>
-<td>EFBonusAttr+0xBC (float) += p1/100 as a fraction (20 = +20% maximum mana); bearer, player or monster; Notify 0x9c90f0 recalculates MaxMP and clamps the current MP; RollBack 0x9c9760 reads the layer counter and a subtraction loop, loop body not verified (same size 0xbb as AttrMaxHPRate::RollBack, already verified as an exact inverse)</td>
+<td>EFBonusAttr+0xBC (float) += p1/100 as a fraction (20 = +20% maximum mana); bearer, player or monster; Notify 0x9c90f0 recalculates MaxMP and clamps the current MP; RollBack 0x9c9760 VERIFIED in full: it reads the stack count in vararg #2 and subtracts Value that many times from EFBonusAttr+0xbc, then calls Notify, the exact inverse under the stacking contract in §2.3</td>
 <td><code>Init</code> 0x9c8fc0 · <code>Execute</code> 0x9c90a0</td>
 </tr>
 <tr>
@@ -3388,7 +3655,7 @@ otherwise.</p>
 <td><code>AttrRecoverMP</code></td>
 <td>1</td>
 <td>identical to AttrRecoverHP except for the field: 1 token, strtol base 10, no range validation, return (p1 != 0); p1=0 = FATAL AND MUTE (without InitErrLogAppend)</td>
-<td>only players (type 7): (obj+352)+1132 += RecoverMP, flat points of the bearer's MP regeneration; RollBack 0x9cbbc0 not verified (same size 0x1c8 as the HP one)</td>
+<td>only players (type 7): (obj+352)+1132 += RecoverMP, flat points of the bearer's MP regeneration; RollBack 0x9cbbc0 VERIFIED: under the same GetType()==7 gate it reads the stack count in vararg #2 and subtracts RecoverMP that many times from (*(character+0x160))+0x46c, the exact inverse under the stacking contract in §2.3</td>
 <td><code>Init</code> 0x9cbaa0 · <code>Execute</code> 0x9cbb60</td>
 </tr>
 <tr>
@@ -3423,42 +3690,42 @@ otherwise.</p>
 <td><code>AttrSpellDamageRate</code></td>
 <td>1 + N (p6 = percent, then up to 5 spellIDs)</td>
 <td>same shape as AttrSpellDamage: 1st token = Rate (strtol base 10, stored in a short); Rate==0: InitErrLogAppend(增加特定某些技能的傷害固定％數的數值為零沒意義) + false = FATAL; the remaining tokens = short spellIDs, the 0s are skipped; empty list: InitErrLogAppend(增加特定某些技能的傷害固定％數沒有指定技能) + false = FATAL; there is NO upper or lower cap on the percentage</td>
-<td>players only (type 7): for each spellID CCharacter::AddSpellDamageRate(spellID, Rate) with Rate as a PERCENTAGE according to the error literal itself (傷害固定％數); RollBack 0x9cd670 not verified</td>
+<td>players only (type 7): for each spellID CCharacter::AddSpellDamageRate(spellID, Rate) with Rate as a PERCENTAGE according to the error literal itself (傷害固定％數); RollBack 0x9cd670 VERIFIED: it reads the stack count in vararg #2 and repeats the whole SpellIds loop that many times calling AddSpellDamageRate(id, -Rate), the exact inverse under the stacking contract in §2.3</td>
 <td><code>Init</code> 0x9cd420 · <code>Execute</code> 0x9cd5f0</td>
 </tr>
 <tr>
 <td><code>AttrSpellDuration</code></td>
 <td>1 + N (p6 = duration, then up to 5 spellIDs)</td>
 <td>same shape: 1st token = Duration (strtol base 10, int); Duration==0: InitErrLogAppend(增加特定某些技能的持續時間的數值為零沒意義) + false = FATAL; the rest = short spellIDs, the 0s are skipped; empty list: InitErrLogAppend(增加特定某些技能的持續時間沒有指定技能) + false = FATAL; no cap</td>
-<td>players only (type 7): for each spellID CCharacter::AddSpellDuration(spellID, Duration, false) lengthens/shortens the duration of that skill of the bearer; UNIT not verified (AddSpellDuration 0x91ae30 has not been entered); RollBack 0x9cddb0 not verified</td>
+<td>players only (type 7): for each spellID CCharacter::AddSpellDuration(spellID, Duration, false) lengthens/shortens the duration of that skill of the bearer; the Duration is in TENTHS of a second: it flows unconverted into the duration slot of CEffectFactory::EffectToLife, and that same slot is only ever filled by the elf code after multiplying a whole-seconds field by 10 (CElfManager::ToCollect@0x463070: v52 = 10<em>(AllElfBonusAttr.CollectTime + EFBonusAttr.CollectTime + m_nDuration)</em>v39); CEventSpellLocationContinued::Execute@0xae6600 likewise passes CCharFormula::SpellDuration into it unscaled; RollBack 0x9cddb0 VERIFIED: it reads the stack count in vararg #2 and repeats the whole SpellIds loop that many times calling AddSpellDuration(id, -Duration, 0), the exact inverse under the stacking contract in §2.3</td>
 <td><code>Init</code> 0x9cdb60 · <code>Execute</code> 0x9cdd30</td>
 </tr>
 <tr>
 <td><code>AttrSpellSetChangeEffectID</code></td>
 <td>6 = 3 pairs (consumes ALL remaining tokens)</td>
 <td>clone of AttrSpellChangeEffectID but the pairs are <spellSetID int> <nuevoEffectID int> (vector of pair<int,int>); a pair with any 0 is discarded; with no pair at all: InitErrLogAppend(改變特定技能的原BUFF變為新的BUFF沒有指定技能), the SAME literal as AttrSpellChangeEffectID so they cannot be told apart in the log, + false = FATAL; same failure with an odd number of tokens</td>
-<td>players only (type 7): for each pair CCharacter::ChangeSpellSetEffectID(spellSetID, nuevoEffectID, 1, 0), replaces the effect of a whole group of skills; RollBack 0x9ccbd0 not verified (0x72 bytes, same size as the one of SpellChangeEffectID)</td>
+<td>players only (type 7): for each pair CCharacter::ChangeSpellSetEffectID(spellSetID, nuevoEffectID, 1, 0), replaces the effect of a whole group of skills; RollBack 0x9ccbd0 VERIFIED and it is an exact inverse WITHOUT stack scaling: Execute calls ChangeSpellSetEffectID(first, second, 1, 0) for every pair in Spells and RollBack calls the identical helper on the same pairs with the enable flag flipped to 0. Neither side reads the stack count, which is correct for a set/unset operation</td>
 <td><code>Init</code> 0x9cc980 · <code>Execute</code> 0x9ccb50</td>
 </tr>
 <tr>
 <td><code>AttrSpellSetDamage</code></td>
 <td>1 + N (p6 = damage, then up to 5 spellSetIDs)</td>
 <td>clone of AttrSpellDamage with group IDs (vector<int> instead of vector<short>): Damage==0: InitErrLogAppend(增加特定技能群組的傷害數值為零沒意義) + false = FATAL; with no valid group: InitErrLogAppend(增加特定技能群組的傷害數值沒有指定技能群組) + false = FATAL; the 0s of the list are skipped; no caps</td>
-<td>players only (type 7): for each group CCharacter::AddSpellSetDamage(spellSetID, Damage) = FLAT addition to the damage of every skill of the group; RollBack 0x9cd280 not verified</td>
+<td>players only (type 7): for each group CCharacter::AddSpellSetDamage(spellSetID, Damage) = FLAT addition to the damage of every skill of the group; RollBack 0x9cd280 VERIFIED: it reads the stack count in vararg #2 and repeats the SpellSets loop that many times calling AddSpellSetDamage(id, -Damage), the exact inverse under the stacking contract in §2.3</td>
 <td><code>Init</code> 0x9cd040 · <code>Execute</code> 0x9cd210</td>
 </tr>
 <tr>
 <td><code>AttrSpellSetDamageRate</code></td>
 <td>1 + N (p6 = percent, then up to 5 spellSetIDs)</td>
 <td>clone of AttrSpellDamageRate with group IDs: Rate (short) ==0: InitErrLogAppend(增加特定技能群組的傷害％數的數值為零沒意義) + false = FATAL; with no valid group: InitErrLogAppend(增加特定技能群組的傷害％數沒有指定技能群組) + false = FATAL; no caps</td>
-<td>players only (type 7): for each group CCharacter::AddSpellSetDamageRate(spellSetID, Rate) with Rate as a PERCENTAGE according to the error literal; RollBack 0x9cd9c0 not verified</td>
+<td>players only (type 7): for each group CCharacter::AddSpellSetDamageRate(spellSetID, Rate) with Rate as a PERCENTAGE according to the error literal; RollBack 0x9cd9c0 VERIFIED: it reads the stack count in vararg #2 and repeats the SpellSets loop that many times calling AddSpellSetDamageRate(id, -Rate), the exact inverse under the stacking contract in §2.3</td>
 <td><code>Init</code> 0x9cd770 · <code>Execute</code> 0x9cd940</td>
 </tr>
 <tr>
 <td><code>AttrSpellSetDuration</code></td>
 <td>1 + N (p6 = duration, then up to 5 spellSetIDs)</td>
 <td>clone of AttrSpellDuration with group IDs: Duration==0: InitErrLogAppend(增加特定技能群組的BUFF持續時間的數值為零沒意義) + false = FATAL; with no valid group: InitErrLogAppend(增加特定技能群組的BUFF持續時間沒有指定技能群組) + false = FATAL; no caps</td>
-<td>players only (type 7): for each group CCharacter::AddSpellSetDuration(spellSetID, Duration, false) on the duration of the BUFF of the group; UNIT not verified; RollBack 0x9ce100 not verified</td>
+<td>players only (type 7): for each group CCharacter::AddSpellSetDuration(spellSetID, Duration, false) on the duration of the BUFF of the group; the Duration is in TENTHS of a second, by the same EffectToLife duration-slot argument as AttrSpellDuration; RollBack 0x9ce100 VERIFIED: it reads the stack count in vararg #2 and repeats the SpellSets loop that many times calling AddSpellSetDuration(id, -Duration, 0), the exact inverse under the stacking contract in §2.3</td>
 <td><code>Init</code> 0x9cdeb0 · <code>Execute</code> 0x9ce080</td>
 </tr>
 <tr>
@@ -3570,21 +3837,21 @@ otherwise.</p>
 <td><code>BornNPC</code></td>
 <td>4</td>
 <td>strtol base 10 x4 -&gt; NPCID(p1), Only(p2), TargerPos(p3), AddTime(p4); strtol truncates decimals; no ranges and no forbidden values; FATAL only if NPCID==0 -&gt; InitErrLogAppend "CEC_BornNPC can't born npc_id[%d]." and it returns false; p2/p3/p4 accept any value without checking</td>
-<td>Execute is a STUB (mov al,1; retn) and does nothing: the spawn is in RollBack 0x9d3220, that is, on EXPIRY/removal of the effect; there CNode::BornNPC(p1) in the node of the bearer, or a deferred CEventBornNPC p4 if p4!=0 (unit of p4 not verified); p2=Only!=0 aborts if that monster already exists in the node (CNode::IsMonsterExist); p3=TargerPos==0 uses the fixed position of GetFBEliaNpsPosDB(nodoID,npcID) instead of the one of the bearer; NPCID 64785..64787 additionally broadcasts to the FamilyBattle and clears HasFamilyBattleFlag; there is NO inverse (the NPC is never deleted)</td>
+<td>Execute is a STUB (mov al,1; retn) and does nothing: the spawn is in RollBack 0x9d3220, that is, on EXPIRY/removal of the effect; there CNode::BornNPC(p1) in the node of the bearer, or a deferred CEventBornNPC p4 if p4!=0 (p4 is in whole SECONDS: AddTime is the first constructor argument of CEventBornNPC@0x5da790, which computes ReadyTime.TimeVal.tv_sec = tv_usec/1000000 + tv_sec + add_time, adding it straight into the tv_sec field of a timeval, and CSJFramework::PushRealTimeEvent then schedules it); p2=Only!=0 aborts if that monster already exists in the node (CNode::IsMonsterExist); p3=TargerPos==0 uses the fixed position of GetFBEliaNpsPosDB(nodoID,npcID) instead of the one of the bearer; NPCID 64785..64787 additionally broadcasts to the FamilyBattle and clears HasFamilyBattleFlag; there is NO inverse (the NPC is never deleted)</td>
 <td><code>Init</code> 0x9d2fc0 · <code>Execute</code> 0x9d3210</td>
 </tr>
 <tr>
 <td><code>ChangeSpecificSpell</code></td>
 <td>variable, in PAIRS until the list is exhausted (6 params from S_Enchant = 3 source/target pairs)</td>
 <td>strtol base 10, stored as pair<u16,u16>; a (0,0) pair is silently ignored; if only one of the two is 0 -&gt; FATAL "ERROR BUFF %d 原技能 %hu 與替換技能 %hu 其中一個未填!!!" and return false; if CGameData::QuerySpell does not find the source and/or the destination -&gt; FATAL "ERROR BUFF %d 找不到技能 %hu !!!" (one line per failing id) and return false; with &gt;=4 stored pairs it ONLY warns "Too much change spell! count:%zu" and returns true (NOT fatal), but Execute indexes a bitset&lt;3&gt; -&gt; the 4th pair throws std::__throw_out_of_range_fmt at runtime</td>
-<td>Players only (vtbl+2 returns 7) and only if they have EFBonusAttr; for each pair whose source spell is in the SpellMaster of the bearer it replaces source-&gt;destination with CCharacter::UpdateChangeSpecificSpell(vec,true), stores the bitset&lt;3&gt; mask in EFBonusAttr[EffectID][InstanceID] and notifies the client (CZoneServer::NotifyClient); it is applied to the bearer of the enchant, not to the target; no units (they are spell ids, not numeric values); RollBack 0x9d49a0 exists (it undoes the replacement; exact equivalence not verified)</td>
+<td>Players only (vtbl+2 returns 7) and only if they have EFBonusAttr; for each pair whose source spell is in the SpellMaster of the bearer it replaces source-&gt;destination with CCharacter::UpdateChangeSpecificSpell(vec,true), stores the bitset&lt;3&gt; mask in EFBonusAttr[EffectID][InstanceID] and notifies the client (CZoneServer::NotifyClient); it is applied to the bearer of the enchant, not to the target; no units (they are spell ids, not numeric values); RollBack 0x9d49a0 VERIFIED as an exact inverse by record-and-replay, without stack scaling: Execute stores the matched slot bitset keyed by InstanceID in the EFBonusAttr[2] map and calls UpdateChangeSpecificSpell(pairs, 1) plus NotifyClient(1); RollBack looks that InstanceID node up, erases it, and replays the identical pairs with UpdateChangeSpecificSpell(pairs, 0) plus NotifyClient(0)</td>
 <td><code>Init</code> 0x9d40d0 · <code>Execute</code> 0x9d4370</td>
 </tr>
 <tr>
 <td><code>ChangeSpellSetSpecificSpell</code></td>
 <td>variable, in PAIRS until the list is exhausted (odd p = spell GROUP id, even p = target spell; 6 params = 3 groups)</td>
 <td>strtol base 10; a (0,0) pair is silently skipped; only one of the two at 0 -&gt; FATAL "ERROR BUFF %d 技能群組 %d 與替換技能 %hu 其中一個未填!!!"; GetAllSetSpells(grupo) empty -&gt; FATAL "ERROR BUFF %d 找不到該技能群組 %d !!!"; nonexistent source spell of the group -&gt; "ERROR BUFF %d 找不到原技能 %hu !!!"; nonexistent destination -&gt; "ERROR BUFF %d 找不到替換技能 %hu !!!"; all of them return false and kill the boot; there is NO cap on pairs (it uses vector&lt;vector&lt;&gt;&gt; instead of the bitset&lt;3&gt; of ChangeSpecificSpell)</td>
-<td>Players only (type 7) with EFBonusAttr; it expands each group to all its spells, filters the ones the bearer has in SpellMaster and replaces them all with the destination spell with CCharacter::UpdateChangeSpecificSpell(vec,true) (one call and one NotifyClient per group), registering the applied lists in EFBonusAttr[EffectID][InstanceID]; it is applied to the bearer; RollBack 0x9d6370 exists (inverse not verified in detail)</td>
+<td>Players only (type 7) with EFBonusAttr; it expands each group to all its spells, filters the ones the bearer has in SpellMaster and replaces them all with the destination spell with CCharacter::UpdateChangeSpecificSpell(vec,true) (one call and one NotifyClient per group), registering the applied lists in EFBonusAttr[EffectID][InstanceID]; it is applied to the bearer; RollBack 0x9d6370 VERIFIED as an exact inverse by record-and-replay, without stack scaling: Execute stores each matched VecSpellSets group keyed by InstanceID in the EFBonusAttr[3] map and calls UpdateChangeSpecificSpell(group, 1) plus NotifyClient(1) per group; RollBack erases that node and replays the recorded groups with the flag at 0</td>
 <td><code>Init</code> 0x9d4f10 · <code>Execute</code> 0x9d5560</td>
 </tr>
 <tr>
@@ -3598,14 +3865,14 @@ otherwise.</p>
 <td><code>CleanItemTrainType</code></td>
 <td>4</td>
 <td>FATAL if pEffectData==NULL -&gt; InitErrLogAppend "pEffectData %p "; strtol base10 p1=mRate and FATAL if mRate==0 -&gt; "增加的經驗值 %d 錯誤" (recycled message, the %d is always passed as 0); ONLY if mRate!=0 does it read p2=mDurabilityRate, p3=mSubDurabilityRate and p4=mLevelLimit, and NONE of the three is validated (any value passes); on a clean exit it sets InnerFlags |= 0x0100</td>
-<td>Players only (type 7); it calls CCharacter::CleanEquipTrainType(container, slot, mRate, mDurabilityRate, mSubDurabilityRate) on the item that arrives in varargs 3 and 4 (container + slot index); the three rates are passed as they are, the internal unit of CleanEquipTrainType 0x926160 is not verified; p4=mLevelLimit is not used by Execute but by CanExecute 0x9f8780, which requires the item to have TrainType and (low byte + high byte of TrainLevel) &lt; mLevelLimit, otherwise it rejects and sends msg 12563/-105 to the player; no RollBack (0x9f9c00 = bare retn)</td>
+<td>Players only (type 7); it calls CCharacter::CleanEquipTrainType(container, slot, mRate, mDurabilityRate, mSubDurabilityRate) on the item that arrives in varargs 3 and 4 (container + slot index); the three rates are passed as they are, and CCharacter::CleanEquipTrainType@0x926160 treats them as INTEGER PERCENT: if ((int)rand()%100 &lt; clean_rate), with the durability rates applied as sub_rate*(MaxDurability/100.0); p4=mLevelLimit is not used by Execute but by CanExecute 0x9f8780, which requires the item to have TrainType and (low byte + high byte of TrainLevel) &lt; mLevelLimit, otherwise it rejects and sends msg 12563/-105 to the player; no RollBack (0x9f9c00 = bare retn)</td>
 <td><code>Init</code> 0x9f8510 · <code>Execute</code> 0x9f88d0</td>
 </tr>
 <tr>
 <td><code>CleanRideItemTrainType</code></td>
 <td>2</td>
 <td>Same pattern as CleanItemTrainType: FATAL if pEffectData==NULL -&gt; "pEffectData %p "; p1=mRate via strtol and FATAL if mRate==0 -&gt; "增加的經驗值 %d 錯誤" (%d fixed at 0); p2=mLevelLimit is read only if mRate!=0 and is NOT validated; it sets InnerFlags |= 0x0100</td>
-<td>Players only (type 7); it calls CCharacter::CleanRideTrainType(container, slot, mRate) on the mount item that arrives in the varargs; it only uses mRate (internal unit of 0x9274b0 not verified); p2=mLevelLimit only acts in CanExecute 0x9f8fc0, byte for byte identical to the one of CleanItemTrainType (TrainLevel low+high &lt; mLevelLimit or rejection with msg 12563/-105); no RollBack (0x9f9c50 = bare retn)</td>
+<td>Players only (type 7); it calls CCharacter::CleanRideTrainType(container, slot, mRate) on the mount item that arrives in the varargs; it only uses mRate, and CCharacter::CleanRideTrainType@0x9274b0 treats it as INTEGER PERCENT: if ((int)rand()%100 &lt; clean_rate); p2=mLevelLimit only acts in CanExecute 0x9f8fc0, byte for byte identical to the one of CleanItemTrainType (TrainLevel low+high &lt; mLevelLimit or rejection with msg 12563/-105); no RollBack (0x9f9c50 = bare retn)</td>
 <td><code>Init</code> 0x9f8e60 · <code>Execute</code> 0x9f9110</td>
 </tr>
 <tr>
@@ -3626,7 +3893,7 @@ otherwise.</p>
 <td><code>Damage2MP</code></td>
 <td>6</td>
 <td>p1 string: =="caster" -&gt; ToCaster=1, anything else leaves 0 WITHOUT error; p2=Type via strtol (bit mask, unvalidated); p3=Probability via strtol, FATAL if (unsigned)&gt;100 -&gt; "攻擊的吸吸MP的機率 %hd 錯誤" (the 吸吸 is a typo of the binary itself); p4 and p5 = Min and Max via strtol -&gt; here the decimals ARE truncated, unlike Damage2HP which uses strtod; they order themselves (Min=smaller, Rand=larger-smaller); p6=Limit via strtol, FATAL if Limit!=0 and (u16)(Limit-1)&gt;=1000 -&gt; "傷害轉換成MP的上限 %hd 錯誤(1~1000)"; the two InitErrLogAppend go without an argument for the %hd (garbage number); if pEffectData exists it registers AddDetailAttrData</td>
-<td>Only if (flags &amp; Type)!=0 and random()%100 &lt; Probability; amount = Min + uniform[0,Rand+1) in FLAT MP POINTS: Execute does NOT multiply by the damage of the hit (the name is misleading); it is a transfer: it applies +amount to one end (vfunc38) and -amount to the other; with p1=="caster" the one that receives +amount is the 1st vararg and the -amount the 2nd, and without "caster" they swap (which of the two varargs is attacker and which victim: not verified, it depends on the caller); the stacks of the enchant (word +72) multiply Probability, Min and Rand; Limit caps the negative side to Limit/1000 of the MAXIMUM MP (vfunc58) of that target, that is, per mille; it notifies and broadcasts both sides; no RollBack (0x9d8290 = bare retn)</td>
+<td>Only if (flags &amp; Type)!=0 and random()%100 &lt; Probability; amount = Min + uniform[0,Rand+1) in FLAT MP POINTS: Execute does NOT multiply by the damage of the hit (the name is misleading); it is a transfer: it applies +amount to one end (vfunc38) and -amount to the other; with p1=="caster" the one that receives +amount is the 1st vararg and the -amount the 2nd, and without "caster" they swap (VERIFIED: vararg #0 is the VICTIM and vararg #1 the attacker/caster, exactly the Execute(victim, caster, HurtType, ...) order of the contract in §2.3; CEC_Damage2MP::Execute@0x9d7f20 sends the primary MP change to the caster by default and swaps the two when ToCaster is 0); the stacks of the enchant (word +72) multiply Probability, Min and Rand; Limit caps the negative side to Limit/1000 of the MAXIMUM MP (vfunc58) of that target, that is, per mille; it notifies and broadcasts both sides; no RollBack (0x9d8290 = bare retn)</td>
 <td><code>Init</code> 0x9d7a20 · <code>Execute</code> 0x9d7f20</td>
 </tr>
 <tr>
@@ -3724,7 +3991,7 @@ otherwise.</p>
 <td><code>DrillItem</code></td>
 <td>4</td>
 <td>It REQUIRES the list to bring EXACTLY 4 elements: it walks 4 nodes and if it does not come back to the head it returns false WITHOUT WRITING ANYTHING in the log = SILENT FATAL; all strtol; p1 Rand 0..100 otherwise FATAL "打洞機率 %hd 錯誤" @0xdd9c58; p2 Dec 0..100 and it is stored NEGATED (this-&gt;Dec = -Dec) otherwise FATAL "修理耐久值扣減％數 %hd 錯誤" @0xdd9c70; p3 Lv in 1..100 otherwise FATAL "限制有效等級 %hd 錯誤" @0xdda7bf; p4 Kuso 0 or 1 otherwise FATAL "kuso裝備使用 %hd 錯誤" @0xdd9c97; on a clean exit it does HIBYTE(effect_data-&gt;InnerFlags) |= 1</td>
-<td>It opens a slot (socket) in the equipment: if random%100 &lt; Rand it calls CItemFactory::DrillItem on this-&gt;citem (which CanExecute @0x9f73a0 sets, Init leaves it at nullptr), persists with CItemDBO::ModifyItemEmbedded, does ItemLog 26 + CCharacterDBO::FlushAll, sends the complete packet of the item and warns with message 9776. If the roll fails, it punishes: it adds Dec (which is NEGATIVE) to CurMaxDurability of the item of container arg2 / slot arg3, with a floor at 0, and it trims Durability if it stays above the new maximum; it calls RefreshEQsAttr if the durability reaches 0 and warns with message 9777. CAREFUL: even though the Init error says ％數 (percentage), Dec is applied as FLAT POINTS of maximum durability, not as %. p4 Kuso is not used in Execute (not verified whether CanExecute uses it). Players only (arg0 type 7). RollBack @0x9f7d60 <code>ret</code> stub</td>
+<td>It opens a slot (socket) in the equipment: if random%100 &lt; Rand it calls CItemFactory::DrillItem on this-&gt;citem (which CanExecute @0x9f73a0 sets, Init leaves it at nullptr), persists with CItemDBO::ModifyItemEmbedded, does ItemLog 26 + CCharacterDBO::FlushAll, sends the complete packet of the item and warns with message 9776. If the roll fails, it punishes: it adds Dec (which is NEGATIVE) to CurMaxDurability of the item of container arg2 / slot arg3, with a floor at 0, and it trims Durability if it stays above the new maximum; it calls RefreshEQsAttr if the durability reaches 0 and warns with message 9777. CAREFUL: even though the Init error says ％數 (percentage), Dec is applied as FLAT POINTS of maximum durability, not as %. p4 Kuso is not used in Execute, but CEC_DrillItem::CanExecute@0x9f73a0 DOES use it to pick the validation branch: Kuso==1 demands item template category 13 (error 9671); otherwise the category must be 0 or 1 and the item must have Durability &gt; 0 and m_nRestrictLevel &lt;= level (error 9778). Players only (arg0 type 7). RollBack @0x9f7d60 <code>ret</code> stub</td>
 <td><code>Init</code> 0x9f70b0 · <code>Execute</code> 0x9f7620</td>
 </tr>
 <tr>
@@ -3794,7 +4061,7 @@ otherwise.</p>
 <td><code>ElfCollectRate</code></td>
 <td>1</td>
 <td>strtol base 10 (truncates decimals); p1 Rate is stored as it is as an int16; ZERO validation (no range, no sign, no zero); Init ALWAYS returns true, it is NEVER fatal</td>
-<td>It adds Rate to the word at [elf+0x274] (1st vararg = the CElf; the 2nd vararg must be a type 7 player, otherwise it returns false without touching anything); unit not verified (the field is typed Rate, presumably % of collection); RollBack@0x9e2d10 subtracts exactly the same (symmetric)</td>
+<td>It adds Rate to the word at [elf+0x274] (1st vararg = the CElf; the 2nd vararg must be a type 7 player, otherwise it returns false without touching anything); INTEGER PERCENT: the word goes to EFBonusAttr.CollectRate (elf+628) and CElfManager::EndCollect@0x4668a0 compares it against a 0-99 roll, if ((dice%100) &lt; CollectRate + m_nRate); RollBack@0x9e2d10 subtracts exactly the same (symmetric)</td>
 <td><code>Init</code> 0x9e2b80 · <code>Execute</code> 0x9e2c80</td>
 </tr>
 <tr>
@@ -3808,7 +4075,7 @@ otherwise.</p>
 <td><code>ElfCollectTime</code></td>
 <td>1</td>
 <td>strtol base 10; p1 Seconds is stored as it is as an int32; ZERO validation; Init ALWAYS returns true, it is NEVER fatal</td>
-<td>It adds Seconds to the dword at [elf+0x270] (1st vararg = CElf), with "+="; it requires the 2nd vararg to be a type 7 player or it returns false; the real unit (seconds vs tenths) not verified, the field is typed Seconds in the IDB; RollBack@0x9e3540 subtracts exactly the same (symmetric)</td>
+<td>It adds Seconds to the dword at [elf+0x270] (1st vararg = CElf), with "+="; it requires the 2nd vararg to be a type 7 player or it returns false; whole SECONDS: the value lands in EFBonusAttr.CollectTime (elf+624) and CElfManager::ToCollect@0x463070 multiplies it by 10 (v52 = 10<em>(AllElfBonusAttr.CollectTime + EFBonusAttr.CollectTime + m_nDuration)</em>v39) before handing it to EffectToLife, whose duration slot is in tenths; RollBack@0x9e3540 subtracts exactly the same (symmetric)</td>
 <td><code>Init</code> 0x9e33b0 · <code>Execute</code> 0x9e34b0</td>
 </tr>
 <tr>
@@ -3822,7 +4089,7 @@ otherwise.</p>
 <td><code>ElfCombineTime</code></td>
 <td>1</td>
 <td>strtol base 10; p1 Seconds is stored as it is as an int32; ZERO validation; Init ALWAYS returns true, it is NEVER fatal; code identical byte for byte to the one of ElfCollectTime except for the offset</td>
-<td>It adds Seconds to the dword at [elf+0x278] (1st vararg = CElf), with "+="; it requires the 2nd vararg to be a type 7 player or it returns false; real unit not verified (field typed Seconds); RollBack@0x9e4230 subtracts exactly the same (symmetric)</td>
+<td>It adds Seconds to the dword at [elf+0x278] (1st vararg = CElf), with "+="; it requires the 2nd vararg to be a type 7 player or it returns false; whole SECONDS: it lands in EFBonusAttr.CombineTime (elf+632) and CElfManager::ToCombine@0x4629d0 multiplies by 10 before passing it to EffectToLife, the same pattern as CollectTime; RollBack@0x9e4230 subtracts exactly the same (symmetric)</td>
 <td><code>Init</code> 0x9e40a0 · <code>Execute</code> 0x9e41a0</td>
 </tr>
 <tr>
@@ -3871,7 +4138,7 @@ otherwise.</p>
 <td><code>ElfSoulCrystalCombineRate</code></td>
 <td>2</td>
 <td>2x strtol base 10: p1 -&gt; Rate, p2 -&gt; BindMode; NO ranges, NO forbidden values, NO error message; return true always; NOT FATAL. Careful: Execute writes them as 16-bit WORD, a value greater than 65535 is silently truncated</td>
-<td>elf[+0x45C] (word) = Rate (ASSIGNMENT, not +=, overwrites whatever was there); elf[+0x460] (dword) = packed source item id (tpl &amp; 0xFFFFFF | (flags&gt;&gt;28)&lt;&lt;24); elf[+0x464] (word) = BindMode; requires target entity type 7 (player) or returns false. Unit of Rate (integer percent vs tenths) not verified. RollBack 0x9e3c00 sets the THREE fields to 0: it does NOT restore the previous value, it wipes it</td>
+<td>elf[+0x45C] (word) = Rate (ASSIGNMENT, not +=, overwrites whatever was there); elf[+0x460] (dword) = packed source item id (tpl &amp; 0xFFFFFF | (flags&gt;&gt;28)&lt;&lt;24); elf[+0x464] (word) = BindMode; requires target entity type 7 (player) or returns false. Rate is INTEGER PERCENT: it goes to EFBonusAttr.SCCombineRate (elf+1116) and CElfManager::EndCombine@0x465640 adds it into a 0-99 success roll, if ((dice%100) &lt; min(10, mElfCombineRate) + SCCombineRate + m_nSuccessRate). RollBack 0x9e3c00 sets the THREE fields to 0: it does NOT restore the previous value, it wipes it</td>
 <td><code>Init</code> 0x9e39a0 · <code>Execute</code> 0x9e3b20</td>
 </tr>
 <tr>
@@ -3885,21 +4152,21 @@ otherwise.</p>
 <td><code>ElfTrainExp</code></td>
 <td>2</td>
 <td>2x strtol base 10: p1 -&gt; Rate, p2 -&gt; Exp; NO validation, NO error message; return true always; NOT FATAL. Rate is written as a 16-bit WORD, Exp as a 32-bit DWORD</td>
-<td>elf[+0x28C] (word) += Rate and elf[+0x288] (dword) += Exp (elf training rate and experience); CUMULATIVE (+=), not assignment; unit of Rate (integer percent vs tenths) not verified. RollBack 0x9e8460 subtracts the same (-= Rate, -= Exp): exact undo</td>
+<td>elf[+0x28C] (word) += Rate and elf[+0x288] (dword) += Exp (elf training rate and experience); CUMULATIVE (+=), not assignment; Rate is INTEGER PERCENT: it goes to EFBonusAttr.TrainExpRate (elf+652) and CElfManager::EndTrain@0x467860 does if ((dice%100) &lt; TrainExpRate) exp += TrainExp. RollBack 0x9e8460 subtracts the same (-= Rate, -= Exp): exact undo</td>
 <td><code>Init</code> 0x9e8280 · <code>Execute</code> 0x9e8400</td>
 </tr>
 <tr>
 <td><code>ElfTrainStuff</code></td>
 <td>2</td>
 <td>2x strtol base 10: p1 -&gt; Rate, p2 -&gt; Amount; NO validation, NO error message; return true always; NOT FATAL. Both are written as a 16-bit WORD</td>
-<td>elf[+0x290] (word) += Rate and elf[+0x28E] (word) += Amount (rate and amount of elf training materials); CUMULATIVE (+=); unit of Rate not verified. RollBack 0x9e86f0 subtracts the same: exact undo</td>
+<td>elf[+0x290] (word) += Rate and elf[+0x28E] (word) += Amount (rate and amount of elf training materials); CUMULATIVE (+=); Rate is INTEGER PERCENT: it goes to EFBonusAttr.TrainStuffRate (elf+656) and CElfManager::ToTrain@0x463c20 rolls if ((dice%100) &lt; TrainStuffRate) once per iteration before appending TrainStuffAmount. RollBack 0x9e86f0 subtracts the same: exact undo</td>
 <td><code>Init</code> 0x9e8510 · <code>Execute</code> 0x9e8690</td>
 </tr>
 <tr>
 <td><code>ElfTrainTime</code></td>
 <td>1</td>
 <td>1x strtol base 10: p1 -&gt; Seconds; NO validation, NO range, NO error message; return true always; NOT FATAL. Accepts negatives without complaining</td>
-<td>elf[+0x284] (dword) += Seconds (adjustment of the elf's training time; the concrete unit -seconds or ticks- not verified); CUMULATIVE (+=); requires target entity type 7 or returns false. RollBack 0x9e8930 subtracts the same: exact undo</td>
+<td>elf[+0x284] (dword) += Seconds (adjustment of the elf's training time; the unit is whole SECONDS, not engine ticks: it goes to EFBonusAttr.TrainTime (elf+644) and CElfManager::ToTrain@0x463c20 multiplies by 10 before feeding EffectToLife, the same conversion as CollectTime and CombineTime); CUMULATIVE (+=); requires target entity type 7 or returns false. RollBack 0x9e8930 subtracts the same: exact undo</td>
 <td><code>Init</code> 0x9e87a0 · <code>Execute</code> 0x9e88a0</td>
 </tr>
 <tr>
@@ -3913,7 +4180,7 @@ otherwise.</p>
 <td><code>EnchantCancel</code></td>
 <td>3</td>
 <td>3x strtol base 10: p1 -&gt; TypeStart, p2 -&gt; TypeEnd, p3 -&gt; Level. If TypeStart &gt; TypeEnd it SWAPS them silently (not an error). FATAL: if Level &lt; 0 it calls CLogFactory::InitErrLogAppend("解除BUF的低權位 %hhd 錯誤") (literal at 0xdd75b8) and returns FALSE -&gt; [FAIL] Database Error!!. TypeStart/TypeEnd are UShort and have no upper cap. Binary bug: InitErrLogAppend is called without varargs, the %hhd prints garbage</td>
-<td>Loop t = TypeStart..TypeEnd (inclusive): ILifeEntity::RemoveEnchantByType(target, t, Level) @0x95acd0 - removes from the target the enchants/buffs of that type using Level (char) as threshold/priority; the exact comparison criterion inside RemoveEnchantByType not verified. It applies to any ILifeEntity (player or monster), not only to the bearer. RollBack 0x9e8dd0 is a stub (ret): it does NOT reapply anything</td>
+<td>Loop t = TypeStart..TypeEnd (inclusive): ILifeEntity::RemoveEnchantByType(target, t, Level) @0x95acd0 - removes from the target the enchants/buffs of that type using Level (char) as threshold/priority; ILifeEntity::RemoveEnchantByType@0x95acd0 uses Level as a THRESHOLD: for every enchant of that type it removes each one whose SEffectData::Level is &lt;= the argument, skipping any whose Flag carries bit 0x10 (not cancelable). It applies to any ILifeEntity (player or monster), not only to the bearer. RollBack 0x9e8dd0 is a stub (ret): it does NOT reapply anything</td>
 <td><code>Init</code> 0x9e8b50 · <code>Execute</code> 0x9e8d60</td>
 </tr>
 <tr>
@@ -3941,7 +4208,7 @@ otherwise.</p>
 <td><code>EnchantClassCheck</code></td>
 <td>6</td>
 <td>6x strtol base 10: p1..p3 -&gt; mClasses[0..2], p4 -&gt; mDuration, p5 -&gt; mEnchantID, p6 -&gt; mOtherEnchantID. ZERO validation, no range, no InitErrLogAppend, return true always; NOT FATAL. A nonexistent enchant id is not detected here</td>
-<td>Despite the name it is NOT a gate (CanExecute 0x9e9620 is a true stub): it requires target entity type 7 (player) or returns false, reads the player's class and if it matches mClasses[0/1/2] it launches CEffectFactory::EffectToLife(player, player, mEnchantID, mDuration, level, true, 0), and if it does NOT match it launches mOtherEnchantID with the same duration; if the chosen id is 0 it launches nothing and returns true all the same. It is self-cast (caster = target = the player himself); the level comes from the effect's 3rd vararg. Unit of mDuration: not verified. RollBack 0x9e9e20 stub</td>
+<td>Despite the name it is NOT a gate (CanExecute 0x9e9620 is a true stub): it requires target entity type 7 (player) or returns false, reads the player's class and if it matches mClasses[0/1/2] it launches CEffectFactory::EffectToLife(player, player, mEnchantID, mDuration, level, true, 0), and if it does NOT match it launches mOtherEnchantID with the same duration; if the chosen id is 0 it launches nothing and returns true all the same. It is self-cast (caster = target = the player himself); the level comes from the effect's 3rd vararg. mDuration is in TENTHS of a second: CEC_EnchantClassCheck::Execute@0x9e9630 passes it unconverted into the duration slot of EffectToLife@0x4488e0, which does no scaling of its own, and that is the slot the elf code only fills after multiplying whole seconds by 10. RollBack 0x9e9e20 stub</td>
 <td><code>Init</code> 0x9e92d0 · <code>Execute</code> 0x9e9630</td>
 </tr>
 <tr>
@@ -3983,7 +4250,7 @@ otherwise.</p>
 <td><code>FakeDie</code></td>
 <td>1</td>
 <td>no validation: a single strtol into this-&gt;Level and unconditional return true; it accepts any value (negatives included, which leave the effect inert); it never calls InitErrLogAppend; it is never fatal</td>
-<td>Aggro reset (playing dead): copies the bearer's FightingCandidates list (1st vararg) and removes every candidate whose virtual getter of slot 76 (returns int16, most likely the level; not verified) is &lt;= Level with RemoveFightingCandicate + RemoveInterestLifeInMe; it applies to monsters and players alike; RollBack @0x9eca90 empty, the hate does not come back</td>
+<td>Aggro reset (playing dead): copies the bearer's FightingCandidates list (1st vararg) and removes every candidate whose virtual getter of slot 76 (resolved: slot 76 is _ZTV+0x10+76*8 = _ZTV+0x270, which holds CMonster::GetLevel@0x951c40 and CCharacter::GetLevel@0x8f17e0, so the test is against the candidate's Level; ILifeEntity carries __cxa_pure_virtual in that slot) is &lt;= Level with RemoveFightingCandicate + RemoveInterestLifeInMe; it applies to monsters and players alike; RollBack @0x9eca90 empty, the hate does not come back</td>
 <td><code>Init</code> 0x9ec830 · <code>Execute</code> 0x9ec900</td>
 </tr>
 <tr>
@@ -4116,7 +4383,7 @@ otherwise.</p>
 <td><code>HPHarmShieldByMP</code></td>
 <td>6</td>
 <td>p1=strtol HPShieldRate, requires &lt;=100 (unsigned comparison); p2=strtol HPShieldCostMPRate read as unsigned short, requires &lt;=10000; p3=strtol HPShieldBreakBuffID, requires &gt;=0; p4=strtol HPShieldBreakBuffTime, requires &gt;=0; p5=strtol HPShieldNoBreakBuffID, requires &gt;=0; p6=strtol HPShieldNoBreakBuffTime, requires &gt;=0; HPShieldBuffID is taken from effect_data-&gt;ID; 🔴 same as HPHarmShield: all failures are MUTE return false, with no InitErrLogAppend</td>
-<td>ASSIGNS (=) in the target's EFBonusAttr: HPShieldByMPRate=HPShieldRate (% of the damage diverted to MP, 0..100) and HPShieldByMPCostRate=HPShieldCostMPRate (MP cost per diverted point, 0..10000); if there already was an MP-shield with ANOTHER buff id it removes that enchant; it marks entity-&gt;HPShieldByMPBuffID; any ILifeEntity; RollBack 0x9f35d0 sets both fields to 0 and launches the Break or NoBreak buff just like HPHarmShield; ⚠ but it reads the remainder at <em>(int</em>)(entity+332) instead of EFBonusAttr+372 as HPHarmShield does: possible copy-paste, which of the two is the correct field = not verified</td>
+<td>ASSIGNS (=) in the target's EFBonusAttr: HPShieldByMPRate=HPShieldRate (% of the damage diverted to MP, 0..100) and HPShieldByMPCostRate=HPShieldCostMPRate (MP cost per diverted point, 0..10000); if there already was an MP-shield with ANOTHER buff id it removes that enchant; it marks entity-&gt;HPShieldByMPBuffID; any ILifeEntity; RollBack 0x9f35d0 sets both fields to 0 and launches the Break or NoBreak buff just like HPHarmShield; ⚠ but it reads the remainder at <em>(int</em>)(entity+332) instead of EFBonusAttr+372 as HPHarmShield does: VERIFIED as correct, NOT a copy-paste bug: entity+332 dereferences to the entity's live MP (ILifeEntity+0x14c), which is the right resource test for an MP-backed shield, while HPHarmShield's EFBonusAttr+372 is EFBonusAttr-&gt;HPShield (SEffectAttribute+0x174), the very field its own Execute@0x9f2f60 wrote. SEffectAttribute has no separate pool for the ByMP variant, only the config fields HPShieldByMPRate (+0x186) and HPShieldByMPCostRate (+0x188)</td>
 <td><code>Init</code> 0x9f31a0 · <code>Execute</code> 0x9f3550</td>
 </tr>
 <tr>
@@ -4564,7 +4831,7 @@ otherwise.</p>
 <td><code>SpellGroupCoolDown</code></td>
 <td>6</td>
 <td>p1=Type must be 0 or 1 ((unsigned)Type&lt;2); p2=CoolDownTime in [1,9999] (unsigned (t-1)&lt;=0x270E); p3..p6=4 SpellIDs unvalidated (0 = empty slot, skipped in Execute); strtol base 10; two FATAL paths (InitErrLogAppend + return false): bad Type -&gt; literal 0xdde3f8 "降低指定技能之初始冷卻時間Type  %hd 錯誤", bad CDTime -&gt; literal 0xdde430 "降低指定技能之初始冷卻時間CDTime  %d 錯誤"; binary BUG: both literals are passed as the only argument to the variadic function, the %hd/%d prints register garbage</td>
-<td>Only on players (vtable+2 == 7 and the deleted flag at 0): for each SpellID != 0 it calls AddSpellGroupData(Type, SpellID, CoolDownTime) which ADDS CoolDownTime (tenths of a second, same format as SpellCoolDown) to the group counter, and notifies the client with the vtable 0xd3d418 packet carrying Type/SpellID/CoolDownTime/accumulated value; also, if Type==0 it makes an extra call with SpellID 0 (whole group); RollBack 0xa10320 not verified</td>
+<td>Only on players (vtable+2 == 7 and the deleted flag at 0): for each SpellID != 0 it calls AddSpellGroupData(Type, SpellID, CoolDownTime) which ADDS CoolDownTime (tenths of a second, same format as SpellCoolDown) to the group counter, and notifies the client with the vtable 0xd3d418 packet carrying Type/SpellID/CoolDownTime/accumulated value; also, if Type==0 it makes an extra call with SpellID 0 (whole group); RollBack 0xa10320 VERIFIED: instead of looping, it reads the stack count in vararg #2 and calls AddSpellGroupData(Type, SpellIDs[i], -(N*CoolDownTime)) once per slot. Same net result as N subtractions, the exact inverse under the stacking contract in §2.3</td>
 <td><code>Init</code> 0xa0fc50 · <code>Execute</code> 0xa10020</td>
 </tr>
 <tr>
@@ -4585,7 +4852,7 @@ otherwise.</p>
 <td><code>SpellSetGroupCoolDown</code></td>
 <td>6</td>
 <td>p1=Type must be 0 or 1 ((unsigned)Type&lt;2); p2=CoolDownTime in [1,9999]; p3..p6 = 4 SET IDs (it does not validate that they are !=0, GetAllSetSpells returns empty); each set is expanded to all its spells and they accumulate in the SpellIDs vector WITHOUT deduplication; strtol base 10; two FATAL paths (InitErrLogAppend + return false) with the SAME literals as SpellGroupCoolDown: 0xdde3f8 "降低指定技能之初始冷卻時間Type  %hd 錯誤" and 0xdde430 "降低指定技能之初始冷卻時間CDTime  %d 錯誤"; same BUG: they are passed as the format with no argument</td>
-<td>Players only (vtable+2 == 7 and not deleted): for each expanded spell != 0 it calls AddSpellGroupData(Type, SpellID, CoolDownTime) adding CoolDownTime (tenths of a second) to the group counter and sends the client the vtable 0xd3d418 packet; if Type==0 it additionally adds a call with SpellID 0 (whole group); RollBack 0xa10a80 not verified</td>
+<td>Players only (vtable+2 == 7 and not deleted): for each expanded spell != 0 it calls AddSpellGroupData(Type, SpellID, CoolDownTime) adding CoolDownTime (tenths of a second) to the group counter and sends the client the vtable 0xd3d418 packet; if Type==0 it additionally adds a call with SpellID 0 (whole group); RollBack 0xa10a80 VERIFIED: it reads the stack count in vararg #2 and calls AddSpellGroupData(Type, id, -(N*CoolDownTime)) once per id in SpellIDs, the exact inverse under the stacking contract in §2.3</td>
 <td><code>Init</code> 0xa10600 · <code>Execute</code> 0xa108c0</td>
 </tr>
 <tr>
@@ -4627,7 +4894,7 @@ otherwise.</p>
 <td><code>SummonMobs</code></td>
 <td>1 + rest (with DecodeEffectCommand always 6: 1 + 5 probabilities)</td>
 <td>p1=TemplateID (int16) must be !=0, otherwise: InitErrLogAppend literal 0xddf128 "召喚怪物的編號 %d 錯誤" (it always prints 0) + return false = FATAL; afterwards it DRAINS THE WHOLE LIST (not just 5) and puts each value into Probabilitys: if the value is &lt;=0 a 0 is stored, otherwise the value as is; if the vector ends up empty: InitErrLogAppend literal 0xddf148 "召喚怪物的機率小於等於0" + return false = FATAL; it does NOT validate that the TemplateID exists (that is checked at runtime in CanExecute); strtol base 10</td>
-<td>CanExecute 0xa14060 requires TWO va_args (attacker and victim) non-null, different from each other and without the deleted flag, and that the TemplateID exists in CZoneServer::MonsterTemplates; it rolls the dice in a CHAIN: for i=0..n-1 if random()%100 &lt; Probabilitys[i] then Num=i+1 and it continues, and it stops at the first failure, i.e. the probabilities are PERCENTAGES (0-100) and chained (a 0 in slot 1 cancels all the others); Execute spawns Num monsters with CNode::BornMonster at the second va_arg's coordinates with a random orientation, sets their CurrentEnemy = first va_arg, BecomeFightingCandicate, CAI::ChangeOwner if the enemy is an ownerless monster, assigns them a DropTable from CZoneServer::MonsterDrops unless the template has NPC alignment, sets bit 0 of +2792 (summoned) and stores the ids in SummonMobIDs and in the summoner's +2728 list if it is a monster; it leaves Num=0; RollBack 0xa14500 not verified</td>
+<td>CanExecute 0xa14060 requires TWO va_args (attacker and victim) non-null, different from each other and without the deleted flag, and that the TemplateID exists in CZoneServer::MonsterTemplates; it rolls the dice in a CHAIN: for i=0..n-1 if random()%100 &lt; Probabilitys[i] then Num=i+1 and it continues, and it stops at the first failure, i.e. the probabilities are PERCENTAGES (0-100) and chained (a 0 in slot 1 cancels all the others); Execute spawns Num monsters with CNode::BornMonster at the second va_arg's coordinates with a random orientation, sets their CurrentEnemy = first va_arg, BecomeFightingCandicate, CAI::ChangeOwner if the enemy is an ownerless monster, assigns them a DropTable from CZoneServer::MonsterDrops unless the template has NPC alignment, sets bit 0 of +2792 (summoned) and stores the ids in SummonMobIDs and in the summoner's +2728 list if it is a monster; it leaves Num=0; RollBack 0xa14500 VERIFIED as an exact inverse by record-and-replay, without stack scaling: Execute spawns Num monsters with CNode::BornMonster and records each id in SummonMobIDs; RollBack walks that exact vector, resolves each id through the vtable+0x40 finder and despawns the surviving type-11 results through vtable slot 39</td>
 <td><code>Init</code> 0xa13e70 · <code>Execute</code> 0xa141d0</td>
 </tr>
 <tr>
@@ -4655,7 +4922,7 @@ otherwise.</p>
 <td><code>TimesShield</code></td>
 <td>7</td>
 <td>Real class = lapis::CEC_TimeShield; the name registered in CEffectFactory::InitEffectCommandTable IS "TimesShield <number> <number> <number> <number> <number> <number> <number>" (literal at 0xce6282, registration at 0x4477d0), so the text DecodeEffectCommand emits matches; p1=Type (strtol, damage-type mask, UNVALIDATED); p2=TimeShield must be &gt;= 0; p3=TimeShieldRate: (unsigned short) must be &lt;= 100; p4=TimeShieldBreakBuffID &gt;= 0; p5=TimeShieldBreakBuffTime &gt;= 0; p6=TimeShieldNoBreakBuffID &gt;= 0; p7=TimeShieldNoBreakBuffTime &gt;= 0; 🔴 ALL the failures do return false WITHOUT calling InitErrLogAppend: they are FATAL (they kill the boot with [FAIL] Database Error!!) and MUTE, they do not leave a single error line saying which enchant it was; 🔴 p4..p7 are parsed and stored but Execute does NOT use them</td>
-<td>Direct assignment (=, not addition) on the bearer's EFBonusAttr: TimeShieldHurtType=p1, TimeShield=p2, TimeShieldRate=p3 (rate as an integer % 0-100); if the bearer already carried a different TimeShieldBuffID it purges it first with RemoveEnchantByID, and leaves life-&gt;TimeShieldBuffID = this enchant's ID; it applies to any ILifeEntity (it does not filter players); its own RollBack at 0xa16510 (0x194 bytes) NOT decompiled: whether it does the exact inverse = not verified</td>
+<td>Direct assignment (=, not addition) on the bearer's EFBonusAttr: TimeShieldHurtType=p1, TimeShield=p2, TimeShieldRate=p3 (rate as an integer % 0-100); if the bearer already carried a different TimeShieldBuffID it purges it first with RemoveEnchantByID, and leaves life-&gt;TimeShieldBuffID = this enchant's ID; it applies to any ILifeEntity (it does not filter players); its own RollBack at 0xa16510 IS the exact inverse: it zeroes EFBonusAttr+380/384/388 (TimeShieldHurtType / TimeShield / TimeShieldRate, i.e. SEffectAttribute +0x17c/+0x180/+0x184) and entity+2048 (TimeShieldBuffID), exactly the fields Execute@0xa16480 assigned. It steps the va_list past the stack-count vararg without reading it, which is correct here because Execute assigns rather than accumulates</td>
 <td><code>Init</code> 0xa16040 · <code>Execute</code> 0xa16480</td>
 </tr>
 <tr>
@@ -4858,7 +5125,7 @@ offending row. If you hit that, look here first.</p>
 <h2 id="8-ids-that-do-nothing">8. Ids that do nothing<a class="headerlink" href="#8-ids-that-do-nothing" title="Permanent link">&para;</a></h2>
 <p>These ids appear in real data but have <strong>no <code>case</code></strong> in the decoder. They produce no command and no warning.
 Their only effect is the range post-processing described in §3 — which, for the <code>2xxx</code> ones, is the whole point.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>5, 10, 20, 80, 100, 243, 1084, 1915, 2000, 2177, 2222, 2501, 2901, 2933, 7003, 7005, 8001, 8002, 8003, 8005, 8006, 9003, 9005, 9007, 9008, 9010, 9011, 9012, 9013, 9023, 9024, 9025, 9026, 9200, 9201, 9202, 9204, 9206, 9207, 9300, 9301, 20503, 30011
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>5, 10, 20, 80, 100, 243, 1084, 1915, 2000, 2177, 2222, 2501, 2901, 2933, 7003, 7005, 8001, 8002, 8003, 8005, 8006, 9003, 9005, 9007, 9008, 9010, 9011, 9012, 9013, 9023, 9024, 9025, 9026, 9200, 9201, 9202, 9204, 9206, 9207, 9300, 9301, 20503, 30011
 </code></pre></div>
 <p>Note <code>30011</code>: the whole <code>30xxx</code> family is unhandled. The ids <code>2004</code>-<code>2010</code>, <code>2015</code>-<code>2018</code>, <code>2025</code>-<code>2028</code>,
 <code>2047</code>-<code>2048</code>, <code>2058</code>, <code>2070</code>, <code>2076</code>-<code>2080</code>, <code>2088</code>-<code>2090</code>, <code>2096</code>-<code>2100</code>, <code>2107</code>, <code>2120</code>, <code>2126</code>-<code>2130</code>,
