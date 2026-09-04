@@ -27,6 +27,16 @@ hide:
 
     [:octicons-arrow-right-24: Read the article](server/S_DropItem.md)
 
+-   :material-auto-fix:{ .lg .middle } __S_Enchant.ini__
+
+    ---
+
+    Effects: buffs, debuffs, passives and procs. Every column, the loader, the exclusion groups, stacking, the transition (proc) child, the flag bits and the boot killers.
+
+    <span class="status-badge">Complete</span>
+
+    [:octicons-arrow-right-24: Read the article](server/S_Enchant.md)
+
 -   :material-skull-outline:{ .lg .middle } __S_Monster.ini__
 
     ---

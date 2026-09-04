@@ -50,6 +50,7 @@ nav:
   - Home: index.md
   - Server files:
       - S_DropItem.ini: server/S_DropItem.md
+      - S_Enchant.ini: server/S_Enchant.md
   - Tags: tags.md
 
 plugins:
