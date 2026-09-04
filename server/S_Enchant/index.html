@@ -1,0 +1,2505 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Effects (buffs, debuffs, procs, passives) — every column, the loader, the runtime engine and the boot killers.">
+      
+      
+      
+        <link rel="canonical" href="https://goburouv.github.io/gf-server-docs/server/S_Enchant/">
+      
+      
+        <link rel="prev" href="../S_DropItem/">
+      
+      
+        <link rel="next" href="../../tags/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/logo.svg">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>S_Enchant.ini - GF Server Data Reference</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,300i,400,400i,700,700i%7CJetBrains+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Inter";--md-code-font:"JetBrains Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  
+  
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="GF Server Data Reference">
+  <meta property="og:title" content="S_Enchant.ini · GF Server Data Reference">
+  <meta property="og:description" content="Effects (buffs, debuffs, procs, passives) — every column, the loader, the runtime engine and the boot killers.">
+  <meta property="og:url" content="https://goburouv.github.io/gf-server-docs/server/S_Enchant/">
+  <meta property="og:image" content="https://goburouv.github.io/gf-server-docs/assets/social.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="S_Enchant.ini · GF Server Data Reference">
+  <meta name="twitter:description" content="Effects (buffs, debuffs, procs, passives) — every column, the loader, the runtime engine and the boot killers.">
+  <meta name="twitter:image" content="https://goburouv.github.io/gf-server-docs/assets/social.png">
+
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="amber">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#s_enchantini-complete-format-and-runtime-reference-zoneserver101-decompile" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="GF Server Data Reference" class="md-header__button md-logo" aria-label="GF Server Data Reference" data-md-component="logo">
+      
+  <img src="../../assets/logo.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            GF Server Data Reference
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              S_Enchant.ini
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="amber"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="amber"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+          <a href="javascript:void(0)" class="md-search__icon md-icon" title="Share" aria-label="Share" data-clipboard data-clipboard-text="" data-md-component="search-share" tabindex="-1">
+            
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91s2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08"/></svg>
+          </a>
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/Goburouv/gf-server-docs" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Goburouv/gf-server-docs
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+    
+      
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../S_DropItem/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Server files
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../tags/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Tags
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="GF Server Data Reference" class="md-nav__button md-logo" aria-label="GF Server Data Reference" data-md-component="logo">
+      
+  <img src="../../assets/logo.svg" alt="logo">
+
+    </a>
+    GF Server Data Reference
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/Goburouv/gf-server-docs" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Goburouv/gf-server-docs
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Server files
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Server files
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../S_DropItem/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    S_DropItem.ini
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    S_Enchant.ini
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    S_Enchant.ini
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#0-what-it-is-and-who-uses-it" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        0. What it is and who uses it
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-versions-and-column-count-checkversion-0xaa4320" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Versions and column count (CheckVersion @0xaa4320)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-columns-1-based-dwarf-field-conversion-and-real-use-in-the-binary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Columns (1-based) — DWARF field, conversion and real use in the binary
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-deserialize-0xaa3970-exact-read-order" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Deserialize @0xaa3970 — exact read order
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-structures-in-memory" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Structures in memory
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Structures in memory">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41-from-cenchantdata-to-seffectdata-cspelldboloadalleffectdata-0x7823b0" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.1 From CEnchantData to SEffectData (CSpellDBO::LoadAllEffectData @0x7823b0)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42-the-transition-child" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.2 The transition child
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#43-enchantflag-bits-col-8-and-col-49" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.3 EnchantFlag bits (col 8 and col 49)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-runtime-apply-stack-exclude-expire" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Runtime: apply, stack, exclude, expire
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. Runtime: apply, stack, exclude, expire">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#51-applying-an-effect-ceffectfactoryeffecttolife-0x4489a0" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.1 Applying an effect (CEffectFactory::EffectToLife @0x4489a0)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#52-cenchantmgradd-0xa1ef40-same-id-exclusion-group-creation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.2 CEnchantMgr::Add @0xa1ef40 — same id, exclusion group, creation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#53-time-period-duration-tick-and-expiry" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.3 Time: Period, duration, tick and expiry
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#54-removal-cenchantmgrremove-0xa213c0" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.4 Removal: CEnchantMgr::Remove @0xa213c0
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#55-persistence-and-re-login" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.5 Persistence and re-login
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#56-icon-and-client-notification" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.6 Icon and client notification
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#57-transitions-procs-at-runtime" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.7 Transitions (procs) at runtime
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-commands-buckets-families-and-the-most-used-ones" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Commands: buckets, families and the most used ones
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-test-server-data-for-calibration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. Test-server data (for calibration)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-recipes-and-traps" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. Recipes and traps
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9-function-index" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9. Function index
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tags/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tags
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#0-what-it-is-and-who-uses-it" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        0. What it is and who uses it
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-versions-and-column-count-checkversion-0xaa4320" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Versions and column count (CheckVersion @0xaa4320)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-columns-1-based-dwarf-field-conversion-and-real-use-in-the-binary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Columns (1-based) — DWARF field, conversion and real use in the binary
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-deserialize-0xaa3970-exact-read-order" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Deserialize @0xaa3970 — exact read order
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-structures-in-memory" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Structures in memory
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Structures in memory">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41-from-cenchantdata-to-seffectdata-cspelldboloadalleffectdata-0x7823b0" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.1 From CEnchantData to SEffectData (CSpellDBO::LoadAllEffectData @0x7823b0)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42-the-transition-child" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.2 The transition child
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#43-enchantflag-bits-col-8-and-col-49" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.3 EnchantFlag bits (col 8 and col 49)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-runtime-apply-stack-exclude-expire" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Runtime: apply, stack, exclude, expire
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. Runtime: apply, stack, exclude, expire">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#51-applying-an-effect-ceffectfactoryeffecttolife-0x4489a0" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.1 Applying an effect (CEffectFactory::EffectToLife @0x4489a0)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#52-cenchantmgradd-0xa1ef40-same-id-exclusion-group-creation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.2 CEnchantMgr::Add @0xa1ef40 — same id, exclusion group, creation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#53-time-period-duration-tick-and-expiry" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.3 Time: Period, duration, tick and expiry
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#54-removal-cenchantmgrremove-0xa213c0" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.4 Removal: CEnchantMgr::Remove @0xa213c0
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#55-persistence-and-re-login" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.5 Persistence and re-login
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#56-icon-and-client-notification" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.6 Icon and client notification
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#57-transitions-procs-at-runtime" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.7 Transitions (procs) at runtime
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-commands-buckets-families-and-the-most-used-ones" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Commands: buckets, families and the most used ones
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-test-server-data-for-calibration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. Test-server data (for calibration)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-recipes-and-traps" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. Recipes and traps
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9-function-index" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9. Function index
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  <nav class="md-tags" >
+    
+      
+      
+      
+      
+        <a href="../../tags/#tag:boot-killers" class="md-tag">boot killers</a>
+      
+    
+      
+      
+      
+      
+        <a href="../../tags/#tag:effects" class="md-tag">effects</a>
+      
+    
+      
+      
+      
+      
+        <a href="../../tags/#tag:server" class="md-tag">server</a>
+      
+    
+  </nav>
+
+
+  
+  
+
+
+<h1 id="s_enchantini-complete-format-and-runtime-reference-zoneserver101-decompile">S_Enchant.ini — complete format and runtime reference (ZoneServer101 decompile)<a class="headerlink" href="#s_enchantini-complete-format-and-runtime-reference-zoneserver101-decompile" title="Permanent link">&para;</a></h1>
+<blockquote>
+<p>Verified 2026-09-03 against the ZoneServer binary (IDA database with DWARF symbols) and the data in a
+test-server copy of <code>S_Enchant.ini</code> (<code>|V.10|63|</code>, 36,382 rows).
+Scope: ZoneServer only. Client-side files (<code>C_Enchant.ini</code>, icons, VFX, tooltips) are not covered. The full table of
+the ~300 effect commands is a separate article; this one documents the engine and the most used commands.</p>
+</blockquote>
+<hr />
+<h2 id="0-what-it-is-and-who-uses-it">0. What it is and who uses it<a class="headerlink" href="#0-what-it-is-and-who-uses-it" title="Permanent link">&para;</a></h2>
+<p><code>S_Enchant.ini</code> is the table of <strong>effects</strong> ("enchants": buffs, debuffs, passives, procs, instant item or skill
+effects). A row defines what the effect does (up to 4 <em>command slots</em> <code>id|p1..p6</code>), how it coexists with others
+(exclusion group <code>Hiword</code>/<code>Lowword</code>, <code>MaxStack</code>, <code>EnchantFlag</code>), whether it triggers something on attack/hit/heal
+(the <strong>transition</strong> block, cols 42-59) and how it looks on the client (icon, VFX, texts). The server does <strong>not</strong>
+decide the duration: whoever applies the effect (<code>S_Spell</code>, <code>S_Item</code>, another effect, a GM command) passes it, and the
+row only contributes the tick period.</p>
+<ul>
+<li>The file has <strong>no column names</strong>: the header is <code>|V.10|63|</code> and nothing else. The names in this article are the
+  DWARF fields of <code>GameData::CEnchantData</code> without the <code>m_n</code>/<code>m_k</code>/<code>m_e</code> prefix.</li>
+<li>Every process that links <code>GameData</code> parses it (<code>CGameData::LoadDatabase @0xa50290</code>), but <strong>only the ZoneServer</strong>
+  builds the runtime objects and validates the commands (<code>CSpellDBO::LoadAllEffectData @0x7823b0</code>): an effect the
+  MissionServer or the WorldServer accept can still kill the ZoneServer at boot.</li>
+</ul>
+<div class="admonition warning">
+<p class="admonition-title">No hot reload of the file</p>
+<p>The GM command <code>reload_effect</code> (<code>TC_ReloadEffect @0x7d8f40</code>, help text <code>reload_effect : reload effect data</code>)
+re-decodes the commands and swaps the pointers held by spells, items and active buffs
+(<code>CZoneServer::CheckAndSwapReloadEffect @0x5b9e40</code>), but it reads the rows <strong>already parsed in memory</strong>
+(<code>CGameData::GetAllEnchants @0xa51a20</code>). The only reader of the file is <code>CEnchantQuery::Init</code>, called once from
+<code>main</code>. Editing <code>S_Enchant.ini</code> requires a ZoneServer restart.</p>
+</div>
+<p>Full chain (all addresses are ZS 101):</p>
+<div class="mermaid">flowchart LR
+    INI[("Data/db/S_Enchant.ini")]
+    LOAD["CEnchantQuery::Init @0xaa3800&lt;br/&gt;LoadDB @0xaa4720 · CheckVersion @0xaa4320 · Deserialize @0xaa3970"]
+    ROW["map&amp;lt;int, CEnchantData*&amp;gt;&lt;br/&gt;(248 B per row, CGameData)"]
+    BUILD["CSpellDBO::LoadAllEffectData @0x7823b0&lt;br/&gt;DecodeEffectCommand @0x786ba0 · ParseEffectCommands @0x449e00&lt;br/&gt;GenerateCommand @0x444dc0 · CEC_*::Init"]
+    EFF["CZoneServer::AllEffects&lt;br/&gt;map&amp;lt;int, SEffectData*&amp;gt; (832 B)"]
+    APPLY["CEffectFactory::EffectToLife @0x4488e0 / @0x4489a0"]
+    MGR["ILifeEntity::AddEnchant @0x95a6e0&lt;br/&gt;CEnchantMgr::Add @0xa1ef40 → CEnchant (96 B)"]
+    INI --&gt; LOAD --&gt; ROW --&gt; BUILD --&gt; EFF --&gt; APPLY --&gt; MGR</div>
+<ol>
+<li><code>main @0x521020</code> → <code>CGameData::Init @0xa50230</code> → <code>LoadDatabase @0xa50290</code> → <code>CEnchantQuery::Init(lang) @0xaa3800</code>.
+   If <code>Init</code> returns <code>false</code>, <code>LoadDatabase</code> counts the error (<code>Loading DB - Error Cnt = %d, (Language %d)</code>) and <code>main</code>
+   exits with <code>Load Game Data(.ini) Fail!</code> <strong>before</strong> the <code>Database Error!!</code> stage.</li>
+<li><code>CZoneServer::InitGame @0x5af910</code> → <code>InitWorld @0x5afc80</code> → <code>CSpellDBO::LoadAllEffectData @0x7823b0</code> (builds the
+   <code>SEffectData</code> objects) → <code>LoadAllSpellData @0x7815e0</code> (links <code>S_Spell</code> to <code>AllEffects</code>). Errors in this stage go
+   through <code>CLogFactory::InitErrLog</code>/<code>InitErrLogAppend</code> → <code>CLogFactory::DBError = 1</code> → <code>[FAIL] Database Error!!</code> at
+   the end of loading.</li>
+<li>Runtime: 207 call sites of <code>EffectToLife(id)</code> (skills <code>ISpell::OnHitLife @0x9b2760</code>/<code>OnBlast @0x9b0a60</code>, items
+   <code>CItemFactory::InvokeItemEffect @0x4ded00</code>, equipment <code>CCharacter::RefreshEQEffect @0x8fc960</code>, class passives
+   <code>InvokePassivity @0x900470</code>, titles, nodes, team/mentor buffs, GM <code>TC_AddEnchant @0x88b8b0</code>, chains
+   <code>CEC_EffectNextID @0x9dfb20</code>, procs <code>CEC_Effect @0x9e0170</code>, …) plus <code>CEnchantMgr::Load @0xa205f0</code>, which restores
+   the saved buffs at login.</li>
+</ol>
+<p>Consumers of the raw row (<code>CGameData::QueryEnchant @0xa519b0</code>, 29 xrefs) read <code>m_kEnchantCommands</code> directly to learn
+parameters without applying the effect — <code>CItemFactory::GetEnchantCommmandParm @0x4f67a0</code>, <code>DoStarCombo</code>,
+<code>CPlayerFactory::ChangeSpellCard</code>/<code>CheckSpecialRule</code>, the <code>UseItem</code> checks of crops/fishing/mining/cattle,
+<code>CRemoveRune</code>, <code>CCharacter::RemoveVIPCardBuff</code>, <code>CMonsterDBO::GetItemPos</code>… None of them uses any column other than
+<code>Id</code> and the command slots.</p>
+<hr />
+<h2 id="1-versions-and-column-count-checkversion-0xaa4320">1. Versions and column count (<code>CheckVersion @0xaa4320</code>)<a class="headerlink" href="#1-versions-and-column-count-checkversion-0xaa4320" title="Permanent link">&para;</a></h2>
+<p>The header <code>|V.x|N|</code> is read in <code>CBaseQuery&lt;int,CEnchantData&gt;::LoadDB @0xaa4720</code>:</p>
+<ul>
+<li>The first byte of the file is the delimiter (<code>|</code>) and is skipped (<code>m_nStartIndex = 1</code>); a file starting with <code>V</code>
+  would use <code>,</code>. <code>LoadDB</code> first tries <code>S_Enchant.ini.bin</code> (RC4, key <code>easyfun</code>): a <code>.bin</code> next to the <code>.ini</code> wins.</li>
+<li><code>CheckVersion</code>: <code>m_nVer = strtol(ver.substr(2))</code> → <code>V.10</code> = 10; it requires <code>m_nVer &gt; 3</code>, otherwise
+  <code>Open %s and check version(%s) is fail.</code> and the ZS exits with <code>Load Game Data(.ini) Fail!</code>.</li>
+<li><code>N</code> is read and <code>(tokens − 2) % N == 0</code> is required over the <strong>whole</strong> file (<code>Open %s and check Columns (%d) is
+  fail. DataSize(%d), Language(%d)</code>); then the token list is sliced blindly into chunks of <code>N</code>: one <code>|</code> too many or
+  too few in a row shifts every following row and is only noticed when the total stops being a multiple of 63.</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Header</th>
+<th>Columns</th>
+<th>What it adds</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>V.4</td>
+<td>58</td>
+<td>base (V.0-V.3 rejected)</td>
+</tr>
+<tr>
+<td>V.5</td>
+<td>59</td>
+<td>+ <code>TransitionCooldownTime</code> (col 56)</td>
+</tr>
+<tr>
+<td>V.6 – V.8</td>
+<td>60</td>
+<td>+ <code>MaxStack</code> (col 63)</td>
+</tr>
+<tr>
+<td>V.9</td>
+<td>61</td>
+<td>+ <code>WeaponFlag</code> (col 57)</td>
+</tr>
+<tr>
+<td><strong>V.10 (current)</strong></td>
+<td><strong>63</strong></td>
+<td>+ <code>EnchantCategory</code> (col 9) and <code>TransitionEnchantCategory</code> (col 50)</td>
+</tr>
+</tbody>
+</table>
+<p>Columns missing in older versions are zero-filled (<code>Deserialize</code> branches on the version; there is no file
+conversion). The tokenizer (<code>CInTextStream::ParseLines @0xa7ec70</code>) splits on <code>|</code>, honouring DBCS lead bytes for the
+configured language, and strips a leading <code>\r</code> and/or <code>\n</code> from each token: that is why a description may contain
+line breaks (10,295 rows do) while the record still has "63 pipes". Each row ends with <code>|</code> followed by a newline (the
+last field, <code>MaxStack</code>, is usually empty).</p>
+<p>Token conversion (<code>CInTextStream::operator&gt;&gt;</code>): integers of every size with <code>strtoul(tok, 0, 10)</code>
+(<code>@0xa482d0</code>/<code>@0xa40ed0</code>/<code>@0xa43cb0</code>/<code>@0xa40fc0</code>), reals with <code>strtod</code> (<code>@0xa7e610</code>), strings verbatim (<code>@0xa7e6f0</code>).
+Consequences: text in a numeric column reads as 0 (<code>s01041</code> in <code>EffectId</code> → 0), <code>-1</code> in an <code>int</code> column is −1 but in
+a <code>ushort</code> it is 65535 and in a <code>uchar</code> 255, and <code>1.5</code> in an integer column is 1.</p>
+<hr />
+<h2 id="2-columns-1-based-dwarf-field-conversion-and-real-use-in-the-binary">2. Columns (1-based) — DWARF field, conversion and real use in the binary<a class="headerlink" href="#2-columns-1-based-dwarf-field-conversion-and-real-use-in-the-binary" title="Permanent link">&para;</a></h2>
+<div class="admonition note">
+<p class="admonition-title">Units</p>
+<p>Every time value in the file (<code>Period</code>, <code>TransitionDuration</code>, <code>TransitionPeriod</code>, <code>TransitionCooldownTime</code>, and
+the duration parameters of <code>1921</code>, <code>7001</code>, <code>1079</code>, <code>6024</code>) is in <strong>tenths of a second</strong>. Integers are read with
+<code>strtoul</code>, the command parameters <code>p1..p6</code> with <code>strtod</code>. "Dead" = the parser reads it but <code>LoadAllEffectData</code>
+never copies it into <code>SEffectData</code> and no other ZoneServer code reads it (the 29 raw-row consumers only read <code>Id</code>
+and the command slots).</p>
+</div>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Field (<code>CEnchantData</code>)</th>
+<th>Type → destination in <code>SEffectData</code></th>
+<th>What it really does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td><code>m_nId</code></td>
+<td>int → <code>ID</code> (child = <code>−ID</code>)</td>
+<td>Key. 1..1000 = <code>FailEffect</code> (the ZS exits). Valid ranges <strong>0-1000 (system), 11000-20000, 45000-200000</strong>; <code>&lt;0</code>, 1001-10999, 20001-44999 → <code>The BUFFID : [%d] is not opened</code> and <code>&gt;200000</code> → <code>The largest BUFFID is [%d]…</code> (both <strong>DBError</strong>, the row is still loaded). <code>≥54990</code> goes through <code>InitSysEnchants</code>.</td>
+</tr>
+<tr>
+<td>2</td>
+<td><code>m_kIconFilename</code></td>
+<td>string → not copied</td>
+<td><strong>Dead</strong> on the server (client icon).</td>
+</tr>
+<tr>
+<td>3</td>
+<td><code>m_nAnimId</code></td>
+<td>uint → not copied</td>
+<td><strong>Dead</strong> (client animation).</td>
+</tr>
+<tr>
+<td>4</td>
+<td><code>m_nEffectId</code></td>
+<td>uint → not copied</td>
+<td><strong>Dead</strong>; <code>s01041</code> reads as 0 anyway.</td>
+</tr>
+<tr>
+<td>5</td>
+<td><code>m_kEffectNode</code></td>
+<td>string → not copied</td>
+<td><strong>Dead</strong> (VFX node on the client).</td>
+</tr>
+<tr>
+<td>6</td>
+<td><code>m_kName</code></td>
+<td>string → <code>Name</code></td>
+<td>Only shows up in logs (<code>effect[%s] id [%d] can't Abandon!</code>). The visible name is col 60.</td>
+</tr>
+<tr>
+<td>7</td>
+<td><code>m_eEnchantType</code></td>
+<td>uint → <code>Type</code></td>
+<td>1 = buff, 2 = debuff, empty = 0. Bit 0 = the player may cancel it (<code>CancelPlayerEnchant</code>); <code>Type &amp; 2</code> = removed by type-based dispels (<code>CCheckBufType</code>, <code>EnchantKillRandom</code>); a monster with the template protection refuses <code>Type = 2</code>.</td>
+</tr>
+<tr>
+<td>8</td>
+<td><code>m_nEnchantFlag</code></td>
+<td>uint → <code>Flag</code></td>
+<td>Bit mask, table in §4.3. Bits 0x1/0x2/0x4/0x2000/0x20000 also inject a <code>Finish 100</code> command.</td>
+</tr>
+<tr>
+<td>9</td>
+<td><code>m_eEnchantCategory</code></td>
+<td>uint (V.10) → <code>Category</code></td>
+<td>Copied, but <strong>no reader was found</strong> in the ZS (128 rows use it).</td>
+</tr>
+<tr>
+<td>10</td>
+<td><code>m_nImmuneMonsterType</code></td>
+<td>ushort → <code>ImmuneMonsterType</code> (parent and child)</td>
+<td>Copied; <strong>no reader found</strong> (8 rows).</td>
+</tr>
+<tr>
+<td>11-17</td>
+<td><code>Cmd1</code> (<code>m_nId</code> + <code>m_dParam1..6</code>)</td>
+<td>slot 1</td>
+<td><code>Id = 0</code> → empty slot. See §6.</td>
+</tr>
+<tr>
+<td>18-24 / 25-31 / 32-38</td>
+<td><code>Cmd2</code> / <code>Cmd3</code> / <code>Cmd4</code></td>
+<td>slots 2-4</td>
+<td>Same. The slots listed in col 42 are pulled out of here and given to the child.</td>
+</tr>
+<tr>
+<td>39</td>
+<td><code>m_nPeriod</code></td>
+<td>int → <code>Period</code> <strong>int16</strong>; 0 → −1</td>
+<td>Tick of the <code>Commands</code> bucket (<code>3xxx</code> commands, <code>7001</code> without p6, <code>2931/2932</code>…). −1 = no tick: the buff simply expires.</td>
+</tr>
+<tr>
+<td>40</td>
+<td><code>m_nHiword</code></td>
+<td>int → ushort → <code>EnchantType</code></td>
+<td><strong>Exclusion group</strong> (§5.2). 0 = no group. <code>&gt;65535</code> is truncated with a warning.</td>
+</tr>
+<tr>
+<td>41</td>
+<td><code>m_nLowword</code></td>
+<td>uchar → <code>Level</code></td>
+<td>Priority inside the group: blocks lower ones, evicts <code>≤</code>.</td>
+</tr>
+<tr>
+<td>42</td>
+<td><code>m_kTransitionCmd</code></td>
+<td>string <code>"1;3"</code> → set of slots</td>
+<td>Slots (1-based) that form the transition <strong>child</strong>. A reference to an empty slot or outside 1..4 is a warning and is ignored. Empty with col 43 ≠ 0 = <code>BUFF [%d] 轉移指令是空的</code> (<strong>DBError</strong>).</td>
+</tr>
+<tr>
+<td>43</td>
+<td><code>m_eEEnchantTransition</code></td>
+<td>uint → <code>TransitionType</code></td>
+<td>Event + receiver of the proc (§4.2): 1 AttackToSelf · 2 AttackToOpponent · 3 HurtToSelf · 4 HurtToOpponent · 5/6 CastSpell · 7 KillToSelf · 8 BeKilledToOpponent · 9 ReviveToSelf · 10/11 Heal · 12/13 BeHealed · 14/15 CastClassSpell. Any other value = <code>BUFF [%d] 轉移指令錯誤 %d</code> (<strong>DBError</strong>).</td>
+</tr>
+<tr>
+<td>44</td>
+<td><code>m_nTransitionRate</code></td>
+<td>char → <code>TransitionRate</code></td>
+<td>Proc chance: <code>random() % 100 &lt; rate</code>. 100 = always. Read with <code>strtoul</code>, so 200 = −56.</td>
+</tr>
+<tr>
+<td>45</td>
+<td><code>m_nTransitionDuration</code></td>
+<td>int → <code>TransitionDuration</code> <strong>int16</strong></td>
+<td>Child duration in tenths; 0 → −1 → the child is <strong>not</strong> created as a buff (instant effect); multiples of 65536 also give −1.</td>
+</tr>
+<tr>
+<td>46</td>
+<td><code>m_nTransitionPeriod</code></td>
+<td>int → child <code>Period</code> (0 → −1)</td>
+<td>Child tick.</td>
+</tr>
+<tr>
+<td>47</td>
+<td><code>m_kTransitionIconFilename</code></td>
+<td>string → not copied</td>
+<td><strong>Dead</strong> (child icon on the client).</td>
+</tr>
+<tr>
+<td>48</td>
+<td><code>m_eTransitionEnchantType</code></td>
+<td>uint → child <code>Type</code></td>
+<td>Child buff/debuff (decides cancel and dispel).</td>
+</tr>
+<tr>
+<td>49</td>
+<td><code>m_nTransitionEnchantFlag</code></td>
+<td>uint → child <code>Flag</code></td>
+<td>Same bit table as col 8, applied to the child; 0x1/0x2/0x4/0x2000/0x20000 inject <code>Finish 100</code> into the child.</td>
+</tr>
+<tr>
+<td>50</td>
+<td><code>m_eTransitionEnchantCategory</code></td>
+<td>uint (V.10) → child <code>Category</code></td>
+<td>No reader found.</td>
+</tr>
+<tr>
+<td>51-55</td>
+<td><code>m_nTransitionAnimId</code>, <code>m_nTransitionEffectId</code>, <code>m_kTransitionEffectNode</code>, <code>m_nTransitionEffectDuration</code>, <code>m_kTransitionEffectDurationNode</code></td>
+<td>not copied</td>
+<td><strong>Dead</strong> (child VFX on the client).</td>
+</tr>
+<tr>
+<td>56</td>
+<td><code>m_nTransitionCooldownTime</code></td>
+<td>int (V.5) → <strong>parent</strong> <code>TransitionCooldownTime</code></td>
+<td>Internal proc cooldown in tenths (<code>EffectDownTimes</code>); ≤ 0 = no cooldown.</td>
+</tr>
+<tr>
+<td>57</td>
+<td><code>m_nWeaponFlag</code></td>
+<td>uint (V.9) → <code>WeaponFlags</code></td>
+<td>Weapon-type mask: if ≠ 0 the buff only lands when <code>IsWeaponCanEffect(current weapon)</code> and it is removed on weapon change.</td>
+</tr>
+<tr>
+<td>58</td>
+<td><code>m_nTransitionEnchantHiword</code></td>
+<td>int → ushort → child <code>EnchantType</code></td>
+<td>Child exclusion group.</td>
+</tr>
+<tr>
+<td>59</td>
+<td><code>m_nTransitionEnchantLowword</code></td>
+<td>uchar → child <code>Level</code></td>
+<td>Child priority.</td>
+</tr>
+<tr>
+<td>60</td>
+<td><code>m_kTip</code></td>
+<td>string → not copied</td>
+<td><strong>Dead</strong> on the server; on the client it is the <strong>name</strong> shown (35,250 rows).</td>
+</tr>
+<tr>
+<td>61</td>
+<td><code>m_kTransitionTip</code></td>
+<td>string → not copied</td>
+<td><strong>Dead</strong>; short proc text on the client.</td>
+</tr>
+<tr>
+<td>62</td>
+<td><code>m_kTransitionName</code></td>
+<td>string → not copied</td>
+<td><strong>Dead</strong>; on the client it is the long <strong>description</strong> (26,184 rows).</td>
+</tr>
+<tr>
+<td>63</td>
+<td><code>m_nMaxStack</code></td>
+<td>ushort (V.6) → <code>MaxStackCnt</code> (parent and child); 0 → 1</td>
+<td>Stacking (§5.2). The loader overwrites it with <code>CFormula::AllFormulaParas[388]</code> for 312 fixed ids (11001-11040, 18915-18986, 51363-51394, 51962-52001, 551x1-558x6, 55900-55905).</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="3-deserialize-0xaa3970-exact-read-order">3. <code>Deserialize @0xaa3970</code> — exact read order<a class="headerlink" href="#3-deserialize-0xaa3970-exact-read-order" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a> 1  Id                         int     1..1000 → &quot;ERROR: FailEffect [%d]&quot; + m_nErrorNum++ (fatal at the end of Init)
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a> 2  IconFilename               string
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a> 3  AnimId                     uint
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a> 4  EffectId                   uint    (strtoul: &quot;s01041&quot; → 0)
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a> 5  EffectNode                 string
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a> 6  Name                       string
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a> 7  EnchantType                uint    → m_eEnchantType
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a> 8  EnchantFlag                uint
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a> 9  EnchantCategory            uint    only if ver ≥ 10, else eEC_None (0)
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>10  ImmuneMonsterType          ushort
+<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>11-17  Cmd1: Id uint + P1..P6 double   Id == 0 → empty slot (null pointer, the gap is kept)
+<a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>18-24  Cmd2, 25-31 Cmd3, 32-38 Cmd4    (always 4 slots; InitSysEnchants appends a 5th to 54999/55000)
+<a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>39  Period                     int
+<a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a>40  Hiword                     int → ushort; &gt; 65535 → log &quot;(%d)的高權位數值(%d)錯誤，需在0~65535&quot;, truncated (non-fatal)
+<a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a>41  Lowword                    uchar
+<a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a>42  TransitionCmd              string  &quot;i;j;…&quot; (1-based) → each slot i is REMOVED from m_kEnchantCommands and moved to m_kTransitionCmd
+<a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a>                                       i outside 1..4 → &quot;(%d)的轉移指令(%s)錯誤&quot;; empty slot → &quot;(%d)的轉移指令第(%d)指令是空的&quot; (both non-fatal)
+<a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a>43  EnchantTransition          uint
+<a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a>44  TransitionRate             char    (strtoul → 100 fits; 200 would be negative)
+<a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a>45  TransitionDuration         int
+<a id="__codelineno-0-21" name="__codelineno-0-21" href="#__codelineno-0-21"></a>46  TransitionPeriod           int
+<a id="__codelineno-0-22" name="__codelineno-0-22" href="#__codelineno-0-22"></a>47  TransitionIconFilename     string
+<a id="__codelineno-0-23" name="__codelineno-0-23" href="#__codelineno-0-23"></a>48  TransitionEnchantType      uint
+<a id="__codelineno-0-24" name="__codelineno-0-24" href="#__codelineno-0-24"></a>49  TransitionEnchantFlag      uint
+<a id="__codelineno-0-25" name="__codelineno-0-25" href="#__codelineno-0-25"></a>50  TransitionEnchantCategory  uint    only if ver ≥ 10
+<a id="__codelineno-0-26" name="__codelineno-0-26" href="#__codelineno-0-26"></a>51  TransitionAnimId           uint
+<a id="__codelineno-0-27" name="__codelineno-0-27" href="#__codelineno-0-27"></a>52  TransitionEffectId         uint
+<a id="__codelineno-0-28" name="__codelineno-0-28" href="#__codelineno-0-28"></a>53  TransitionEffectNode       string
+<a id="__codelineno-0-29" name="__codelineno-0-29" href="#__codelineno-0-29"></a>54  TransitionEffectDuration   int
+<a id="__codelineno-0-30" name="__codelineno-0-30" href="#__codelineno-0-30"></a>55  TransitionEffectDurationNode string
+<a id="__codelineno-0-31" name="__codelineno-0-31" href="#__codelineno-0-31"></a>56  TransitionCooldownTime     int     only if ver ≥ 5 (else 0)
+<a id="__codelineno-0-32" name="__codelineno-0-32" href="#__codelineno-0-32"></a>57  WeaponFlag                 uint    only if ver ≥ 9 (else 0)
+<a id="__codelineno-0-33" name="__codelineno-0-33" href="#__codelineno-0-33"></a>58  TransitionEnchantHiword    int → ushort; ≥ 65536 → &quot;(%d)的轉移高權位數值(%d)錯誤，需在0~65535&quot; (non-fatal)
+<a id="__codelineno-0-34" name="__codelineno-0-34" href="#__codelineno-0-34"></a>59  TransitionEnchantLowword   uchar
+<a id="__codelineno-0-35" name="__codelineno-0-35" href="#__codelineno-0-35"></a>60  Tip                        string
+<a id="__codelineno-0-36" name="__codelineno-0-36" href="#__codelineno-0-36"></a>61  TransitionTip              string
+<a id="__codelineno-0-37" name="__codelineno-0-37" href="#__codelineno-0-37"></a>62  TransitionName             string
+<a id="__codelineno-0-38" name="__codelineno-0-38" href="#__codelineno-0-38"></a>    → if Id ≥ 54990: InitSysEnchants @0xaa43d0 (54999 appends command {1}, 55000 appends {2}; others unchanged)
+<a id="__codelineno-0-39" name="__codelineno-0-39" href="#__codelineno-0-39"></a>63  MaxStack                   ushort  only if ver ≥ 6 (else 0)
+</code></pre></div>
+<p>Details the table does not show:</p>
+<ul>
+<li>The <code>(%d)…</code> messages go through <code>CQueryLogger::ErrorLog @0xa65520</code> → <code>CGameDataLogger::ErrorLog @0x520ef0</code> →
+  <code>SystemLog</code> level 5. They <strong>do not</strong> touch <code>DBError</code>. The only fatal parser error is an <code>Id</code> between 1 and 1000
+  (<code>CEnchantQuery::Init</code> returns <code>false</code> with <code>ERROR: FailEffect, ID 0~1000 有 [%d] 筆</code>).</li>
+<li>Rows are inserted into a <code>std::map&lt;int, CEnchantData*&gt;</code> by <code>Id</code>: a <strong>duplicate id</strong> silently replaces the earlier
+  one (the last row in the file wins, the first one leaks).</li>
+<li><code>Init</code> builds the path <code>..//Data//Translate//T_Enchant.ini</code> and discards it unused: the ZS does not translate names.</li>
+<li>The transition block is extracted in the parser already: the slots listed in <code>TransitionCmd</code> disappear from the
+  normal command list and live in a <code>std::set</code> ordered by pointer (allocation order = slot order in practice).</li>
+</ul>
+<hr />
+<h2 id="4-structures-in-memory">4. Structures in memory<a class="headerlink" href="#4-structures-in-memory" title="Permanent link">&para;</a></h2>
+<p><strong><code>GameData::CEnchantData</code> (248 B)</strong> — the parsed row, one per id, alive for the whole run:
+<code>m_nId 0x0 · m_kIconFilename 0x8 · m_nAnimId 0x10 · m_nEffectId 0x14 · m_kEffectNode 0x18 · m_kName 0x20 ·
+m_eEnchantType 0x28 · m_nEnchantFlag 0x2c · m_eEnchantCategory 0x30 · m_nImmuneMonsterType 0x34 ·
+m_kEnchantCommands 0x38 (vector&lt;SEnchantCommand*&gt;) · m_nPeriod 0x50 · m_nHiword 0x54 · m_nLowword 0x56 ·
+m_kTransitionCmd 0x58 (set&lt;SEnchantCommand*&gt;) · m_eEEnchantTransition 0x88 · m_nTransitionRate 0x8c ·
+m_nTransitionDuration 0x90 · m_nTransitionPeriod 0x94 · m_kTransitionIconFilename 0x98 · m_eTransitionEnchantType 0xa0 ·
+m_nTransitionEnchantFlag 0xa4 · m_eTransitionEnchantCategory 0xa8 · m_nTransitionAnimId 0xac · m_nTransitionEffectId 0xb0 ·
+m_kTransitionEffectNode 0xb8 · m_nTransitionEffectDuration 0xc0 · m_kTransitionEffectDurationNode 0xc8 ·
+m_nTransitionCooldownTime 0xd0 · m_nTransitionEnchantHiword 0xd4 · m_nTransitionEnchantLowword 0xd6 · m_kTip 0xd8 ·
+m_kTransitionTip 0xe0 · m_kTransitionName 0xe8 · m_nMaxStack 0xf0 · m_nWeaponFlag 0xf4</code>.
+<code>SEnchantCommand</code> (56 B): <code>m_nId 0x0</code>, <code>m_dParam1..6</code> at <code>0x8, 0x10, 0x18, 0x20, 0x28, 0x30</code> (doubles).</p>
+<p><strong><code>lapis::SEffectData</code> (832 B)</strong> — the runtime effect, one per id in <code>CZoneServer::AllEffects</code>:
+<code>ID 0x0 · Name 0x8 · Type 0x10 · Flag 0x14 · Category 0x18 · ImmuneMonsterType 0x1c · TransitionType 0x20 ·
+command buckets (vector&lt;CEffectCommand*&gt;, 24 B each): CommandsStart 0x28 · Commands 0x40 · CommandsOnce 0x58 ·
+CommandsEnd 0x70 · CommandsAttack 0x88 · CommandsHit 0xa0 · CommandsMiss 0xb8 · CommandsBeAttacked 0xd0 ·
+CommandsHurt 0xe8 · CommandsCastSpellSelf 0x100 · CommandsCastSpellTarget 0x118 · CommandsKill 0x130 ·
+CommandsBeKilled 0x148 · CommandsRevive 0x160 · CommandsHealSelf 0x178 · CommandsHealTarget 0x190 ·
+CommandsBeHealedSelf 0x1a8 · CommandsBeHealedTarget 0x1c0 · CommandsCastClassSpellSelf 0x1d8 ·
+CommandsCastClassSpellTarget 0x1f0 · CommandsAbsorb 0x208 · CommandsEnhance 0x220 · CommandsMove 0x238 ·
+CommandsStartElf 0x250 · CommandsElf 0x268 · CommandsOnceElf 0x280 · CommandsUseItem 0x298 · CommandsMoveSelf 0x2b0 ·
+DetailAttrData 0x2c8 · Period 0x2f8 (int16) · EnchantType 0x2fa (u16) · Level 0x2fc (char) · TransitionRate 0x2fd ·
+InnerFlags 0x2fe (u16) · IndexFlags 0x300 (u16) · TransitionEffect 0x308 (child SEffectData*) · TransitionDuration 0x310 ·
+TransitionCooldownTime 0x314 · AddHate 0x318 · HateRate 0x31a · DurationCnt 0x31c · MaxStackCnt 0x31e ·
+LoopEnchantIDs 0x320 (vector&lt;int&gt;) · WeaponFlags 0x338</code>.</p>
+<p><strong><code>lapis::CEnchant</code> (96 B)</strong> — one applied instance on one entity: <code>m_pEffectData 0x10 · m_CasterId 0x18 ·
+m_pVictim 0x20 · m_NextTime 0x28 (CTime) · m_Duration 0x38 (tenths of a second; −2 = permanent) · m_LifePoint 0x3c ·
+m_HurtType 0x40 · m_Flags 0x44 (bit 0 not saved, bit 1 survives death, bit 3 skip End commands, bit 4 duration
+paused, bit 5 removed without rollback, bit 6 re-applying) · m_LifeType 0x46 · m_StackCnt 0x48 · m_BindItemTID 0x4c ·
+m_BindWitchCraftID 0x50 · BossId 0x54 · RealDuration 0x58</code>.</p>
+<p><strong><code>lapis::CEnchantMgr</code> (1272 B, one per entity)</strong>: <code>m_EnchantIdMap 0x0</code> (key <code>ID &amp; 0xFFFFFF | (HurtType&gt;&gt;28)&lt;&lt;24</code>),
+<code>m_EnchantTypeMap 0x30</code> (key <code>EnchantType | (HurtType&gt;&gt;28)&lt;&lt;16</code>, = exclusion group), <code>m_EnchantTimeMap 0x60</code>
+(queue by <code>m_NextTime</code>), <code>m_State2Enchant 0x90</code>, <code>m_EnchantWeaponLimitSet 0xc0</code>, and 21 per-event sets
+<code>m_OnAttack 0xf0 · m_OnHit 0x120 · m_OnMiss 0x150 · m_OnBeAttack 0x180 · m_OnHurt 0x1b0 · m_OnCastSpellSelf 0x1e0 ·
+m_OnCastSpellTarget 0x210 · m_OnCastClassSpellSelf 0x240 · m_OnCastClassSpellTarget 0x270 · m_OnKillToSelf 0x2a0 ·
+m_OnBeKilledTarget 0x2d0 · m_OnRevive 0x300 · m_OnHealSelf 0x330 · m_OnHealTarget 0x360 · m_OnBeHealedSelf 0x390 ·
+m_OnBeHealedTarget 0x3c0 · m_OnAbsorb 0x3f0 · m_OnEnhance 0x420 · m_OnUseItem 0x450 · m_OnMove 0x480</code>,
+<code>m_AbilityIndexes 0x4b0</code>, <code>m_pLife 0x4e0</code>, <code>m_pEvent 0x4e8</code>, <code>m_TriggerTransitionCnt 0x4f0</code>, <code>m_bNoRestartEvent 0x4f1</code>.</p>
+<h3 id="41-from-cenchantdata-to-seffectdata-cspelldboloadalleffectdata-0x7823b0">4.1 From <code>CEnchantData</code> to <code>SEffectData</code> (<code>CSpellDBO::LoadAllEffectData @0x7823b0</code>)<a class="headerlink" href="#41-from-cenchantdata-to-seffectdata-cspelldboloadalleffectdata-0x7823b0" title="Permanent link">&para;</a></h3>
+<p>It walks <code>CGameData::GetAllEnchants</code> and for every row creates an <code>SEffectData</code> with defaults (<code>Type = 1</code>,
+<code>Period = −1</code>, <code>TransitionDuration = −1</code>, <code>MaxStackCnt = 1</code>, everything else 0) and copies what the §2 table says.
+Then:</p>
+<ol>
+<li>Bits 0x1/0x2/0x4/0x2000/0x20000 of <code>Flag</code> → a <code>Finish 100</code> command is added to <code>CommandsAttack</code> /
+   <code>CommandsBeAttacked</code> / <code>CommandsHurt</code> / <code>CommandsUseItem</code> / <code>CommandsMoveSelf</code> (the buff <strong>ends</strong> when the carrier
+   attacks / is attacked / takes damage / uses an item / moves) and <code>++DurationCnt</code>. If the command cannot be built →
+   <code>BUFF [%d] 攻擊失效|受擊失效|使用物品失效|移動失效 [Finish] 錯誤</code> (<strong>DBError</strong>).</li>
+<li>Every non-null slot → <code>DecodeEffectCommand @0x786ba0</code> (<code>switch(id)</code>, jump table <code>0xDA1070</code> for 1001-3102 plus
+   separate tables for 4001-4041, 5001-5032, 6001-6026, 7001-7114, 9009-9031): the id becomes text <code>"Name p1 p2 …"</code>
+   (some ids emit several <code>;</code>-separated sub-commands, some emit fixed constants) accumulated in one of 12 streams that
+   feed the buckets <code>Commands</code>, <code>CommandsOnce</code>, <code>CommandsStart</code>, <code>CommandsHurt</code>, <code>CommandsHit</code>, <code>CommandsAbsorb</code>,
+   <code>CommandsEnhance</code>, <code>CommandsStartElf</code>, <code>CommandsElf</code>, <code>CommandsOnceElf</code>, <code>CommandsMove</code>, <code>CommandsMiss</code>.
+   <strong>An unknown id emits nothing and does not warn.</strong> Every id in 2000-3999 and 5000-5999 does <code>++DurationCnt</code> even
+   when it emits no text (that is why a lone <code>2000</code> still creates a buff with icon and duration). Ids 4000-5999
+   (except 4021) set <code>InnerFlags |= 0x4</code> (sprite effect).</li>
+<li>Each bucket is parsed by <code>CEffectFactory::ParseEffectCommands @0x449e00</code> → split on <code>;</code> →
+   <code>CEffectCommandGenerator::GenerateCommand @0x444dc0</code> (lower-cased name looked up in <code>EffectCommandTable</code>, filled by
+   <code>InitEffectCommandTable @0x4452c0</code> with ~300 <code>Book</code> calls). Unknown name, <strong>argument count different from what the
+   generator expects</strong>, or a <code>CEC_*::Init</code> returning <code>false</code> → the whole bucket fails → <code>BUFF [%d] commands_start指令錯誤</code>
+   (or <code>commands</code>, <code>commands_once</code>, <code>commands_hurt</code>, <code>commands_hit</code>, <code>commands_absorb</code>, <code>commands_enhance</code>,
+   <code>elf_commands_once</code>, <code>commands_move</code>, <code>commands_miss</code>) → <strong>DBError</strong>, and the row is dropped.</li>
+<li><code>1121</code>/<code>1122</code> emit no text: their <code>p1</code> goes to <code>AddHate</code>/<code>HateRate</code>. <code>1007 IndexCasterAbility</code> is the only writer of
+   <code>IndexFlags</code>. <code>1079 LastEnchant</code> chains are followed on the raw rows to fill <code>LoopEnchantIDs</code> (closed loops only);
+   a missing target → <code>BUFF [%d] EnchantLoop指令1079資料錯誤</code>, more than 9 hops → <code>…循環超過上限(%d個)</code> (<strong>DBError</strong>).</li>
+<li>After all rows, <code>CSpellDBO::AddSystemEffectData @0x798450</code> creates the system effects in code and <strong>replaces</strong> any
+   file row with the same id: 1 MonsterLifeTime, 2 Regenerate, 7-11 ElfReturn, 12 ElfRegenerate, 13 StrengthenItem,
+   14/24 CombineItem, 15 OUT_BATTLE, 16 DuelToLose, 17 ElfDecrease, <strong>18 AntiStun (<code>AttrAntiStunRate 50</code>)</strong>,
+   <strong>19 BossAntiStun (<code>AttrAntiStunRate 100</code>)</strong>, 20 HealthOnlineTimer, 21 PVPRevive, 22/23 ElfNPCGames/ElfBetGames,
+   25-29 Strengthen/Awake/StarCombo/Carving, 52007 PVPKiller, 52009/52010 PVP/OutPVP, 54337-54338 Captcha,
+   54890 UnhonoraryKiller, 54893 ElfGamesCantJoin, 54998 BFEscapee, 77778 AutoClickPunish, 101-106 ElfWork.
+   Ids 56885-56887 and 56891-56899 get <code>Flag |= 0x800</code> forced.</li>
+<li><code>InitErrLogFlush</code> → if any <code>InitErrLogAppend</code> happened, <code>CLogFactory::DBError = 1</code> and the ZS dies at the end of
+   loading.</li>
+</ol>
+<h3 id="42-the-transition-child">4.2 The transition child<a class="headerlink" href="#42-the-transition-child" title="Permanent link">&para;</a></h3>
+<p>If col 43 ≠ 0 a second <code>SEffectData</code> is created (id <code>−ID</code>, also stored in <code>AllEffects</code>) with: <code>Type</code> = col 48,
+<code>Flag</code> = col 49, <code>Category</code> = col 50, <code>ImmuneMonsterType</code> = col 10, <code>Period</code> = col 46, <code>EnchantType</code>/<code>Level</code> =
+cols 58/59, <code>MaxStackCnt</code> = col 63, <code>TransitionCooldownTime = 0</code>, no <code>WeaponFlags</code>, no name, no transition of its
+own. Its commands are the col 42 slots decoded like the parent's, but the <code>move</code> and <code>miss</code> streams are <strong>discarded</strong>
+for the child. The parent receives one parameterless command (<code>Effect</code> or <code>Effect2Other</code>) in the event bucket, and
+<code>TransitionRate</code>, <code>TransitionDuration</code> and <code>TransitionCooldownTime</code> stay on the parent for that command:</p>
+<table>
+<thead>
+<tr>
+<th>col 43</th>
+<th>Event (parent bucket)</th>
+<th>Command</th>
+<th>Who receives the child</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>on attack (<code>CommandsAttack</code>)</td>
+<td><code>Effect2Other</code></td>
+<td>the carrier</td>
+</tr>
+<tr>
+<td>2</td>
+<td>on attack (<code>CommandsAttack</code>)</td>
+<td><code>Effect</code></td>
+<td>the target hit</td>
+</tr>
+<tr>
+<td>3</td>
+<td>when attacked (<code>CommandsBeAttacked</code>, <code>InnerFlags\|=0x4000</code>)</td>
+<td><code>Effect</code></td>
+<td>the carrier</td>
+</tr>
+<tr>
+<td>4</td>
+<td>when attacked (<code>CommandsBeAttacked</code>, <code>InnerFlags\|=0x4000</code>)</td>
+<td><code>Effect2Other</code></td>
+<td>the attacker</td>
+</tr>
+<tr>
+<td>5 / 6</td>
+<td>on casting a skill (<code>CommandsCastSpellSelf</code> / <code>…Target</code>)</td>
+<td><code>Effect2Other</code> / <code>Effect</code></td>
+<td>carrier / target</td>
+</tr>
+<tr>
+<td>7</td>
+<td>on kill (<code>CommandsKill</code>)</td>
+<td><code>Effect2Other</code></td>
+<td>carrier</td>
+</tr>
+<tr>
+<td>8</td>
+<td>on death (<code>CommandsBeKilled</code>, <code>\|=0x4000</code>)</td>
+<td><code>Effect</code></td>
+<td>the killer</td>
+</tr>
+<tr>
+<td>9</td>
+<td>on revive (<code>CommandsRevive</code>)</td>
+<td><code>Effect</code></td>
+<td>carrier</td>
+</tr>
+<tr>
+<td>10 / 11</td>
+<td>on heal (<code>CommandsHealSelf</code> / <code>…Target</code>)</td>
+<td><code>Effect2Other</code> / <code>Effect</code></td>
+<td>carrier / healed</td>
+</tr>
+<tr>
+<td>12 / 13</td>
+<td>when healed (<code>CommandsBeHealedSelf</code> / <code>…Target</code>, <code>\|=0x4000</code>)</td>
+<td><code>Effect</code> / <code>Effect2Other</code></td>
+<td>carrier / healer</td>
+</tr>
+<tr>
+<td>14 / 15</td>
+<td>on casting a class skill (<code>CommandsCastClassSpellSelf</code> / <code>…Target</code>)</td>
+<td><code>Effect2Other</code> / <code>Effect</code></td>
+<td>carrier / target</td>
+</tr>
+</tbody>
+</table>
+<h3 id="43-enchantflag-bits-col-8-and-col-49">4.3 <code>EnchantFlag</code> bits (col 8 and col 49)<a class="headerlink" href="#43-enchantflag-bits-col-8-and-col-49" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Bit</th>
+<th>Rows</th>
+<th>Verified effect</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0x1 / 0x2 / 0x4</td>
+<td>326 / 429 / 108</td>
+<td>The buff ends when the carrier attacks / is attacked / takes damage (<code>Finish 100</code> injected by the loader).</td>
+</tr>
+<tr>
+<td>0x10</td>
+<td>9,316</td>
+<td>The player <strong>cannot cancel it</strong> by right-click (<code>CancelPlayerEnchant @0x449c40</code>).</td>
+</tr>
+<tr>
+<td>0x20</td>
+<td>5,269</td>
+<td><strong>Survives death</strong> (<code>IsDieReserve @0xa1b5f0</code>; <code>CCharacter::Die</code> removes everything else).</td>
+</tr>
+<tr>
+<td>0x40 / 0x80 / 0x100 / 0x1000</td>
+<td>54 / 66 / 82 / 1</td>
+<td>Only while in <strong>vulture / wolf / gorilla / machine</strong> form: <code>CEC_AttrForm::RollBack @0x9c2a00</code> removes them when the form ends (<code>CCheckBufVultureOnly</code> and siblings).</td>
+</tr>
+<tr>
+<td>0x200</td>
+<td>300</td>
+<td>Not applied to monsters of type 3, 6 or 10 (<code>EffectToLife @0x448bc2</code>).</td>
+</tr>
+<tr>
+<td>0x400</td>
+<td>4,517</td>
+<td>Removed on <strong>node/map change</strong> (<code>CCharacter::RemoveAllNoTransNodeEnchants @0x8f97a0</code>, from <code>CPlayerFactory::CheckNoTransNode @0x5434a0</code>) and in <code>SaveAllAndQuitServer</code>.</td>
+</tr>
+<tr>
+<td>0x800</td>
+<td>407</td>
+<td>Duration clamped to the end of the local day; not refreshed on re-apply; <code>GetRestTime</code> adds one tenth.</td>
+</tr>
+<tr>
+<td>0x2000 / 0x20000</td>
+<td>18 / 54</td>
+<td>Ends on item use / on move (<code>Finish 100</code> in <code>CommandsUseItem</code> / <code>CommandsMoveSelf</code>).</td>
+</tr>
+<tr>
+<td>0x4000</td>
+<td>0</td>
+<td>Not applied to entities of type 2059.</td>
+</tr>
+<tr>
+<td>0x8000</td>
+<td>4,822</td>
+<td><strong>Hidden icon</strong>: the client is not notified (<code>IsHideIcon @0xa1dfc0</code>). The effect still works.</td>
+</tr>
+<tr>
+<td>0x80000</td>
+<td>704</td>
+<td>Removed on class <strong>rebirth</strong> (<code>CPlayerFactory::Rebirth @0x56a6a0</code>, <code>CCheckNoRebirth</code>).</td>
+</tr>
+<tr>
+<td>0x100000</td>
+<td>133</td>
+<td>Removed when transported to a <strong>battlefield</strong> (<code>RemoveAllNoBattlefieldEnchants @0x8f97c0</code> from <code>CTransportFactory::TransportCharacterToArea @0x5955f0</code>).</td>
+</tr>
+<tr>
+<td>0x200000</td>
+<td>435</td>
+<td>Suppresses message 9022 to the caster when a buff with a higher <code>Lowword</code> blocks it.</td>
+</tr>
+<tr>
+<td>0x400000</td>
+<td>1,775</td>
+<td><strong>Never stacks</strong>, even with <code>MaxStack ≥ 2</code>.</td>
+</tr>
+<tr>
+<td>0x10000 / 0x40000 / 0x800000 / 0x1000000 / 0x2000000</td>
+<td>6 / 550 / 84 / 17 / 1</td>
+<td>No reader found in the functions inspected.</td>
+</tr>
+</tbody>
+</table>
+<p><code>InnerFlags</code> (<code>+0x2fe</code>, derived at load time, not editable): 0x2 hidden icon of system effects · 0x4 sprite commands
+(ids 4000-5999) · 0x8 mount/chair (<code>2134</code>, <code>2143</code>) · 0x10 transformation (<code>2132</code>, <code>2135</code>) · 0x20 "toggle" effect:
+re-applying the same id <strong>removes</strong> it (mounts, transformations, <code>2150</code>) · 0x100 item commands (<code>DrillItem</code>,
+<code>ItemReCombo</code>, <code>UnBindItem</code>…) · 0x200 <code>2055 StateNoMove</code> · 0x400-0x2000 EXP/prestige/collection gain commands
+(<code>2931</code>, <code>2932</code>, <code>2944</code>, <code>5025</code>) · 0x4000 the proc lands on the other party (transitions 3/4/8/12/13) · 0x8400 exempt
+from the buff sweep on item use.</p>
+<div class="admonition danger">
+<p class="admonition-title">What kills the ZS at boot</p>
+<p>Two different gates. <strong>Parser</strong> (<code>Load Game Data(.ini) Fail!</code>, immediate exit): header version ≤ 3, token count
+of the file not a multiple of 63, any <code>Id</code> between 1 and 1000. <strong>Loader</strong> (<code>[FAIL] Database Error!!</code> at the end of
+loading): id out of range, unknown command name in the generated text, wrong argument count, a <code>CEC_*::Init</code>
+rejecting the value (<code>2087</code> with a decimal or 0, <code>2061</code> outside −1..100, <code>2150</code> with template 0,
+<code>7001</code>/<code>1921</code>/<code>1079</code> with id 0 or missing, <code>2242</code> without a skill group, <code>6024</code> with min &gt; max, <code>HP</code> with type ≥ 9,
+<code>4011-4014</code> out of range), a transition with col 43 outside 1..15 or col 42 empty, a broken <code>1079</code> loop or one
+longer than 9 hops, and dangling references from <code>S_Spell</code>/<code>S_Item</code> to an effect that does not exist
+(<code>using effect [%d] not exist</code>). An unknown command id does <strong>not</strong> warn.</p>
+</div>
+<hr />
+<h2 id="5-runtime-apply-stack-exclude-expire">5. Runtime: apply, stack, exclude, expire<a class="headerlink" href="#5-runtime-apply-stack-exclude-expire" title="Permanent link">&para;</a></h2>
+<h3 id="51-applying-an-effect-ceffectfactoryeffecttolife-0x4489a0">5.1 Applying an effect (<code>CEffectFactory::EffectToLife @0x4489a0</code>)<a class="headerlink" href="#51-applying-an-effect-ceffectfactoryeffecttolife-0x4489a0" title="Permanent link">&para;</a></h3>
+<p>Single entry point for everything (skills, items, GM, chains, procs): <code>EffectToLife(life, caster, SEffectData*,
+duration, hurt_type, save, damage)</code>. The by-id variant (<code>@0x4488e0</code>) looks the id up in <code>AllEffects</code> and calls this
+one. Order of checks:</p>
+<ol>
+<li>Null <code>life</code>/<code>caster</code> → <code>effect to life : victim/caster not exist!</code> (System log) and nothing else.</li>
+<li>Entities of type 139 or 1035 accept only effect 48154.</li>
+<li>If the victim is a monster (type 11): a <code>Type = 2</code> effect (debuff) is refused when the template float at <code>+0x2C</code>
+   is 0 and the monster flag <code>+0xAEA &amp; 0xFFFE == 4</code>; monsters of <strong>type 9</strong> (<code>template+0x1A</code>) accept no effect at all;
+   neither do those with <code>+0x1B1 &amp; 0x20</code> in their <code>+0x150</code> sub-structure.</li>
+<li>Player (type 7) with <code>WeaponFlags != 0</code> (col 57): <code>SEffectData::IsWeaponCanEffect(CurrentWeaponFlag) @0xa1a0b0</code>
+   or no effect. In addition <code>CCharacter::CheckBuffCanEffectWithChangeWeapon @0x942e80</code> walks
+   <code>m_EnchantWeaponLimitSet</code> on every weapon change and removes (<code>RemoveEnchantByID</code>) the buffs whose <code>WeaponFlags</code>
+   no longer match.</li>
+<li><code>Flag &amp; 0x4000</code> → not applied to entities of type 2059.</li>
+<li><code>Flag &amp; 0x8000</code> → <code>hurt_type |= 0x1000</code> (hidden icon, see 5.6). <code>hurt_type &amp; 0x1000000</code> → <code>ItemMallEnchantLog</code>.</li>
+<li><code>Flag &amp; 0x200</code> and the victim is a monster of type 3, 6 or 10 → not applied.</li>
+<li><strong><code>DurationCnt</code> (<code>SEffectData+0x31c</code>) == 0 or <code>duration == −1</code> → instant effect</strong>: <code>CanExecute</code> and <code>Execute</code> of
+   the <code>Commands</code>, <code>CommandsOnce</code> and <code>CommandsStart</code> buckets run directly on the victim and <strong>no <code>CEnchant</code> is
+   created</strong> (no icon, no duration, no rollback). This is the path of potions, <code>GetItem</code>, <code>GainBonus</code>, teleports, etc.</li>
+<li>Otherwise <code>ILifeEntity::AddEnchant @0x95a6e0</code> → <code>CEnchantMgr::Add @0xa1ef40</code>; if it returns a <code>CEnchant</code>, players
+   go through <code>CPlayerFactory::HandleREEnchant @0x565080</code>.</li>
+</ol>
+<p><code>CEffectFactory::CheckEffectToLife @0x449320</code> (used by skills before spending the cast) only runs <code>CanExecute</code> over
+<code>Commands</code>, <code>CommandsOnce</code> and <code>CommandsStart</code>.</p>
+<h3 id="52-cenchantmgradd-0xa1ef40-same-id-exclusion-group-creation">5.2 <code>CEnchantMgr::Add @0xa1ef40</code> — same id, exclusion group, creation<a class="headerlink" href="#52-cenchantmgradd-0xa1ef40-same-id-exclusion-group-creation" title="Permanent link">&para;</a></h3>
+<p>Instance key: <code>(ID &amp; 0xFFFFFF) | (HurtType &gt;&gt; 28) &lt;&lt; 24</code> (the top 4 bits of <code>HurtType</code> separate "families": sprite
+effects use <code>HurtType ≥ 0x10000000</code> and run the <code>*Elf</code> buckets).</p>
+<p><strong>An instance with the same key already exists</strong> (refresh):</p>
+<ul>
+<li>It stacks if <code>MaxStackCnt ≥ 2</code> (col 63) <strong>and</strong> not <code>Flag &amp; 0x400000</code>; while <code>m_StackCnt &lt; MaxStackCnt</code> it does
+  <code>RollBackStartCommands(1)</code> + re-application (<code>Reset @0xa1fd40</code>, which increments <code>m_StackCnt</code>, runs
+  Once/Commands/Start and re-registers the buff in the containers and in the time queue). At the cap it only refreshes.</li>
+<li>Duration: <code>HurtType &amp; 0x400</code> → the remaining time is <strong>added</strong> (<code>GetRestTime</code>); otherwise it is <strong>replaced</strong>. With
+  <code>Flag &amp; 0x800</code> the duration is left untouched.</li>
+<li>Player and savable buff → <code>CleanPlayerEnchant</code> + <code>SavePlayerEnchant</code> again.</li>
+<li>If the re-application fails (<code>CanExecute</code> of some command returns <code>false</code>, typically the <code>6021</code>-<code>6025</code>/<code>3101</code>
+  checks) the existing instance <strong>is removed</strong> (<code>RemoveEnchantByID</code>) with the log <code>CEnchantMgr::Add the same [%d]
+  from [%s], stack [%hd] but fail !</code>; if it was not stackable it is also marked <code>m_Flags |= 0x20</code> (removed without
+  rollback).</li>
+</ul>
+<p><strong>New instance</strong>:</p>
+<ol>
+<li>Exclusion group: key <code>EnchantType | (HurtType &gt;&gt; 28) &lt;&lt; 16</code> where <code>EnchantType</code> = <code>Hiword</code> (col 40) and <code>Level</code> =
+   <code>Lowword</code> (col 41). With <code>Hiword == 0</code> there is no group (<code>AddToContainers</code> does not even index it). If any active
+   buff of the group has a <code>Level</code> <strong>greater</strong> than the new one → failure, and the caster receives message <strong>9022</strong>
+   unless <code>Flag &amp; 0x200000</code>. Otherwise <strong>every</strong> group member with <code>Level ≤ new</code> is removed
+   (<code>RemoveAllEnchantKeys @0x95b1b0</code>) and the new one enters: on equal <code>Level</code> the last one applied wins.</li>
+<li><code>Flag &amp; 0x800</code> → the duration is cut to the end of the local day (<code>localtime</code>): <code>if (seconds_of_day + dur/10 &gt;
+   86399) dur = 10 × (86400 − seconds_of_day)</code>.</li>
+<li><code>new CEnchant(caster, life, data, dur, hurt) @0xa1a940</code> (<code>m_LifePoint = 1</code>, <code>m_StackCnt = 0</code>); <code>save == false</code> →
+   <code>m_Flags |= 1</code> (never persisted). If the caster is a pet/summon (types 75, 267, 2059) <code>BossId</code> = the owner's id.</li>
+<li><code>CEnchantMgr::Add(CEnchant*) @0xa202c0</code>: <code>++m_StackCnt</code>; <code>CanExecuteStartCommands</code> → (<code>First</code>)
+   <code>CanExecuteOnceCommands</code> + <code>ExecuteOnceCommands(damage)</code> → <code>Reg2Caster</code> (if caster ≠ victim) →
+   <code>ExecuteStartCommands @0xa1b430</code> (if a Start command fails the earlier ones are rolled back and the effect does not
+   enter) → if <code>m_LifePoint ≤ 0</code> afterwards (<code>CEnchantMgr::Add [%d] but enchant is over</code>) rollback and failure →
+   <code>IndexFlags != 0</code> → <code>SetAbilityIndex</code> → <code>AddToContainers @0xa26270</code> (indexes by id and by group,
+   <code>m_EnchantWeaponLimitSet</code> if <code>WeaponFlags</code>, and one <code>m_OnXxx</code> set per non-empty bucket; <code>m_OnEnhance</code> also when
+   <code>m_LifePoint &gt; 1</code>) → <code>AddNextTime @0xa22c10</code> (time queue).</li>
+<li>Player and <code>m_Flags &amp; 1 == 0</code> and (<code>RestTime == −2</code> or <code>≥ 101</code> tenths) → <code>SavePlayerEnchant @0x44a190</code>
+   (<code>SEnchantSave{CasterID, EffectID, RestTime, Factor=HurtType, Counter=Damage, StackCount}</code>, flushed by
+   <code>EnchantSaveToDB @0x44a1d0</code> → <code>CSpellDBO::SavePlayerEnchant @0x780db0</code>). Buffs shorter than 10.1 s are not saved.</li>
+</ol>
+<p>Messages of this stage: <code>CEnchantMgr::Add : pCaster == NULL!</code> / <code>pEffectData == NULL!</code> (System log, EnchantMgr.cc:53/57).</p>
+<h3 id="53-time-period-duration-tick-and-expiry">5.3 Time: <code>Period</code>, duration, tick and expiry<a class="headerlink" href="#53-time-period-duration-tick-and-expiry" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Every effect duration and period is in <strong>tenths of a second</strong> (<code>CalculerNextTime @0xa1ab00</code>: <code>t/10</code> s +
+  <code>(t%10)·100 ms</code>). <code>m_Duration == −2</code> = permanent. <code>Period</code> (<code>SEffectData+0x2f8</code>, int16) == <strong>−1</strong> = no tick.</li>
+<li><code>CalculerNextTime</code>: <code>Period == −1</code> → a single expiry at <code>now + Duration</code> (nothing if permanent); <code>Period &gt; 0</code> →
+  next tick at <code>now + Period</code>, <code>m_Duration −= Period</code>; when less than one period is left → last tick at <code>now + rest</code>
+  and <code>m_Duration = 0</code>. A permanent effect with a period ticks forever.</li>
+<li><code>AddNextTime @0xa22c10</code> puts the <code>CEnchant</code> into <code>m_EnchantTimeMap</code> (map <code>CTime → set&lt;CEnchant&gt;</code>). The event
+  <code>CEventEnchant::Execute @0xadfcd0</code> (one per entity, re-armed by <code>RestarupEvent @0xa21090</code>) calls
+  <code>CEnchantMgr::OnExecuteCommands @0xa22770</code>, which pops the oldest group and for each buff: <code>m_Flags &amp; 0x10</code>
+  (paused duration) → recompute and re-queue · <code>Period == −1</code> → <strong>expires</strong> (<code>RemoveEnchantByID</code>) · otherwise
+  <code>CanExecuteCommands</code> + <code>ExecuteCommands @0xa1b610</code> (the <code>Commands</code> bucket = the tick) and if that fails, or
+  <code>m_Duration ≤ 0</code>, or <code>m_LifePoint == 0</code> → expires; else re-queue.</li>
+<li><code>GetRestTime @0xa1ae50</code>: tenths until <code>m_NextTime</code> (+ <code>m_Duration</code> if periodic; +1 if <code>Flag &amp; 0x800</code>); −2 if
+  permanent; with <code>m_Flags &amp; 0x10</code> it returns the frozen <code>m_Duration</code>.</li>
+<li><code>IsRealDuration @0xa1dfe0</code> = <code>HurtType &amp; 0x300</code>: the duration runs in wall-clock time (offline included);
+  <code>CalculerRealDuration @0xa1e070</code> stores <code>now + dur/10</code> in <code>RealDuration</code> for persistence.</li>
+</ul>
+<h3 id="54-removal-cenchantmgrremove-0xa213c0">5.4 Removal: <code>CEnchantMgr::Remove @0xa213c0</code><a class="headerlink" href="#54-removal-cenchantmgrremove-0xa213c0" title="Permanent link">&para;</a></h3>
+<p><code>RemoveEnchantByID(id, elf_loc, not_run_end_cmds) @0x95a570</code> → <code>RemoveEnchant</code> → <code>Remove</code>: drops the buff from the
+indexes, the queue and the containers (<code>RemoveFromContainers @0xa26c30</code>), clears <code>m_AbilityIndexes</code> when
+<code>IndexFlags</code>, for players with <code>m_Flags &amp; 1 == 0</code> runs <code>CleanPlayerEnchant</code> (DB row), and unless <code>m_Flags &amp; 0x20</code>:
+<code>RollBackStartCommands(m_StackCnt) @0xa1b970</code> (undoes the <code>2xxx</code> modifiers once per stack) and, if
+<code>CanExecuteEndCommands</code> and not <code>m_Flags &amp; 8</code>, <code>ExecuteEndCommands @0xa1b850</code> (the <code>CommandsEnd</code> bucket). Log
+<code>CEnchantMgr::Remove [%d]</code> and the forensic line <code>&lt;%d,%.2f,%.2f&gt;&lt;4206&gt;&lt;%d,%d&gt;</code> (node, x, y, cid, effect). The entity
+then recomputes its stats (<code>CCharacter::OnUpdateEnchant @0x931060</code>, 72 KB).</p>
+<p>Mass-removal paths: death (<code>CCharacter::Die @0x90f2b0</code> → <code>RemoveAllEnchants(CCheckExceptDieReserve) @0x95add0</code>:
+survivors are those with <code>IsDieReserve @0xa1b5f0</code> = <code>Flag &amp; 0x20 || m_Flags &amp; 2 || HurtType &amp; 0x2000</code>), weapon change
+(5.1), cancel by the player (<code>CancelPlayerEnchant @0x449c40</code>: needs <code>Type</code> bit 0 = buff and <code>!(Flag &amp; 0x10)</code>, else
+<code>CancelPlayerEnchant : effect[%s] id [%d] can't Abandon!</code> / <code>is not buff, it can not cancel!</code>),
+<code>RemoveAllEquipEnchants @0xa21760</code>, <code>RemoveAllElftabletEnchants @0xa21b90</code>, item use (<code>CItemFactory::DoUseItem
+@0x4e2f80</code>, <code>InnerFlags &amp; 0x8400</code> exempt), the flag-driven sweeps of §4.3 and the <code>EnchantCancel</code>/<code>EnchantKill*</code>
+commands (§6).</p>
+<h3 id="55-persistence-and-re-login">5.5 Persistence and re-login<a class="headerlink" href="#55-persistence-and-re-login" title="Permanent link">&para;</a></h3>
+<p>At login <code>CEnchantMgr::Load @0xa205f0</code> receives <code>(SEffectData, CasterId, Duration, Counter, HurtType, StackCount,
+RealDuration)</code> from the DB: if the instance already exists it only updates duration/HurtType; otherwise it applies the
+same exclusion group and daily clamp as <code>Add</code>, creates the <code>CEnchant</code>, adds it (<code>Add(CEnchant*)</code>) and <strong>repeats
+<code>Reset</code> <code>StackCount−1</code> times</strong> to rebuild the stacks (<code>CEnchantMgr::Load : %s reset enchant stack fail, Enchant id %d</code>
+if one fails). The <code>PVPKillerEffectID</code> effect gets <code>m_Flags |= 0x10</code> (paused) outside PvP nodes. Children chained
+with <code>1921</code> without the <em>Save</em> flag are not stored: after re-login the parent comes back but the child does not.</p>
+<h3 id="56-icon-and-client-notification">5.6 Icon and client notification<a class="headerlink" href="#56-icon-and-client-notification" title="Permanent link">&para;</a></h3>
+<p><code>ILifeEntity::AddEnchant @0x95a6e0</code>: after a successful <code>Add</code> it calls the entity's virtual hook (stat recompute),
+<code>RestarupEvent</code>, <code>++EnchantTimes</code>, and <strong>if <code>!IsHideIcon</code></strong> (<code>InnerFlags &amp; 2 || HurtType &amp; 0x1000</code>, <code>@0xa1dfc0</code>)
+sends the packet <code>off_D15958</code> <code>{cid, effect id, RestTime, EnchantTimes, HurtType&gt;&gt;28, StackCnt, BindWitchCraftID}</code>
+to the client (<code>NotifyClient</code>) and to everyone who sees the entity (<code>BroadCastToCanSee</code>). A hidden buff still works;
+it is simply not drawn.</p>
+<h3 id="57-transitions-procs-at-runtime">5.7 Transitions (procs) at runtime<a class="headerlink" href="#57-transitions-procs-at-runtime" title="Permanent link">&para;</a></h3>
+<ul>
+<li>When the effect is built (§4.2) the parent keeps in <code>TransitionEffect</code> (<code>+0x308</code>) a child <code>SEffectData</code> without an
+  id of its own, holding the commands extracted by <code>TransitionCmd</code>, and the parent gets an <code>Effect</code>/<code>Effect2Other</code>
+  command in the bucket matching <code>EnchantTransition</code> (col 43). <code>CEC_Effect::Init @0x9e00d0</code> fails if the parent has
+  no child.</li>
+<li><code>AddToContainers</code> registers the carrier in <code>m_OnAttack</code>, <code>m_OnHit</code>, <code>m_OnMiss</code>, <code>m_OnBeAttack</code>, <code>m_OnHurt</code>,
+  <code>m_OnCastSpell*</code>, <code>m_OnKill*</code>, <code>m_OnRevive</code>, <code>m_OnHeal*</code>, <code>m_OnBeHealed*</code>, <code>m_OnCastClassSpell*</code>, <code>m_OnUseItem</code>,
+  <code>m_OnMove</code> according to the non-empty buckets. The handlers <code>CEnchantMgr::OnAttackEnchant @0xa22ef0</code>
+  (<code>OnHitEnchant @0xa23170</code>, <code>OnMissEnchant @0xa233d0</code>, <code>OnBeAttackEnchant @0xa23650</code>, <code>OnHurtEnchant @0xa238d0</code>,
+  <code>OnCastSpellSelf/Target @0xa23b60/@0xa23dc0</code>, <code>OnKillEnchant @0xa24030</code>, <code>OnReviveEnchant @0xa24510</code>,
+  <code>OnHealSelf/Target @0xa24770/@0xa249e0</code>, <code>OnCastClassSpellSelf/Target @0xa25130/@0xa25390</code>,
+  <code>OnUseItemEnchant @0xa25a60</code>, <code>OnMoveEnchant @0xa25c80</code>) copy the set, skip everything while
+  <code>m_TriggerTransitionCnt &gt; 0</code> (a proc never triggers procs), skip each buff in cooldown
+  (<code>CheckInTransitionDownTime @0x95eda0</code>, virtual slot 46 of the entity) and call <code>CEnchant::OnAttack @0xa1c360</code> etc.</li>
+<li><code>CEnchant::OnAttack</code>: <code>InnerFlags &amp; 1</code> swaps attacker and defender; it runs <code>CanExecute</code> and then <code>Execute</code> of the
+  whole <code>CommandsAttack</code> bucket with <code>(victim = defender, caster = attacker, HurtType, this, Damage)</code>; if the carrier
+  dies and the buff is not <em>DieReserve</em> it stops.</li>
+<li><code>CEC_Effect::Execute @0x9e0170</code>: <code>random() % 100 &lt; TransitionRate</code> (col 44) → <code>OnTriggerEffect @0x95f020</code> (notes
+  the parent in <code>TriggerEffects</code> when <code>TransitionCooldownTime &gt; 0</code>) → <code>EffectToLife(target, source,
+  TransitionEffect, TransitionDuration, hurt_type, save=1, 0)</code>. <code>InnerFlags &amp; 0x4000</code> decides whether the child lands
+  on the carrier or on the other party. Log <code>Effect [%d] Transition BuffHitTest random = %d, rate = %d -&gt; succ/nul</code>.</li>
+<li>Cooldown: <code>CCharacter::PutInTransitionDownTime @0x90cb40</code> stores <code>now + TransitionCooldownTime/10 s</code> in
+  <code>EffectDownTimes[ID]</code> (log <code>Effect [%d] PutInTransitionDownTime [%d]</code>); <code>CheckInTransitionDownTime</code> returns <code>true</code>
+  until it expires and then erases the entry. <code>TransitionCooldownTime ≤ 0</code> = no cooldown.</li>
+<li><code>CEC_Effect::CanExecute @0x9e0100</code>: needs a living victim (<code>+0x106 &amp; 1 == 0</code>) and a non-null caster.</li>
+</ul>
+<hr />
+<h2 id="6-commands-buckets-families-and-the-most-used-ones">6. Commands: buckets, families and the most used ones<a class="headerlink" href="#6-commands-buckets-families-and-the-most-used-ones" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>Numbering</strong>: <code>1xxx</code> = instant (<code>CommandsOnce</code>: run once when applied; if the effect creates no buff that is all
+  that happens) · <code>2xxx</code> = persistent modifiers (<code>CommandsStart</code> on entry, <code>RollBack</code> on exit; they add up across
+  buffs because they do <code>+=</code>) · <code>3xxx</code> = periodic (<code>Commands</code>, every <code>Period</code>) · <code>4xxx</code>/<code>5xxx</code> = sprite · <code>6xxx</code> =
+  checks and items · <code>7xxx</code> = effects on others/targets · <code>9xxx</code> = misc (shop, counters). The bucket is decided by
+  the position of the <code>case</code> in <code>DecodeEffectCommand</code>, not by a flag.</li>
+<li><strong><code>CanExecute</code> before <code>Execute</code></strong>: the checks (<code>6021 MonsterCheck</code>, <code>6022-6025</code>, <code>3101/3102 EnchantCheckType</code>,
+  <code>HPCheck</code>, <code>LevelCheck</code>…) live in <code>CommandsStart</code>; if they fail the effect does not enter (and if it was a refresh,
+  the existing buff <strong>is removed</strong>, §5.2).</li>
+<li><strong>Arguments</strong>: the generated text has a fixed argument count per name; <code>pN</code> values the <code>case</code> does not use are
+  ignored. Values are re-read with <code>strtol</code>/<code>strtod</code> in every <code>Init</code>, so a decimal in an integer parameter is
+  truncated (and in <code>2087</code> it is fatal).</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Id</th>
+<th>Uses</th>
+<th>Generated text (pN → args)</th>
+<th>Bucket</th>
+<th><code>Init</code> and traps</th>
+<th>Effect</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2051</td>
+<td>3,866</td>
+<td><code>AttrMovement &lt;p1&gt;</code> (same shape: 2052 <code>AttrAttackSpeed</code>, 2053 <code>AttrCastTime</code>, 2067, 2121, 2122, 2902)</td>
+<td>start</td>
+<td>—</td>
+<td><code>+= p1</code> to the movement-speed % (<code>Execute @0x9c9c40</code>, notifies the client); 2052 negative = faster.</td>
+</tr>
+<tr>
+<td>2000</td>
+<td>3,847</td>
+<td><em>(nothing)</em> — same for 2004-2010, 2015-2018, 2025-2028, 2047-2048, 2058, 2070, 2076-2080, 2088-2090, 2096-2100, 2107, 2120, 2126-2130, 2138, 2152-2162, 2173-2177</td>
+<td>—</td>
+<td>—</td>
+<td><strong>Empty</strong> command; it only contributes <code>DurationCnt</code> → used for icon/timer buffs with no effect.</td>
+</tr>
+<tr>
+<td>1921</td>
+<td>2,871</td>
+<td><code>EffectNextID &lt;p1 id&gt; &lt;p2 chance%&gt; &lt;p3 dur&gt; &lt;p4 save&gt; &lt;p5 timetype&gt;</code></td>
+<td>once</td>
+<td><code>Init @0x9df7a0</code>: id 0 → <code>Next</code>, chance 0 → <code>Probability %d</code> (<strong>DBError</strong>).</td>
+<td>Applies <code>p1</code> to the carrier with <code>p2</code> %, duration <code>p3</code> tenths (−2 permanent); <code>p4 ≠ 0</code> persists it; <code>p5 = 1</code> → wall-clock time (<code>HurtType 0x100</code>). Without <code>p4</code> the child does not return after re-login.</td>
+</tr>
+<tr>
+<td>2083 / 2085</td>
+<td>2,297 / 1,474</td>
+<td><code>AttrPhysicoDamageRate &lt;p1&gt;</code> / <code>AttrMagicDamageRate &lt;p1&gt;</code></td>
+<td>start</td>
+<td>—</td>
+<td>Physical / magic damage %, additive.</td>
+</tr>
+<tr>
+<td>3001</td>
+<td>1,855</td>
+<td><code>HP &lt;p1 min&gt; &lt;p2 max&gt; &lt;p3 min%&gt; &lt;p4 max%&gt; &lt;p5 type&gt;</code></td>
+<td><strong>Commands (every <code>Period</code>)</strong></td>
+<td><code>Init @0x9efa20</code>: sorts min/max, ratios ×10, type 0-8 or <code>AttrResist Type is Wrong : %d</code> (<strong>DBError</strong>).</td>
+<td>DoT/HoT: HP between <code>p1</code> and <code>p2</code> (negative = damage) plus <code>p3..p4</code> % of max per tick. <strong><code>1001</code> generates the same text but in <code>once</code></strong> (a single hit/heal on apply).</td>
+</tr>
+<tr>
+<td>7001</td>
+<td>1,659</td>
+<td><code>Effect2Target &lt;p1 type 1-4&gt; &lt;p2 friend 0-3&gt; &lt;p3 range/10&gt; &lt;p4 id&gt; &lt;p5 dur&gt;</code></td>
+<td><code>p6</code> empty → <strong>Commands (every <code>Period</code>)</strong>; <code>p6 ≠ 0</code> → once</td>
+<td><code>Init @0x9e0530</code>: type/friend out of range → <code>Type %d</code>/<code>Friend %d</code>; missing id → <code>CEC_Effect2Target : effect id [%d] not exist!</code> (<strong>DBError</strong>).</td>
+<td>Applies <code>p4</code> to the targets of the given kind within range; with a <code>Period</code> it becomes an aura / periodic check.</td>
+</tr>
+<tr>
+<td>2081</td>
+<td>1,569</td>
+<td>one sub-command per <code>pN ≠ 0</code>: <code>AttrStr &lt;p1&gt;; AttrCon &lt;p2&gt;; AttrInt &lt;p3&gt;; …</code></td>
+<td>start</td>
+<td>—</td>
+<td>Flat base stats (several in one row). <code>2082</code> is the same, with the row <code>0|0|0|0|0|-300</code> as an empty sentinel.</td>
+</tr>
+<tr>
+<td>2055</td>
+<td>1,554</td>
+<td><code>StateNoMove …</code> (sub-commands depending on the sign of <code>p1</code>, <code>p2</code>…)</td>
+<td>start</td>
+<td>sets <code>InnerFlags 0x200</code></td>
+<td>Root / immobilise.</td>
+</tr>
+<tr>
+<td>1079</td>
+<td>1,454</td>
+<td><code>LastEnchant &lt;p1 chance%&gt; &lt;p2 id&gt; &lt;p3 dur&gt; &lt;p4 timetype&gt; &lt;p5 save&gt;</code></td>
+<td>start</td>
+<td><code>Init @0x9d22b0</code>: id 0 → <code>CEC_LastEnchant param is null.</code> (<strong>DBError</strong>); the loader follows the chain (<code>LoopEnchantIDs</code>, max 9).</td>
+<td><code>Execute</code> is empty: it acts in the <strong><code>RollBack</code></strong> (<code>@0x9d2640</code>): when the buff ends, <code>p1</code> % chance to apply <code>p2</code> for <code>p3</code>.</td>
+</tr>
+<tr>
+<td>2034 / 2033</td>
+<td>1,449 / 852</td>
+<td>one sub-command per <code>pN ≠ 0</code> (N = 1..4): <code>AttrBeDamageRate &lt;mask 1/2/4/8&gt; &lt;pN&gt;</code> / <code>AttrDamageRate …</code></td>
+<td>start</td>
+<td><code>Init @0x9bf430</code>: value outside ±1000 → <strong>DBError</strong>; stored ×100.</td>
+<td>Damage taken / dealt % per hit type (melee/ranged/kungfu/magic), additive across buffs.</td>
+</tr>
+<tr>
+<td>2134</td>
+<td>1,367</td>
+<td><code>Ride &lt;p1&gt; &lt;p2&gt; &lt;p3&gt; &lt;p4&gt; &lt;p5&gt;</code> (+ <code>Finish 100</code> in <strong>hit</strong> when <code>p4 == 0</code>)</td>
+<td>start</td>
+<td><code>Init @0xa07fa0</code> sets <code>InnerFlags 0x8\|0x20</code></td>
+<td>Mount; re-applying the same id dismounts; with <code>p4 = 0</code> you dismount on hit.</td>
+</tr>
+<tr>
+<td>2087</td>
+<td>856</td>
+<td>one sub-command per <code>pN ≠ 0</code>: <code>AttrBase &lt;Str\|Con\|Int\|Vol\|Dex&gt; &lt;type&gt; &lt;pN&gt;</code></td>
+<td>start</td>
+<td><code>Init @0x9bed70</code>: value via <code>strtol</code> → <strong>0 or a decimal = DBError</strong> (<code>增減基本屬性的數值為零沒意義</code>); unknown stat name = DBError.</td>
+<td><code>Execute @0x9bf080</code>: players only; <code>+=</code> into the base pool (type 1) or pool 2 (type 0) and <code>NeedUpdateAttr(60)</code>. Integers only.</td>
+</tr>
+<tr>
+<td>6024</td>
+<td>843</td>
+<td><code>EnchantStackCheck &lt;p1 id&gt; &lt;p2 min&gt; &lt;p3 max&gt; &lt;p4 other id&gt; &lt;p5 dur&gt; &lt;p6 target&gt;</code></td>
+<td>start</td>
+<td><code>Init @0x9e9910</code>: min &gt; max → <strong>DBError</strong>.</td>
+<td>Stack self-check ("stacks up to N", switch to <code>p4</code> at the cap).</td>
+</tr>
+<tr>
+<td>2003</td>
+<td>—</td>
+<td><code>AttrRecoverHP &lt;p1&gt;</code> (only if <code>p1 ≠ 0</code>)</td>
+<td>start</td>
+<td>—</td>
+<td><code>Execute @0x9cb860</code>: players, flat <code>+=</code> to HP regeneration (<strong>not</strong> an immunity).</td>
+</tr>
+<tr>
+<td>2061</td>
+<td>—</td>
+<td><code>AttrCastFailRate &lt;p1 physical&gt; &lt;p2 magic&gt; &lt;p3 buff&gt; &lt;p4 restore&gt; &lt;p5 all&gt;</code></td>
+<td>start</td>
+<td><code>Init @0x9bf740</code>: each value in <strong>−1..100</strong> or <code>BUFFID(%d) …</code> (<strong>DBError</strong>); <code>p5</code> excludes the others.</td>
+<td>Cast-fail %; for "fewer interruptions" use <code>2067 AttrCastSuccessRate</code>.</td>
+</tr>
+<tr>
+<td>2150</td>
+<td>—</td>
+<td><code>SetCoRideAction &lt;p1 rtpl&gt; &lt;p2..p5 actions&gt;</code></td>
+<td>start</td>
+<td><code>Init @0xa0a770</code>: <code>p1 = 0</code> → <code>座騎/寶座TemplateID 0 錯誤</code> (<strong>DBError</strong>); <code>InnerFlags 0x20</code>.</td>
+<td>Mount throne/seat mode.</td>
+</tr>
+<tr>
+<td>2242</td>
+<td>—</td>
+<td><code>ChangeSpellSetSpecificSpell &lt;group&gt; &lt;spell&gt;</code></td>
+<td>start</td>
+<td>expects a skill <strong>group</strong>; <code>找不到該技能群組</code> (<strong>DBError</strong>).</td>
+<td>Not usable on monsters.</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="7-test-server-data-for-calibration">7. Test-server data (for calibration)<a class="headerlink" href="#7-test-server-data-for-calibration" title="Permanent link">&para;</a></h2>
+<p><code>|V.10|63|</code>, 36,382 rows, ids 11001-199999 with no duplicates (8,363 in 1xxxx, 4,990 in 4xxxx, 9,928 in 5xxxx, 8,744
+in 6xxxx, 3,039 in 7xxxx, 641 in 9xxxx, 423 in 10xxxx, 247 in 12xxxx), 10,295 multi-line rows (line breaks inside
+<code>Tip</code>/<code>TransitionName</code>), 63 <code>|</code> in 100 % of the rows.</p>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Distribution</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>IconFilename</code></td>
+<td>90.7 % filled; <code>E9999</code> (placeholder) 10,309 times, 2,900 distinct icons</td>
+</tr>
+<tr>
+<td><code>AnimId</code> / <code>EffectId</code> / <code>EffectNode</code></td>
+<td>2.0 % / 8.6 % / 8.5 %; <code>EffectId</code> is always <code>s#####</code> (text → 0 on the server); nodes <code>11</code> 1,635, <code>4</code> 869, <code>1</code> 431</td>
+</tr>
+<tr>
+<td><code>Name</code></td>
+<td>3.3 % (593 are literally <code>NAME</code>)</td>
+</tr>
+<tr>
+<td><code>EnchantType</code></td>
+<td>1 = 29,956 · 2 = 5,415 · empty = 1,011</td>
+</tr>
+<tr>
+<td><code>EnchantFlag</code></td>
+<td>50.2 % filled, 143 values; most used bits: 0x10 9,316 · 0x20 5,269 · 0x8000 4,822 · 0x400 4,517 · 0x400000 1,775 · 0x80000 704 · 0x40000 550</td>
+</tr>
+<tr>
+<td><code>EnchantCategory</code></td>
+<td>128 rows (3 = 77, 6 = 24, 4 = 16, 1 = 9, 2 = 2)</td>
+</tr>
+<tr>
+<td><code>ImmuneMonsterType</code></td>
+<td>8 rows (<code>126</code> ×7, <code>2002</code> ×1)</td>
+</tr>
+<tr>
+<td>Slots</td>
+<td>0 commands: 74 · 1: 18,908 · 2: 11,223 · 3: 4,027 · 4: 2,150; 307 distinct ids</td>
+</tr>
+<tr>
+<td>Top commands</td>
+<td>2051 ×3,866 · 2000 ×3,847 · 1921 ×2,871 · 2083 ×2,297 · 3001 ×1,855 · 7001 ×1,659 · 2081 ×1,569 · 2055 ×1,554 · 2085 ×1,474 · 1079 ×1,454 · 2034 ×1,449 · 2134 ×1,367 · 2082 ×1,352 · 2052 ×1,352 · 2064 ×1,342</td>
+</tr>
+<tr>
+<td><code>Period</code></td>
+<td>9.7 %: <code>10</code> 1,468 · <code>30</code> 514 · <code>20</code> 499 · <code>1</code> 311 · <code>50</code> 169 · <code>100</code> 148 (tenths); 1,694 rows have a <code>Period</code> and no <code>3xxx</code> command, 1,002 the other way round</td>
+</tr>
+<tr>
+<td><code>Hiword</code> / <code>Lowword</code></td>
+<td>23.0 % / 21.2 %; 1,155 groups; group 81 has 346 members; typical <code>Lowword</code> 1-3, 10, 20, 51-57</td>
+</tr>
+<tr>
+<td>Transition (<code>TransitionCmd</code>)</td>
+<td>3,434 rows: <code>1</code> 1,533 · <code>1;2</code> 710 · <code>2</code> 466 · <code>3</code> 171 · <code>1;2;3</code> 162 · <code>2;3</code> 145 · <code>1;2;3;4</code> 50; none points at an empty slot</td>
+</tr>
+<tr>
+<td><code>EnchantTransition</code></td>
+<td>2 = 1,317 · 4 = 847 · 1 = 693 · 3 = 538 · 7 = 16 · 5 = 10 · 10 = 6 · 11 = 3 · 8 = 2 · 6 = 1 · 12 = 1</td>
+</tr>
+<tr>
+<td><code>TransitionRate</code></td>
+<td><code>100</code> 942 · <code>3</code> 636 · <code>10</code> 326 · <code>15</code> 319 · <code>20</code> 185 (never &gt; 100)</td>
+</tr>
+<tr>
+<td><code>TransitionDuration</code></td>
+<td><code>50</code> 712 · <code>1</code> 355 · <code>100</code> 342 · <code>10</code> 323 · <code>150</code> 242 · <code>80</code> 227 (tenths)</td>
+</tr>
+<tr>
+<td><code>TransitionCooldownTime</code></td>
+<td>2,231 rows: <code>300</code> 329 · <code>100</code> 250 · <code>40</code> 216 · <code>75</code> 212 · <code>20</code> 160 (tenths)</td>
+</tr>
+<tr>
+<td><code>TransitionEnchantFlag</code></td>
+<td>1,039 rows: <code>512</code> 422 · <code>16</code> 370 · <code>32768</code> 129 · <code>32769</code> 20 · <code>1040</code> 17</td>
+</tr>
+<tr>
+<td><code>TransitionEnchantHiword</code>/<code>Lowword</code></td>
+<td>1,259 / 1,258 rows</td>
+</tr>
+<tr>
+<td><code>WeaponFlag</code></td>
+<td>15 rows: <code>65536</code> ×7, <code>2688</code> ×5, <code>1344</code> ×3</td>
+</tr>
+<tr>
+<td><code>Tip</code> / <code>TransitionTip</code> / <code>TransitionName</code></td>
+<td>96.9 % / 8.0 % / 72.0 %; <code>Tip</code> = displayed name, <code>TransitionName</code> = long description</td>
+</tr>
+<tr>
+<td><code>MaxStack</code></td>
+<td>1,915 rows: <code>5</code> 450 · <code>10</code> 362 · <code>20</code> 307 · <code>3</code> 191 · <code>1</code> 91</td>
+</tr>
+</tbody>
+</table>
+<p>Sample rows:</p>
+<ul>
+<li>Class passive (INT +9 per level): <code>11001|E4852|||||1||||2081|||9|||…|||Sturdy Sword||Each level upgrade increases INT by 9…|</code></li>
+<li>Aura with VFX and flag: <code>52124|E0124|||||1|524288|||2036||||-80|||2095|||10|||…|||9101|51|||…|||Nature's Blessing 1||Increases Nature Resistance +10 points and reduces Magic Damage Taken -80 points.|</code></li>
+<li>VIP (flag 0x10030, 4 slots, VFX <code>s91341</code> on node 11): <code>48794|E5319||s91341|11||1|65584|||2952|2||||||2911|100|20|||||2902|10||||||2051|5||||…|Glory Sprite VIP ||…</code></li>
+<li>Weapon ability with a proc (slots 1 and 4 go to the child, event 2 = on attack → enemy, 30 %, 8 s, 12 s cooldown):
+  <code>56988|E6006|||||1||||2081||||-150|||2031|25|50|||||2032|25|50|||||1011|-3000|-6000|||||||||1;4|2|30|80||E6006|2|512|||||||120||||Otherworld - Breakthrough|$15$Reduce MP -3000-6000 and WIL -150 for 8 sec|$15$Attacking may trigger one of the following:…|</code></li>
+<li>DoT (3001 every 1 s = <code>Period</code> 10): <code>11346|E4949|||||2||||3001|-100|-100|||||1807||||…||10|||…|Magnetic Pulse 1||Deal 100 Real Damage,\nand drag the target closer|</code></li>
+<li>Saved permanent chain (<code>1921</code> p3 = −2, p4 = 1): <code>12357|E5086|||||1||||1921|100|16036|-2|1||||…|Block 2061|||</code></li>
+<li>Stackable ×3 with self-check: <code>11389|E4905|||||2||||2034|10|10|10|10|||2044|10|10|||||6024|11389|3|3|11388|1||||…|Unholy Scar||Damage taken +10%. Stacks up to 3 times.|3</code></li>
+<li>Icon placeholder (only <code>2000</code>): <code>11363|E4951|||||2|32768|||2000||||…|Time Crush - Judgement|||</code></li>
+<li>System effects with no commands in the file: <code>54999|E9901|||||1|||…|85|51|…|Unbeatable|||</code> and <code>55000|E9902|||||2|||…|84|51|…|Weak|||</code> (the loader appends command 1 and 2).</li>
+</ul>
+<hr />
+<h2 id="8-recipes-and-traps">8. Recipes and traps<a class="headerlink" href="#8-recipes-and-traps" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>Flat stat buff</strong>: <code>2087</code> (integers, one per stat) or <code>2081</code> (Str/Con/Int… in one row); <code>Type = 1</code>, a <code>Hiword</code> so it
+  does not coexist with its family, <code>MaxStack</code> empty. The duration comes from the <code>S_Spell</code>/<code>S_Item</code> that applies it.</li>
+<li><strong>Percentage buff</strong>: <code>2083</code>/<code>2085</code> (damage), <code>2033</code>/<code>2034</code> (per hit type, ±1000 max), <code>2051</code> (speed), <code>2041-2044</code>
+  (critical). Percentages from different buffs <strong>add up</strong>.</li>
+<li><strong>DoT / HoT</strong>: <code>3001</code> with a <code>Period</code> (10 = 1 s); <code>1001</code> is a single hit. An empty <code>Period</code> with a <code>3xxx</code> = the tick
+  never runs.</li>
+<li><strong>"X % on attack → debuff the enemy" proc</strong>: same row, payload in the slots, col 42 = those slots, col 43 = 2,
+  col 44 = %, col 45 = duration ×0.1 s, col 56 = cooldown ×0.1 s, cols 58/59 = the child's group. Two rows with
+  <code>OnAttackBuff*</code> (2144-2149) or <code>7001</code> only when the debuff needs an id of its own.</li>
+<li><strong>Permanent chain/passive</strong>: <code>1921 &lt;id&gt; 100 -2 1</code> (permanent + saved); without the trailing <code>1</code> half of the chain is
+  lost on re-login. Closed <code>1079</code> loops: 9 hops max.</li>
+<li><strong>Stackable</strong>: <code>MaxStack = N</code> without <code>Flag 0x400000</code>; every application refreshes the stack and <code>RollBack(stacks)</code>
+  undoes all of them on exit. <code>6024</code> for "at N stacks switch to another effect".</li>
+<li><strong>Hide the icon</strong>: <code>Flag 0x8000</code>. <strong>Survive death</strong>: <code>0x20</code>. <strong>Not cancellable</strong>: <code>0x10</code>. <strong>Expire on map change</strong>:
+  <code>0x400</code>. <strong>Daily</strong>: <code>0x800</code>.</li>
+<li><strong>Exclusion group</strong>: <code>Hiword</code> = family, <code>Lowword</code> = rank; equal ranks replace each other (last wins), a higher rank
+  blocks a lower one with message 9022 (silenced by <code>0x200000</code>).</li>
+<li><strong>Traps</strong>: <code>strtoul</code> on integers (a decimal is truncated, a negative in a <code>ushort</code>/<code>uchar</code> becomes 65535/255);
+  <code>EffectId</code> as <code>s#####</code> is 0 (irrelevant: the server never uses it); <code>TransitionRate</code> &gt; 127 goes negative;
+  <code>TransitionDuration</code> 0 = the child is instant, not a buff; a duplicate id = the last row wins silently; a <code>.bin</code> next to
+  the <code>.ini</code> wins; a command id that does not exist <strong>raises no error</strong> (the slot silently vanishes); editing the
+  file requires a ZoneServer restart.</li>
+<li><strong>Check a change without risking the boot</strong>: <code>timeout 30 ./ZoneServer101 &gt;/dev/null 2&gt;&amp;1; echo $?</code> → 124 = alive,
+  0 = aborted; <code>grep "\[DB\]" Test.log</code> names the guilty <code>BUFF [id]</code>. <code>/add_enchant &lt;cid&gt; &lt;id&gt; &lt;dur&gt;</code> applies any
+  effect without a restart to test it.</li>
+</ul>
+<hr />
+<h2 id="9-function-index">9. Function index<a class="headerlink" href="#9-function-index" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Function</th>
+<th>Addr</th>
+<th>Role</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>main</code></td>
+<td>0x521020</td>
+<td><code>CGameData::Init</code> (once) → <code>Load Game Data(.ini) Fail!</code> on failure → <code>CZoneServer::InitGame</code></td>
+</tr>
+<tr>
+<td><code>CGameData::Init</code> / <code>LoadDatabase</code></td>
+<td>0xa50230 / 0xa50290</td>
+<td>installs <code>CGameDataLogger</code> and calls every <code>*Query::Init</code>; counts errors</td>
+</tr>
+<tr>
+<td><code>CEnchantQuery::Init</code> / <code>CheckVersion</code> / <code>Deserialize</code> / <code>InitSysEnchants</code></td>
+<td>0xaa3800 / 0xaa4320 / 0xaa3970 / 0xaa43d0</td>
+<td><code>S_Enchant.ini</code> parser</td>
+</tr>
+<tr>
+<td><code>CBaseQuery&lt;int,CEnchantData&gt;::LoadDB</code></td>
+<td>0xaa4720</td>
+<td><code>.bin</code> RC4, header, <code>(tokens−2) % N</code>, map by id</td>
+</tr>
+<tr>
+<td><code>CInTextStream::ParseLines</code> / <code>operator&gt;&gt;</code> int, uint, ushort, uchar, double, string</td>
+<td>0xa7ec70 / 0xa482d0, 0xa40ed0, 0xa43cb0, 0xa40fc0, 0xa7e610, 0xa7e6f0</td>
+<td>tokenizer and conversions (<code>strtoul</code>/<code>strtod</code>)</td>
+</tr>
+<tr>
+<td><code>CQueryLogger::ErrorLog</code> → <code>CGameDataLogger::ErrorLog</code></td>
+<td>0xa65520 → 0x520ef0</td>
+<td>the parser's <code>(%d)…</code> messages go to the System log (non-fatal)</td>
+</tr>
+<tr>
+<td><code>CZoneServer::InitWorld</code></td>
+<td>0x5afc80</td>
+<td><code>LoadAllEffectData</code> → <code>LoadAllSpellData</code></td>
+</tr>
+<tr>
+<td><code>CSpellDBO::LoadAllEffectData</code></td>
+<td>0x7823b0</td>
+<td><code>CEnchantData</code> → <code>SEffectData</code>, commands, transition child</td>
+</tr>
+<tr>
+<td><code>CSpellDBO::DecodeEffectCommand</code></td>
+<td>0x786ba0</td>
+<td>72 KB <code>switch(id)</code> → command text per bucket</td>
+</tr>
+<tr>
+<td><code>CEffectFactory::ParseEffectCommands</code> / <code>CEffectCommandGenerator::GenerateCommand</code> / <code>InitEffectCommandTable</code></td>
+<td>0x449e00 / 0x444dc0 / 0x4452c0</td>
+<td>text → <code>CEC_*</code></td>
+</tr>
+<tr>
+<td><code>CSpellDBO::AddSystemEffectData</code></td>
+<td>0x798450</td>
+<td>system effects added in code</td>
+</tr>
+<tr>
+<td><code>TC_ReloadEffect</code> / <code>CZoneServer::CheckAndSwapReloadEffect</code></td>
+<td>0x7d8f40 / 0x5b9e40</td>
+<td>GM <code>reload_effect</code>: re-decodes in memory, validates spells/items (<code>spell [%d] has an invalid effect [%d]</code>, <code>item [%d] has an invalid effect [%d]</code>), swaps pointers</td>
+</tr>
+<tr>
+<td><code>CEffectFactory::EffectToLife</code> (id) / (SEffectData) / <code>CheckEffectToLife</code></td>
+<td>0x4488e0 / 0x4489a0 / 0x449320</td>
+<td>apply; entity, weapon and flag checks, instant effects</td>
+</tr>
+<tr>
+<td><code>SEffectData::IsWeaponCanEffect</code> / <code>CCharacter::CheckBuffCanEffectWithChangeWeapon</code> / <code>CEnchantMgr::FindByWrongWeaponType</code></td>
+<td>0xa1a0b0 / 0x942e80 / 0xa22650</td>
+<td>col 57</td>
+</tr>
+<tr>
+<td><code>ILifeEntity::AddEnchant</code> / <code>RemoveEnchantByID</code> / <code>RemoveAllEnchants</code> / <code>RemoveAllEnchantKeys</code></td>
+<td>0x95a6e0 / 0x95a570 / 0x95add0 / 0x95b1b0</td>
+<td>entity API; client notification</td>
+</tr>
+<tr>
+<td><code>CEnchantMgr::Add</code> (data) / <code>Add</code> (CEnchant) / <code>Reset</code> / <code>Remove</code> / <code>Load</code></td>
+<td>0xa1ef40 / 0xa202c0 / 0xa1fd40 / 0xa213c0 / 0xa205f0</td>
+<td>refresh, stacks, exclusion, creation, removal, restore from DB</td>
+</tr>
+<tr>
+<td><code>CEnchantMgr::AddToContainers</code> / <code>RemoveFromContainers</code> / <code>AddNextTime</code> / <code>RemoveNextTime</code> / <code>OnExecuteCommands</code> / <code>RestarupEvent</code></td>
+<td>0xa26270 / 0xa26c30 / 0xa22c10 / 0xa1fb70 / 0xa22770 / 0xa21090</td>
+<td>indexes, per-event sets, time queue, tick</td>
+</tr>
+<tr>
+<td><code>CEnchantMgr::FindById</code> / <code>FindByType</code> / <code>RemoveByKey</code> / <code>RemoveAllEquipEnchants</code> / <code>RemoveAllElftabletEnchants</code></td>
+<td>0xa22420 / 0xa20170 / 0xa211c0 / 0xa21760 / 0xa21b90</td>
+<td>lookups and mass removal</td>
+</tr>
+<tr>
+<td><code>CCharacter::RemoveAllNoTransNodeEnchants</code> / <code>RemoveAllNoBattlefieldEnchants</code> / <code>CPlayerFactory::Rebirth</code> / <code>CEC_AttrForm::RollBack</code></td>
+<td>0x8f97a0 / 0x8f97c0 / 0x56a6a0 / 0x9c2a00</td>
+<td>flag-driven sweeps (0x400, 0x100000, 0x80000, form-only bits)</td>
+</tr>
+<tr>
+<td><code>CEnchantMgr::On{Attack,Hit,Miss,BeAttack,Hurt,CastSpellSelf,CastSpellTarget,Kill,Revive,HealSelf,HealTarget,CastClassSpellSelf,CastClassSpellTarget,UseItem,Move}Enchant</code></td>
+<td>0xa22ef0, 0xa23170, 0xa233d0, 0xa23650, 0xa238d0, 0xa23b60, 0xa23dc0, 0xa24030, 0xa24510, 0xa24770, 0xa249e0, 0xa25130, 0xa25390, 0xa25a60, 0xa25c80</td>
+<td>proc triggers</td>
+</tr>
+<tr>
+<td><code>CEventEnchant::Execute</code></td>
+<td>0xadfcd0</td>
+<td>per-entity tick/expiry event</td>
+</tr>
+<tr>
+<td><code>CEnchant</code> ctor / <code>CalculerNextTime</code> / <code>GetRestTime</code> / <code>CalculerRealDuration</code> / <code>IsRealDuration</code> / <code>IsDieReserve</code> / <code>IsHideIcon</code> / <code>SetData</code></td>
+<td>0xa1a940 / 0xa1ab00 / 0xa1ae50 / 0xa1e070 / 0xa1dfe0 / 0xa1b5f0 / 0xa1dfc0 / 0xa1ae40</td>
+<td>instance</td>
+</tr>
+<tr>
+<td><code>CEnchant::ExecuteStartCommands</code> / <code>ExecuteCommands</code> / <code>ExecuteOnceCommands</code> / <code>ExecuteEndCommands</code> / <code>RollBackStartCommands</code> / <code>OnAttack</code> / <code>OnHit</code></td>
+<td>0xa1b430 / 0xa1b610 / 0xa1b740 / 0xa1b850 / 0xa1b970 / 0xa1c360 / 0xa1c4d0</td>
+<td>buckets</td>
+</tr>
+<tr>
+<td><code>CEC_Effect::Init</code> / <code>CanExecute</code> / <code>Execute</code></td>
+<td>0x9e00d0 / 0x9e0100 / 0x9e0170</td>
+<td>transition proc (roll, child)</td>
+</tr>
+<tr>
+<td><code>ILifeEntity::OnTriggerEffect</code> / <code>CheckInTransitionDownTime</code> / <code>CCharacter::PutInTransitionDownTime</code></td>
+<td>0x95f020 / 0x95eda0 / 0x90cb40</td>
+<td>transition cooldown (<code>EffectDownTimes</code>)</td>
+</tr>
+<tr>
+<td><code>CEffectFactory::CancelPlayerEnchant</code></td>
+<td>0x449c40</td>
+<td>cancel by the player (<code>Type</code> bit 0 and <code>!(Flag &amp; 0x10)</code>)</td>
+</tr>
+<tr>
+<td><code>CCharacter::Die</code> / <code>CCheckExceptDieReserve::operator()</code></td>
+<td>0x90f2b0 / 0x431bf0</td>
+<td>cleanup on death</td>
+</tr>
+<tr>
+<td><code>CEffectFactory::SavePlayerEnchant</code> / <code>CleanPlayerEnchant</code> / <code>EnchantSaveToDB</code> / <code>CSpellDBO::SavePlayerEnchant</code></td>
+<td>0x44a190 / 0x44a180 / 0x44a1d0 / 0x780db0</td>
+<td>persistence</td>
+</tr>
+<tr>
+<td><code>CCharacter::OnUpdateEnchant</code></td>
+<td>0x931060</td>
+<td>stat recompute (72 KB)</td>
+</tr>
+<tr>
+<td><code>CEC_AttrBase::Init</code> / <code>Execute</code> · <code>CEC_EffectNextID::Init</code> / <code>Execute</code> · <code>CEC_Effect2Target::Init</code> · <code>CEC_HP::Init</code> · <code>CEC_AttrBeDamageRate::Init</code> · <code>CEC_LastEnchant::Init</code> · <code>CEC_EnchantStackCheck::Init</code> · <code>CEC_AttrCastFailRate::Init</code> · <code>CEC_SetCoRideAction::Init</code> · <code>CEC_AttrMovement::Execute</code> · <code>CEC_AttrRecoverHP::Execute</code></td>
+<td>0x9bed70 / 0x9bf080 · 0x9df7a0 / 0x9dfb20 · 0x9e0530 · 0x9efa20 · 0x9bf430 · 0x9d22b0 · 0x9e9910 · 0x9bf740 · 0xa0a770 · 0x9c9c40 · 0x9cb860</td>
+<td>the commands of §6</td>
+</tr>
+<tr>
+<td><code>TC_AddEnchant</code> / <code>TC_AddEnchantTarget</code></td>
+<td>0x88b8b0 / 0x88cef0</td>
+<td>GM <code>/add_enchant</code></td>
+</tr>
+</tbody>
+</table>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../S_DropItem/" class="md-footer__link md-footer__link--prev" aria-label="Previous: S_DropItem.ini">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                S_DropItem.ini
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../../tags/" class="md-footer__link md-footer__link--next" aria-label="Next: Tags">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                Tags
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Written from the decompiled server binaries. No game data files or binaries are distributed here.
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        
+<div class="md-social">
+  
+    
+    
+    
+    
+    <a href="https://github.com/Goburouv/gf-server-docs" target="_blank" rel="noopener" title="Repository" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.tabs.sticky", "navigation.sections", "navigation.indexes", "navigation.top", "navigation.footer", "search.suggest", "search.highlight", "search.share", "content.code.copy", "content.code.annotate", "content.tabs.link", "toc.follow"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="https://unpkg.com/mermaid@11/dist/mermaid.min.js"></script>
+      
+        <script src="../../javascripts/mermaid-init.js"></script>
+      
+    
+  </body>
+</html>

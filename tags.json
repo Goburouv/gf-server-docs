@@ -1,1 +1,1 @@
-{"mappings": [{"item": {"url": "server/S_DropItem/", "title": "S_DropItem.ini"}, "tags": ["boot killers", "loot", "server"]}]}
+{"mappings": [{"item": {"url": "server/S_DropItem/", "title": "S_DropItem.ini"}, "tags": ["boot killers", "loot", "server"]}, {"item": {"url": "server/S_Enchant/", "title": "S_Enchant.ini"}, "tags": ["boot killers", "effects", "server"]}]}
