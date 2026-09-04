@@ -25,7 +25,7 @@
     
     
       
-        <title>Home - GF Server Data Reference</title>
+        <title>GF Server Data Reference</title>
       
     
     
@@ -46,8 +46,8 @@
         
         
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,300i,400,400i,700,700i%7CJetBrains+Mono:400,400i,700,700i&display=fallback">
-        <style>:root{--md-text-font:"Inter";--md-code-font:"JetBrains Mono"}</style>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=IBM+Plex+Sans:300,300i,400,400i,700,700i%7CIBM+Plex+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"IBM Plex Sans";--md-code-font:"IBM Plex Mono"}</style>
       
     
     
@@ -59,6 +59,11 @@
 
     
     
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&display=swap">
+  <meta name="theme-color" content="#eff0ed" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#0d0f0e" media="(prefers-color-scheme: dark)">
   
   
   <meta property="og:type" content="website">
@@ -89,11 +94,6 @@
     <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
     <label class="md-overlay" for="__drawer"></label>
     <div data-md-component="skip">
-      
-        
-        <a href="#gf-server-data-reference" class="md-skip">
-          Skip to content
-        </a>
       
     </div>
     <div data-md-component="announce">
@@ -359,26 +359,6 @@
       <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
       
       
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Home
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
       
       <a href="." class="md-nav__link md-nav__link--active">
         
@@ -396,47 +376,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#articles" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Articles
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#how-to-read-these-pages" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        How to read these pages
-      
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
       
     </li>
   
@@ -639,38 +578,6 @@
   
   
   
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#articles" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Articles
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#how-to-read-these-pages" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        How to read these pages
-      
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
   
 </nav>
                   </div>
@@ -692,66 +599,147 @@
   
 
 
-<div class="hero">
-<h1 id="gf-server-data-reference">GF Server Data Reference<a class="headerlink" href="#gf-server-data-reference" title="Permanent link">&para;</a></h1>
-<p class="lead">Column-by-column reference for the server data files, written from the decompiled server binaries and checked against real data. Every article says which functions read each column, what the values do at runtime, what stops the server from booting, and how to edit the file safely.</p>
-</div>
-<h2 id="articles">Articles<a class="headerlink" href="#articles" title="Permanent link">&para;</a></h2>
-<div class="grid cards">
-<ul>
-<li>
-<p><span class="twemoji lg middle"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M5 4h14a3 3 0 0 1 3 3v4h-7v-1H9v1H2V7a3 3 0 0 1 3-3m6 7h2v2h-2zm-9 1h7v1l2 2h2l2-2v-1h7v8H2z"/></svg></span> <strong>S_DropItem.ini</strong></p>
-<hr />
-<p>Loot tables: monster drops, bag contents, gold, affix quality, part-break drops and server-wide announcements. Includes the exact roll formula and the list of boot killers.</p>
-<p><span class="status-badge">Complete</span></p>
-<p><a href="server/S_DropItem/"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13.22 19.03a.75.75 0 0 1 0-1.06L18.19 13H3.75a.75.75 0 0 1 0-1.5h14.44l-4.97-4.97a.749.749 0 0 1 .326-1.275.75.75 0 0 1 .734.215l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0"/></svg></span> Read the article</a></p>
-</li>
-<li>
-<p><span class="twemoji lg middle"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M7.5 5.6 5 7l1.4-2.5L5 2l2.5 1.4L10 2 8.6 4.5 10 7zm12 9.8L22 14l-1.4 2.5L22 19l-2.5-1.4L17 19l1.4-2.5L17 14zM22 2l-1.4 2.5L22 7l-2.5-1.4L17 7l1.4-2.5L17 2l2.5 1.4zm-8.66 10.78 2.44-2.44-2.12-2.12-2.44 2.44zm1.03-5.49 2.34 2.34c.39.37.39 1.02 0 1.41L5.04 22.71c-.39.39-1.04.39-1.41 0l-2.34-2.34c-.39-.37-.39-1.02 0-1.41L12.96 7.29c.39-.39 1.04-.39 1.41 0"/></svg></span> <strong>S_Enchant.ini</strong></p>
-<hr />
-<p>Effects: buffs, debuffs, passives and procs. Every column, the loader, the exclusion groups, stacking, the transition (proc) child, the flag bits and the boot killers.</p>
-<p><span class="status-badge">Complete</span></p>
-<p><a href="server/S_Enchant/"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13.22 19.03a.75.75 0 0 1 0-1.06L18.19 13H3.75a.75.75 0 0 1 0-1.5h14.44l-4.97-4.97a.749.749 0 0 1 .326-1.275.75.75 0 0 1 .734.215l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0"/></svg></span> Read the article</a></p>
-</li>
-<li>
-<p><span class="twemoji lg middle"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M8 3a2 2 0 0 0-2 2v4a2 2 0 0 1-2 2H3v2h1a2 2 0 0 1 2 2v4a2 2 0 0 0 2 2h2v-2H8v-5a2 2 0 0 0-2-2 2 2 0 0 0 2-2V5h2V3m6 0a2 2 0 0 1 2 2v4a2 2 0 0 0 2 2h1v2h-1a2 2 0 0 0-2 2v4a2 2 0 0 1-2 2h-2v-2h2v-5a2 2 0 0 1 2-2 2 2 0 0 1-2-2V5h-2V3z"/></svg></span> <strong>S_Enchant commands</strong></p>
-<hr />
-<p>The command vocabulary behind those effects: every numeric id, the text it generates, the stream it lands in, what its <code>Init</code> refuses at boot and what <code>Execute</code> actually changes.</p>
-<p><span class="status-badge">Complete</span></p>
-<p><a href="server/S_Enchant_Commands/"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13.22 19.03a.75.75 0 0 1 0-1.06L18.19 13H3.75a.75.75 0 0 1 0-1.5h14.44l-4.97-4.97a.749.749 0 0 1 .326-1.275.75.75 0 0 1 .734.215l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0"/></svg></span> Read the article</a></p>
-</li>
-<li>
-<p><span class="twemoji lg middle"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M8 15a2 2 0 0 1-2-2 2 2 0 0 1 2-2 2 2 0 0 1 2 2 2 2 0 0 1-2 2m2.5 2 1.5-3 1.5 3zm5.5-2a2 2 0 0 1-2-2 2 2 0 0 1 2-2 2 2 0 0 1 2 2 2 2 0 0 1-2 2m6-4A10 10 0 0 0 12 1 10 10 0 0 0 2 11c0 2.8 1.2 5.3 3 7.1V22h14v-3.9c1.8-1.8 3-4.3 3-7.1m-5 9h-2v-2h-2v2h-2v-2H9v2H7v-2.8c-1.8-1.5-3-3.7-3-6.2a8 8 0 0 1 8-8 8 8 0 0 1 8 8c0 2.5-1.2 4.8-3 6.2z"/></svg></span> <strong>S_Monster.ini</strong></p>
-<hr />
-<p>Monster templates: stats, spells, AI hooks, alignment and part breaking.</p>
-<p><span class="status-badge status-badge--planned">Planned</span></p>
-</li>
+<div class="home">
+
+<header class="home__hero">
+
+<span class="eyebrow" translate="no">S_Enchant.ini &middot; effect 52124</span>
+
+<h1>Every column, read from the binary.</h1>
+
+<p class="lead">Column-by-column reference for the server&rsquo;s data files, written from the decompiled server binaries and checked against real data. Each article names the function that reads each column, says what the value does at runtime, and lists what stops the server from booting.</p>
+
+<figure class="rowstrip">
+  <div class="rowstrip__scroll" tabindex="0" role="img" aria-label="One row of S_Enchant.ini, fields one to twenty-four: 52124, E0124, four empty fields, 1, 524288, two empty fields, then command slot 2036 with its fourth parameter set to -80, then command slot 2095 with its third parameter set to 10. Thirty-nine further fields follow.">
+    <div class="rowstrip__fields" translate="no">
+      <span class="f f--key"><i>01</i><b>52124</b></span>
+      <span class="f"><i>02</i><b>E0124</b></span>
+      <span class="f"><i>03</i><b>&nbsp;</b></span>
+      <span class="f"><i>04</i><b>&nbsp;</b></span>
+      <span class="f"><i>05</i><b>&nbsp;</b></span>
+      <span class="f"><i>06</i><b>&nbsp;</b></span>
+      <span class="f"><i>07</i><b>1</b></span>
+      <span class="f f--key"><i>08</i><b>524288</b></span>
+      <span class="f"><i>09</i><b>&nbsp;</b></span>
+      <span class="f"><i>10</i><b>&nbsp;</b></span>
+      <span class="f f--slot f--slot-start f--key"><i>11</i><b>2036</b></span>
+      <span class="f f--slot"><i>12</i><b>&nbsp;</b></span>
+      <span class="f f--slot"><i>13</i><b>&nbsp;</b></span>
+      <span class="f f--slot"><i>14</i><b>&nbsp;</b></span>
+      <span class="f f--slot f--key"><i>15</i><b>-80</b></span>
+      <span class="f f--slot"><i>16</i><b>&nbsp;</b></span>
+      <span class="f f--slot f--slot-end"><i>17</i><b>&nbsp;</b></span>
+      <span class="f f--slot f--slot-start"><i>18</i><b>2095</b></span>
+      <span class="f f--slot"><i>19</i><b>&nbsp;</b></span>
+      <span class="f f--slot"><i>20</i><b>&nbsp;</b></span>
+      <span class="f f--slot"><i>21</i><b>10</b></span>
+      <span class="f f--slot"><i>22</i><b>&nbsp;</b></span>
+      <span class="f f--slot"><i>23</i><b>&nbsp;</b></span>
+      <span class="f f--slot f--slot-end"><i>24</i><b>&nbsp;</b></span>
+      <span class="f f--more"><i>&nbsp;</i><b>+39</b></span>
+    </div>
+  </div>
+  <figcaption class="rowstrip__caption">One row of <code translate="no">S_Enchant.ini</code>: 63&nbsp;fields separated by <code translate="no">|</code>, with no header row, so position is the only thing that names them. The two shaded blocks are command slots &mdash; an id followed by its six parameters, every seven&nbsp;fields. This row uses two of the four.</figcaption>
+</figure>
+
+<ul class="legend">
+  <li><span class="col">01</span><span>The effect id. Other files point at effects by this number.</span></li>
+  <li><span class="col">08</span><span><code translate="no">EnchantFlag</code>. <code>524288</code> is <code>0x80000</code>: the effect is stripped when the character rebirths.</span></li>
+  <li><span class="col">11</span><span>A command id. <code>2036</code> builds a damage shield.</span></li>
+  <li><span class="col">15</span><span>That command&rsquo;s <code translate="no">p4</code> &mdash; the only parameter it reads. Here, the size of the shield.</span></li>
 </ul>
-</div>
-<h2 id="how-to-read-these-pages">How to read these pages<a class="headerlink" href="#how-to-read-these-pages" title="Permanent link">&para;</a></h2>
-<div class="grid cards">
-<ul>
-<li>
-<p><span class="twemoji lg middle"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M8 2h8a2 2 0 0 1 2 2v16a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2m0 8v4h8v-4zm0 6v4h8v-4zM8 4v4h8V4z"/></svg></span> <strong>Columns</strong></p>
-<hr />
-<p>Column numbers are <strong>1-based</strong> unless marked <code>idx</code> (0-based). Header names come from the file; field names come from the binary's debug symbols.</p>
-</li>
-<li>
-<p><span class="twemoji lg middle"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 17H7V7h10m4 4V9h-2V7a2 2 0 0 0-2-2h-2V3h-2v2h-2V3H9v2H7c-1.11 0-2 .89-2 2v2H3v2h2v2H3v2h2v2a2 2 0 0 0 2 2h2v2h2v-2h2v2h2v-2h2a2 2 0 0 0 2-2v-2h2v-2h-2v-2m-6 2h-2v-2h2m2-2H9v6h6z"/></svg></span> <strong>Addresses</strong></p>
-<hr />
-<p><code>@0x...</code> values are ZoneServer addresses, given so every claim can be re-checked in a disassembler.</p>
-</li>
-<li>
-<p><span class="twemoji lg middle"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m15.8 18.5 6 1.6-.4 1.9-9.4-2.5L2.6 22l-.5-1.9 6-1.6L2 16.9l.5-1.9 9.4 2.5 9.4-2.5.5 1.9zM18 8c0 1.8-.8 3.3-2 4.4V15h-2v-2h-1v2h-2v-2h-1v2H8v-2.6C6.8 11.3 6 9.8 6 8a6 6 0 0 1 6-6 6 6 0 0 1 6 6m-7-.5c0-.8-.7-1.5-1.5-1.5S8 6.7 8 7.5 8.7 9 9.5 9 11 8.3 11 7.5m2 3.5-1-2-1 2zm3-3.5c0-.8-.7-1.5-1.5-1.5S13 6.7 13 7.5 13.7 9 14.5 9 16 8.3 16 7.5"/></svg></span> <strong>Boot killers</strong></p>
-<hr />
-<p>Anything marked as a boot killer makes the ZoneServer refuse to start. Each article lists them for its file.</p>
-</li>
-<li>
-<p><span class="twemoji lg middle"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 20c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8m0-18C6.47 2 2 6.47 2 12s4.47 10 10 10 10-4.47 10-10S17.53 2 12 2m2.59 6L12 10.59 9.41 8 8 9.41 10.59 12 8 14.59 9.41 16 12 13.41 14.59 16 16 14.59 13.41 12 16 9.41z"/></svg></span> <strong>Dead columns</strong></p>
-<hr />
-<p>Parsed by the loader but never read by any code. Editing them does nothing.</p>
-</li>
+
+</header>
+
+<section class="home__section">
+
+<h2>The files</h2>
+
+<p class="note">One article per file, column by column. Every article says where each claim came from and what it could not prove.</p>
+
+<ul class="idx">
+  <li>
+    <a class="idx__row" href="server/S_DropItem/">
+      <span class="idx__file" translate="no">S_DropItem.ini</span>
+      <span class="idx__what">Loot tables: monster drops, bag contents, gold, affix quality, part-break drops and server-wide announcements.</span>
+      <span class="idx__facts"><span>194&nbsp;columns</span><span>roll formula</span><span>boot killers</span></span>
+      <span class="idx__go" aria-hidden="true">&rarr;</span>
+    </a>
+  </li>
+  <li>
+    <a class="idx__row" href="server/S_Enchant/">
+      <span class="idx__file" translate="no">S_Enchant.ini</span>
+      <span class="idx__what">Effects: buffs, debuffs, passives and procs. The loader, exclusion groups, stacking, the flag bits and the transition child.</span>
+      <span class="idx__facts"><span>63&nbsp;columns</span><span>23&nbsp;flag bits</span><span>boot killers</span></span>
+      <span class="idx__go" aria-hidden="true">&rarr;</span>
+    </a>
+  </li>
+  <li>
+    <a class="idx__row" href="server/S_Enchant_Commands/">
+      <span class="idx__file" translate="no">S_Enchant commands</span>
+      <span class="idx__what">The command vocabulary behind those effects: what each numeric id emits, which stream it runs in, and what it changes.</span>
+      <span class="idx__facts"><span>283&nbsp;ids</span><span>247&nbsp;commands</span><span>222&nbsp;boot killers</span></span>
+      <span class="idx__go" aria-hidden="true">&rarr;</span>
+    </a>
+  </li>
+  <li>
+    <div class="idx__row idx__row--planned">
+      <span class="idx__file" translate="no">S_Monster.ini</span>
+      <span class="idx__what">Monster templates: stats, spells, AI hooks, alignment and part breaking.</span>
+      <span class="idx__facts"><span>not started</span></span>
+      <span class="tag-planned">Planned</span>
+    </div>
+  </li>
 </ul>
+
+</section>
+
+<section class="home__section">
+
+<h2>Why you can check it</h2>
+
+<ul class="proofs">
+  <li>
+    <h3>Addresses, not adjectives</h3>
+    <p>Values like <code>@0x786ba0</code> are ZoneServer addresses. Every claim points at the code it came from, so you can open the binary and disagree with it.</p>
+  </li>
+  <li class="is-fail">
+    <h3>Boot killers, collected</h3>
+    <p>Anything that makes the server refuse to start with <code>[FAIL] Database Error!!</code> is listed per file &mdash; including the checks that fail without writing a single line to the log.</p>
+  </li>
+  <li>
+    <h3>Gaps are marked</h3>
+    <p>Where something could not be proven in the binary, the page says <code>not verified</code> and names what was searched, instead of guessing.</p>
+  </li>
+</ul>
+
+</section>
+
+<section class="home__section">
+
+<h2>Conventions</h2>
+
+<dl class="conv">
+  <div>
+    <dt>Columns</dt>
+    <dd>1-based unless marked <code translate="no">idx</code>. Field names come from the binary&rsquo;s debug symbols; the files themselves have no header row.</dd>
+  </div>
+  <div>
+    <dt>Addresses</dt>
+    <dd><code>@0x&hellip;</code> values are ZoneServer addresses, given so every claim can be re-checked in a disassembler.</dd>
+  </div>
+  <div>
+    <dt>Units</dt>
+    <dd>Every duration is in tenths of a second unless a page says otherwise. Percentages are not consistent between commands, so each entry states its own scale.</dd>
+  </div>
+  <div>
+    <dt>Dead columns</dt>
+    <dd>Parsed by the loader and read by nothing. Editing them does nothing at all.</dd>
+  </div>
+</dl>
+
+</section>
+
 </div>
 
 
